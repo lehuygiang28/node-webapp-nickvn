@@ -1,1 +1,250 @@
-<h3>HEADER</h3>
+<body class="c-layout-header-fixed c-layout-header-mobile-fixed c-layout-header-topbar c-layout-header-topbar-collapse">
+
+    <div class="h1tag"
+        style="font-size:0px;text-indent:-1000px;height:0;width:0;position: absolute;z-index:-1000;padding:0;margin:0">
+    </div>
+
+    <!-- BEGIN: LAYOUT/HEADERS/HEADER-1 -->
+    <!-- BEGIN: HEADER -->
+    <header class="c-layout-header c-layout-header-4 c-layout-header-default-mobile" data-minimize-offset="80">
+        <div class="c-topbar c-topbar-light">
+            <div class="container">
+                <!-- BEGIN: INLINE NAV -->
+                <nav class="c-top-menu c-pull-left">
+                    <ul class="c-icons c-theme-ul">
+                        <li>
+                            <a href="https://www.facebook.com/" target="_blank">
+                                <i class="icon-social-facebook"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/" target="_blank">
+                                <i class="icon-social-youtube"></i>
+                            </a>
+                        </li>
+
+                    </ul>
+                </nav>
+                <!-- END: INLINE NAV -->
+
+                <!-- BEGIN: INLINE NAV -->
+                <nav class="c-top-menu c-pull-right m-t-10">
+                    <ul class="c-links c-theme-ul">
+                        <li>
+                            Hotline: <a href="tel:0">08.6969.3000 </a>
+                        </li>
+
+                        <!--                <li class="c-divider">|</li>
+                                    <li>
+                                        <a href="~/contact.html">Liên hệ</a>
+                                    </li>
+                                    <li class="c-divider">|</li>
+                                    <li>
+                                        <a href="~/faq.html">FAQ</a>
+                                    </li>-->
+                    </ul>
+                </nav>
+                <!-- END: INLINE NAV -->
+
+            </div>
+        </div>
+        <div class="c-navbar">
+            <div class="container">
+                <!-- BEGIN: BRAND -->
+                <div class="c-navbar-wrapper clearfix">
+                    <div class="c-brand c-pull-left">
+                        <div style="margin: 0px;display: inline-block">
+                            <a href="~/" class="c-logo"
+                                alt="Shop bán nick game, acc game online liên minh huyền thoại lol giá rẻ, uy tín...">
+                                <img height="35px" src="/img/logo.jpg" alt="logo" class="c-desktop-logo">
+                                <img height="29px" src="/img/logo.jpg" alt="logo"
+                                    class="c-desktop-logo-inverse">
+                                <img height="35px" src="/img/logo.jpg" alt="logo" class="c-mobile-logo">
+                            </a>
+                        </div>
+                        <button class="c-hor-nav-toggler" type="button" data-target=".c-mega-menu">
+                            <span class="c-line"></span>
+                            <span class="c-line"></span>
+                            <span class="c-line"></span>
+                        </button>
+                        <button class="c-topbar-toggler" type="button">
+                            <i class="fa fa-ellipsis-v"></i>
+                        </button>
+                        {{!-- <button class="c-search-toggler" type="button">
+                            <i class="fa fa-search"></i>
+                        </button> --}}
+
+                        <!--    <button class="c-cart-toggler" type="button">
+                            <i class="icon-handbag"></i>
+                            <span class="c-cart-number c-theme-bg">2</span>
+                        </button>-->
+                    </div>
+                    <!-- END: BRAND -->
+                    <!-- BEGIN: QUICK SEARCH -->
+                    {{!-- <form class="c-quick-search" action="#">
+                        <input type="text" name="query" placeholder="Tìm kiếm..." value="" class="form-control"
+                            autocomplete="off">
+                        <span class="c-theme-link">&times;</span>
+                    </form> --}}
+                    <!-- END: QUICK SEARCH -->
+                    <!-- BEGIN: HOR NAV -->
+                    <!-- BEGIN: LAYOUT/HEADERS/MEGA-MENU -->
+                    <!-- BEGIN: MEGA MENU -->
+                    <!-- Dropdown menu toggle on mobile: c-toggler class can be applied to the link arrow or link itself depending on toggle mode -->
+                    <style>
+                        .c-menu-type-mega:hover {
+                            transition-delay: 1s;
+                        }
+
+                        .c-layout-header.c-layout-header-4 .c-navbar .c-mega-menu>.nav.navbar-nav>li:focus>a:not(.btn),
+                        .c-layout-header.c-layout-header-4 .c-navbar .c-mega-menu>.nav.navbar-nav>li:active>a:not(.btn),
+                        .c-layout-header.c-layout-header-4 .c-navbar .c-mega-menu>.nav.navbar-nav>li:hover>a:not(.btn) {
+                            color: #3a3f45;
+                            background: #FAFAFA;
+                        }
+                    </style>
+                    <nav
+                        class="c-mega-menu c-pull-right c-mega-menu-dark c-mega-menu-dark-mobile c-fonts-uppercase c-fonts-bold d-none hidden-xs hidden-sm">
+
+                        <ul class="nav navbar-nav c-theme-nav">
+                            <li class="c-menu-type-classic"><a rel="" href="~/" class="c-link dropdown-toggle ">Trang
+                                    chủ</a></li>
+                            <li class="c-menu-type-classic"><a rel="" href="#" class="c-link dropdown-toggle ">Dịch vụ
+                                    game</a></li>
+                            <li class="c-menu-type-classic"><a rel="" asp-action="TheNap" asp-controller="User"
+                                    target="_blank" class="c-link dropdown-toggle ">Mua thẻ</a></li>
+                            <li class="c-menu-type-classic"><a rel="" href="#" class="c-link dropdown-toggle ">Nạp
+                                    tiền<span class="c-arrow c-toggler"></span></a>
+                                <ul id="children-of-41" class="dropdown-menu c-menu-type-classic c-pull-left ">
+                                    <li class="c-menu-type-classic">
+                                        <a rel="" asp-action="NapThe" asp-controller="User" class="">Nạp thẻ cào</a>
+                                    </li>
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Nạp ATM tự
+                                            động</a></li>
+                                    <li class="c-menu-type-classic"><a target='_blank' rel="" href="#" class="">Hướng
+                                            dẫn nạp ATM tự động</a></li>
+                                </ul>
+                            </li>
+                            <li class="c-menu-type-classic"><a rel="" href="#" class="c-link dropdown-toggle ">Tin
+                                    tức<span class="c-arrow c-toggler"></span></a>
+                                <ul id="children-of-42" class="dropdown-menu c-menu-type-classic c-pull-left ">
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Blog</a></li>
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">UY
+                                            TÍN CỦA SHOP</a></li>
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Danh
+                                            Sách GDV group</a></li>
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Dịch Vụ
+                                            Game</a></li>
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Điều
+                                            khoản sử dụng website</a></li>
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Chính
+                                            sách tại Shop</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/dang-nhap" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
+                                                                c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                    <i class="icon-user"></i> Đăng nhập</a>
+                            </li>
+                            <li><a href="/dang-ky" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
+                                                                c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                    <i class="icon-key icons"></i> Đăng ký</a>
+                            </li>
+
+                            {{!-- var userName = Context.Session.GetString("_Name");
+                            var money = Context.Session.GetInt32("_Money");
+                            <li>
+                                <a asp-action="Profile" asp-controller="User" title="@userName"
+                                    class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                    <i class="icon-user"></i> @limitChar(userName) - @vndFormat(money)</a>
+                            </li>
+                            <li>
+                                <a asp-action="Logout" asp-controller="User"
+                                    class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                    Đăng xuất
+                                </a>
+                            </li> --}}
+
+                        </ul>
+
+                    </nav>
+
+                    <nav
+                        class="menu-main-mobile c-mega-menu c-pull-right c-mega-menu-dark c-mega-menu-dark-mobile c-fonts-uppercase c-fonts-bold hidden-md hidden-lg">
+
+                        <ul class="nav navbar-nav c-theme-nav">
+                            <li class="c-menu-type-classic"><a rel="" href="~/" class="c-link dropdown-toggle ">Trang
+                                    chủ</a></li>
+                            <li class="c-menu-type-classic"><a rel="" href="#" class="c-link dropdown-toggle ">Dịch vụ
+                                    game</a></li>
+                            <li class="c-menu-type-classic"><a rel="" asp-action="TheNap" asp-controller="User"
+                                    target="_blank" class="c-link dropdown-toggle ">Mua thẻ</a></li>
+                            <li class="c-menu-type-classic"><a rel="" href="#" class="c-link dropdown-toggle ">Nạp
+                                    tiền<span class="c-arrow c-toggler"></span></a>
+                                <ul id="children-of-41" class="dropdown-menu c-menu-type-classic c-pull-left ">
+                                    <li class="c-menu-type-classic"><a rel="" asp-action="NapThe" asp-controller="User"
+                                            class="">Nạp thẻ
+                                            cào</a></li>
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Nạp ATM tự
+                                            động</a></li>
+                                    <li class="c-menu-type-classic"><a target='_blank' rel="" href="#" class="">Hướng
+                                            dẫn nạp ATM tự động</a></li>
+                                </ul>
+                            </li>
+                            <li class="c-menu-type-classic"><a rel="" href="#" class="c-link dropdown-toggle ">Tin
+                                    tức<span class="c-arrow c-toggler"></span></a>
+                                <ul id="children-of-42" class="dropdown-menu c-menu-type-classic c-pull-left ">
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Blog</a></li>
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">UY
+                                            TÍN CỦA SHOP</a></li>
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Danh
+                                            Sách GDV group</a></li>
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Dịch Vụ
+                                            Game</a></li>
+                                    <li class="c-menu-type-classic"><a rel=""
+                                            href="blog/dieu-khoan-su-dung-website-nickvn" class="">Điều
+                                            khoản sử dụng website</a></li>
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Chính sách tại SHOP</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li><a asp-controller="user" asp-action="Login" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
+                                                    c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                    <i class="icon-user"></i> Đăng nhập</a>
+                            </li>
+                            <li><a asp-controller="user" asp-action="Signup" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
+                                                    c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                    <i class="icon-key icons"></i> Đăng ký</a>
+                            </li>
+
+                            {{!-- <li>
+                                <a asp-action="Profile" asp-controller="User" title="@userName"
+                                    class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                    <i class="icon-user"></i> @limitChar(userName) - @vndFormat(money)</a>
+                            </li>
+                            <li>
+                                <a asp-action="Logout" asp-controller="User"
+                                    class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                    Đăng xuất
+                                </a>
+                            </li> --}}
+
+
+                        </ul>
+
+                    </nav>
+
+
+                    <!-- END: MEGA MENU -->
+                    <!-- END: LAYOUT/HEADERS/MEGA-MENU -->
+                    <!-- END: HOR NAV -->
+                </div>
+                <!-- BEGIN: LAYOUT/HEADERS/QUICK-CART -->
+                <!-- BEGIN: CART MENU -->
+                <!-- END: CART MENU -->
+                <!-- END: LAYOUT/HEADERS/QUICK-CART -->
+            </div>
+        </div>
+    </header>
+    <!-- END: HEADER -->
+    <!-- END: LAYOUT/HEADERS/HEADER-1 -->

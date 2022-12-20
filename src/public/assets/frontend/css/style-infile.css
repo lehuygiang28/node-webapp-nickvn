@@ -1,0 +1,70 @@
+.c-layout-header .c-navbar .c-mega-menu>.nav.navbar-nav>li>.c-link {
+  padding: 41px 10px 39px 10px
+}
+
+.ui-autocomplete {
+  max-height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.input-group-addon {
+  background-color: #FAFAFA;
+}
+
+.input-group .input-group-btn>.btn,
+.input-group .input-group-addon {
+  background-color: #FAFAFA;
+}
+
+.modal {
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1200px) {
+  .c-layout-header-fixed.c-layout-header-topbar .c-layout-page {
+    margin-top: 245px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .modal-dialog:before {
+    margin-top: 75px;
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+  .modal-dialog {
+    width: 100%;
+  }
+  .modal-content {
+    margin-right: 20px;
+  }
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+}
+
+.mfp-wrap {
+  z-index: 20000 !important;
+}
+
+.c-content-overlay .c-overlay-wrapper {
+  z-index: 6;
+}
+
+.z7 {
+  z-index: 7 !important;
+}

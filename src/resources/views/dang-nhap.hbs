@@ -1,0 +1,116 @@
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<link rel="stylesheet" href="/assets/frontend/css/login-style.css">
+
+<!-- BEGIN: PAGE CONTAINER -->
+<div class="c-layout-page">
+    <!-- BEGIN: PAGE CONTENT -->
+    <div class="login-box">
+
+        <!-- /.login-logo -->
+        <div class="login-box-body box-custom">
+            <p class="login-box-msg">Đăng nhập hệ thống</p>
+            <span class="help-block" style="text-align: center;color: #dd4b39">
+                {{!-- <strong>@TempData["error"]</strong> --}}
+            </span>
+
+            <form method="POST">
+                {{!-- <input type="hidden" name="_token" value=""> --}}
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" name="username" value="" placeholder="Tài khoản của Web">
+                    <span class="fa-solid fa-user form-control-feedback"></span>
+
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" class="form-control" name="password" placeholder="Mật khẩu">
+                    <span class="fa-solid fa-lock form-control-feedback"></span>
+                </div>
+
+                <div class="form-group has-feedback g-recaptcha" data-sitekey=''></div>
+
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="checkbox icheck">
+                            <label style="color: #666">
+                                <input type="checkbox" name="remember" id="remember"> Ghi nhớ
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-6" style="text-align: right">
+                        <a href="#"
+                            style="color: #666;margin-top: 10px;margin-bottom: 10px;display: block;font-style: italic;">Quên
+                            mật khẩu?</a><br>
+                    </div>
+                    <!-- /.col -->
+                </div>
+
+                <div class="row">
+
+                    <!-- /.col -->
+                    <div class="col-xs-12">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat" style="margin: 0 auto;">Đăng
+                            nhập</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+            <div class="social-auth-links text-center">
+                <p style="margin-top: 5px">- HOẶC -</p>
+                <!-- login facebook -->
+
+                {{!-- <a href="" class="btn  btn-social btn-facebook btn-flat d-inline-block"><i
+                        class="fa-brands fa-facebook-f"></i>Login FB</a>
+
+                <a href="#" class="btn  btn-social btn-facebook btn-flat d-inline-block"><i
+                        class="fa-brands fa-facebook-f"></i>Login FB</a> --}}
+                <a asp-controller="User" asp-action="Signup" class="btn btn-social btn-google btn-flat d-inline-block">
+                    <i class="icon-key icon"></i>Tạo tài khoản</a>
+            </div>
+            <!-- /.social-auth-links -->
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+    <!-- /.login-box -->
+
+    <!-- END: PAGE CONTENT -->
+</div>
+
+<div class="modal fade" id="noticeModal" role="dialog" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="loader" style="text-align: center"><img src="/assets/frontend/images/loader.gif"
+                style="width: 50px;height: 50px;display: none"></div>
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="LoadModal" role="dialog" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="loader" style="text-align: center"><img src="/assets/frontend/images/loader.gif"
+                style="width: 50px;height: 50px;display: none"></div>
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('.load-modal').each(function (index, elem) {
+            $(elem).unbind().click(function (e) {
+                e.preventDefault();
+                e.preventDefault();
+                var curModal = $('#LoadModal');
+                curModal.find('.modal-content').html("<div class=\"loader\" style=\"text-align: center\"><img src=\"/assets/frontend/images/loader.gif\" style=\"width: 50px;height: 50px;\"></div>");
+                curModal.modal('show').find('.modal-content').load($(elem).attr('rel'));
+            });
+        });
+    });
+</script>
+
+
+<!-- END: PAGE CONTAINER -->

@@ -1,0 +1,88 @@
+@media only screen and (min-width: 360px) {
+  .hidetext {
+    max-height: 140px;
+    overflow: hidden;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .viewless,
+  .viewmore {
+    font-size: 14px !important;
+  }
+  .row-flex.item-list .col-sm-6 {
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+@media only screen and (min-width: 500px) {
+  .hidetext {
+    max-height: 162px;
+    overflow: hidden;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .hidetext {
+    max-height: 162px;
+    overflow: hidden;
+  }
+}
+
+.box-text {
+  margin-bottom: 5px;
+}
+
+.showtext {
+  max-height: initial;
+}
+
+.viewless,
+.viewmore {
+  cursor: pointer;
+  color: #f1c40f;
+  border: 1px solid #f1c40f;
+  padding: 5px;
+  text-align: center;
+  font-size: 17px;
+  margin: 20px 0;
+}
+
+
+/*tan code*/
+
+.special-text:not(.-expanded)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+}
+
+.special-text.-expanded {
+  max-height: 900vh;
+}
+
+.special-text {
+  line-height: 1.6;
+  padding: 20px 20px;
+  position: relative;
+  max-height: 250px;
+  overflow: hidden;
+  background-color: #fff;
+  margin-bottom: 20px;
+}
+
+.btn-viewmore {
+  cursor: pointer;
+  color: #f1c40f;
+  border: 1px solid #f1c40f;
+  padding: 5px;
+  text-align: center;
+  font-size: 17px;
+  margin: 20px 0;
+  float: right;
+}
