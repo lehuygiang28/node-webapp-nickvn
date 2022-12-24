@@ -5,7 +5,9 @@ const siteControllers = require('../app/controllers/SiteController');
 
 // dangNhapController.index();
 
-router.get('/dang-nhap', siteControllers.login)
-router.get('/', siteControllers.home)
+router.post('/dang-nhap', siteControllers.loginSovle)
+router.get('/dang-nhap', siteControllers.login);
+router.get('/dang-ky', siteControllers.signup);;
+router.get('/', siteControllers.home);
 
 module.exports = router;

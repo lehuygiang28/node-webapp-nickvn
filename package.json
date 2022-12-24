@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --inspect .\\src\\index.js",
+    "qqq" : "node .\\src\\index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
