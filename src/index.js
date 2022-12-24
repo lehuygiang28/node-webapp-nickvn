@@ -2,9 +2,12 @@ const path = require('path');
 const express = require('express');
 const handlebars = require('express-handlebars');
 const morgan = require('morgan');
+require('dotenv').config({ path: path.resolve(__dirname, './config.env') });
+
 
 const app = express();
-const port = 8081;
+const port = process.env.NODE_PORT || 3000;
+// const port = 8081;
 
 const route = require('./routes')
 const db = require('./config/db')
