@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const handlebars = require('express-handlebars');
 const morgan = require('morgan');
+const session = require('express-session');
 require('dotenv').config({ path: path.resolve(__dirname, './config.env') });
 
 
@@ -22,6 +23,19 @@ app.use(express.urlencoded({
   extended: true
 }));
 app.use(express.json());
+
+// Express session
+app.use(session({
+  secret: process.env.SECRET_SESSION_KEY,
+  resave: true,
+  saveUninitialized: false
+}))
+
+// Get session to handlebars
+app.use(function(_req, res, next) {
+  res.locals.session = _req.session;
+  next();
+});
 
 // Http logger
 app.use(morgan('combined'));

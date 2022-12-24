@@ -3,7 +3,6 @@
     <div class="h1tag"
         style="font-size:0px;text-indent:-1000px;height:0;width:0;position: absolute;z-index:-1000;padding:0;margin:0">
     </div>
-
     <!-- BEGIN: LAYOUT/HEADERS/HEADER-1 -->
     <!-- BEGIN: HEADER -->
     <header class="c-layout-header c-layout-header-4 c-layout-header-default-mobile" data-minimize-offset="80">
@@ -54,11 +53,10 @@
                 <div class="c-navbar-wrapper clearfix">
                     <div class="c-brand c-pull-left">
                         <div style="margin: 0px;display: inline-block">
-                            <a href="~/" class="c-logo"
+                            <a href="/" class="c-logo"
                                 alt="Shop bán nick game, acc game online liên minh huyền thoại lol giá rẻ, uy tín...">
                                 <img height="35px" src="/img/logo.jpg" alt="logo" class="c-desktop-logo">
-                                <img height="29px" src="/img/logo.jpg" alt="logo"
-                                    class="c-desktop-logo-inverse">
+                                <img height="29px" src="/img/logo.jpg" alt="logo" class="c-desktop-logo-inverse">
                                 <img height="35px" src="/img/logo.jpg" alt="logo" class="c-mobile-logo">
                             </a>
                         </div>
@@ -141,6 +139,21 @@
                                             sách tại Shop</a></li>
                                 </ul>
                             </li>
+
+                            {{#if session.User}}
+                            <li>
+                                <a href="/user/profile" title="{{session.User.userName}}"
+                                    class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                    <i class="icon-user"></i> {{session.User.userName}} - {{session.User.money}}</a>
+                            </li>
+                            <li>
+                                <a href="/dang-xuat"
+                                    class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                    Đăng xuất
+                                </a>
+                            </li>
+
+                            {{else}}
                             <li><a href="/dang-nhap" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
                                                                 c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
                                     <i class="icon-user"></i> Đăng nhập</a>
@@ -149,20 +162,8 @@
                                                                 c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
                                     <i class="icon-key icons"></i> Đăng ký</a>
                             </li>
+                            {{/if}}
 
-                            {{!-- var userName = Context.Session.GetString("_Name");
-                            var money = Context.Session.GetInt32("_Money");
-                            <li>
-                                <a asp-action="Profile" asp-controller="User" title="@userName"
-                                    class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
-                                    <i class="icon-user"></i> @limitChar(userName) - @vndFormat(money)</a>
-                            </li>
-                            <li>
-                                <a asp-action="Logout" asp-controller="User"
-                                    class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
-                                    Đăng xuất
-                                </a>
-                            </li> --}}
 
                         </ul>
 
@@ -208,26 +209,29 @@
                                 </ul>
                             </li>
 
-                            <li><a asp-controller="user" asp-action="Login" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
-                                                    c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
-                                    <i class="icon-user"></i> Đăng nhập</a>
-                            </li>
-                            <li><a asp-controller="user" asp-action="Signup" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
-                                                    c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
-                                    <i class="icon-key icons"></i> Đăng ký</a>
-                            </li>
-
-                            {{!-- <li>
-                                <a asp-action="Profile" asp-controller="User" title="@userName"
+                            {{#if session.User}}
+                            <li>
+                                <a href="/user/profile" title="{{session.User.userName}}"
                                     class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
-                                    <i class="icon-user"></i> @limitChar(userName) - @vndFormat(money)</a>
+                                    <i class="icon-user"></i> {{session.User.userName}} - {{session.User.money}}</a>
                             </li>
                             <li>
-                                <a asp-action="Logout" asp-controller="User"
+                                <a href="/dang-xuat"
                                     class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
                                     Đăng xuất
                                 </a>
-                            </li> --}}
+                            </li>
+                            {{else}}
+                            <li><a href="/dang-nhap" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
+                                                    c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                    <i class="icon-user"></i> Đăng nhập</a>
+                            </li>
+                            <li><a href="/dang-ky" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
+                                                    c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                    <i class="icon-key icons"></i> Đăng ký</a>
+                            </li>
+                            {{/if}}
+
 
 
                         </ul>
