@@ -10,8 +10,8 @@ const app = express();
 const port = process.env.NODE_PORT || 3000;
 // const port = 8081;
 
-const route = require('./routes')
-const db = require('./config/db')
+const route = require('./routes');
+const db = require('./config/db');
 
 // Connect to mongodb
 db.connect();
@@ -29,7 +29,7 @@ app.use(session({
   secret: process.env.SECRET_SESSION_KEY,
   resave: true,
   saveUninitialized: false
-}))
+}));
 
 // Get session to handlebars
 app.use(function(_req, res, next) {
@@ -53,7 +53,6 @@ app.set('views', path.join(__dirname, 'resources', 'views'));
 
 // Routes init
 route(app);
-
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);

@@ -10,7 +10,7 @@ class SiteController {
   home(_req, res, next) {
 
     Category.find({})
-      .then(categories => res.render('home', {
+      .then(categories => res.render('sites/home', {
         categories: mutipleMongooseToObject(categories)
       }))
       .catch(next);
@@ -40,7 +40,7 @@ class SiteController {
         if (!user) {
           console.log('User not found');
           res.status(401);
-          return res.render('dang-nhap', { error: 'Tài khoản hoặc mật khẩu không chính xác !' });
+          return res.render('sites/dang-nhap', { error: 'Tài khoản hoặc mật khẩu không chính xác !' });
         }
         // Check password with hash function
         bcrypt.compare(_req.body.password, user.password, async function(err, result) {
@@ -49,7 +49,7 @@ class SiteController {
           } else if (!result) {
             console.log('Dang nhap that bai: ' + result);
             res.status(401);
-            return res.render('dang-nhap', { error: 'Tài khoản hoặc mật khẩu không chính xác !' });
+            return res.render('sites/dang-nhap', { error: 'Tài khoản hoặc mật khẩu không chính xác !' });
           }
           console.log('Dang nhap thanh cong: ' + result);
           // Set the session value
@@ -72,11 +72,11 @@ class SiteController {
 
   // GET dang-nhap
   login(_req, res) {
-    res.render('dang-nhap');
+    res.render('sites/dang-nhap');
   }
 
   signup(_req, res) {
-    res.render('dang-ky');
+    res.render('sites/dang-ky');
   }
 
 }
