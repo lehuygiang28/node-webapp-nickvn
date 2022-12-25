@@ -45,6 +45,12 @@ app.engine(
     "hbs",
     handlebars.engine({
       extname: ".hbs",
+      helpers: {
+        vndCurrency: (value) => {
+          return value.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+          // return value.toLocaleString('vi-VN', {currency: 'VND', style: 'currency'});
+        },
+    }
     })
   );
 

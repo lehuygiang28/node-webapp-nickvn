@@ -1,8 +1,6 @@
-<script> document.title = 'Đăng nhập hệ thống' </script>
+<script> document.title = 'Đăng ký tài khoản' </script>
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
-<link rel="stylesheet" href="/assets/frontend/css/login-style.css">
 
 <!-- BEGIN: PAGE CONTAINER -->
 <div class="c-layout-page">
@@ -11,70 +9,78 @@
 
         <!-- /.login-logo -->
         <div class="login-box-body box-custom">
-            <p class="login-box-msg">Đăng nhập hệ thống</p>
+            <p class="login-box-msg">Đăng ký thành viên</p>
+
             <span class="help-block" style="text-align: center;color: #dd4b39">
                 <strong>{{error}}</strong>
             </span>
 
-            <form method="POST">
-                {{!-- <input type="hidden" name="_token" value=""> --}}
+            <span class="help-block" style="text-align: center;color: #00FF00">
+                <strong>{{success}}</strong>
+            </span>
+
+            <form action="/dang-ky" method="POST">
                 <div class="form-group has-feedback">
-                    <input type="text" class="form-control" name="username" value="" placeholder="Tài khoản của Web" required>
+                    <input type="text" class="form-control" name="userName" value="" placeholder="Tài khoản" required>
                     <span class="fa-solid fa-user form-control-feedback"></span>
 
                 </div>
+
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" name="email" value="" placeholder="Email" required>
+                    <span class="fa-solid fa-envelope form-control-feedback"></span>
+                </div>
+
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control number" maxlength="11" name="phone" value=""
+                        placeholder="Số điện thoại" required>
+                    <span class="fa-solid fa-mobile-screen-button form-control-feedback"></span>
+                </div>
+
                 <div class="form-group has-feedback">
                     <input type="password" class="form-control" name="password" placeholder="Mật khẩu" required>
                     <span class="fa-solid fa-lock form-control-feedback"></span>
                 </div>
 
-                <div class="form-group has-feedback g-recaptcha" data-sitekey=''></div>
-
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="checkbox icheck">
-                            <label style="color: #666">
-                                <input type="checkbox" name="remember" id="remember"> Ghi nhớ
-                            </label>
-                        </div>
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-xs-6" style="text-align: right">
-                        <a href="#"
-                            style="color: #666;margin-top: 10px;margin-bottom: 10px;display: block;font-style: italic;">Quên
-                            mật khẩu?</a><br>
-                    </div>
-                    <!-- /.col -->
+                <div class="form-group has-feedback">
+                    <input type="password" class="form-control" name="password_confirmation"
+                        placeholder="Xác nhận mật khẩu" required>
+                    <span class="fa-solid fa-lock form-control-feedback"></span>
+                    
+                <div id="passHelp" class="form-text">
+                    Mật khẩu từ 8 kí tự trở lên.<br>
+                    Bao gồm chữ, số và kí tự đặc biệt.
                 </div>
+                </div>
+                <div class="form-group has-feedback g-recaptcha" data-sitekey=''></div>
 
                 <div class="row">
 
                     <!-- /.col -->
                     <div class="col-xs-12">
                         <button type="submit" class="btn btn-primary btn-block btn-flat" style="margin: 0 auto;">Đăng
-                            nhập</button>
+                            ký</button>
                     </div>
                     <!-- /.col -->
                 </div>
             </form>
 
+
             <div class="social-auth-links text-center">
                 <p style="margin-top: 5px">- HOẶC -</p>
-                <!-- login facebook -->
 
-                {{!-- <a href="" class="btn  btn-social btn-facebook btn-flat d-inline-block"><i
-                        class="fa-brands fa-facebook-f"></i>Login FB</a>
 
-                <a href="#" class="btn  btn-social btn-facebook btn-flat d-inline-block"><i
-                        class="fa-brands fa-facebook-f"></i>Login FB</a> --}}
-                <a asp-controller="User" asp-action="Signup" class="btn btn-social btn-google btn-flat d-inline-block">
-                    <i class="icon-key icon"></i>Tạo tài khoản</a>
+
+                <a asp-action="Login" asp-controller="User" class="btn btn-social btn-info btn-flat d-inline-block">
+                    <i class="fa-regular fa-user"></i>Đăng nhập</a>
             </div>
             <!-- /.social-auth-links -->
         </div>
         <!-- /.login-box-body -->
     </div>
     <!-- /.login-box -->
+
+    <link rel="stylesheet" href="/assets/frontend/css/signup-style.css">
 
     <!-- END: PAGE CONTENT -->
 </div>
@@ -113,6 +119,5 @@
         });
     });
 </script>
-
 
 <!-- END: PAGE CONTAINER -->

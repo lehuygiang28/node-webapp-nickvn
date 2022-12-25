@@ -11,7 +11,6 @@ class LienMinhController {
         lienminhs: mutipleMongooseToObject(lienminhs)
       }))
       .catch(error => next(error));
-
   }
 
   // GET /lien-minh
@@ -21,7 +20,6 @@ class LienMinhController {
         category: mongooseToObject(category)
       }))
       .catch(error => next(error));
-
   }
 
 }
