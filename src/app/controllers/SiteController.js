@@ -90,7 +90,6 @@ class SiteController {
   }
 
   signupSolvers(_req, res, next) {
-
     if (!isNullOrEmpty(_req.body.userName) || !isNullOrEmpty(_req.body.password) ||
       !isNullOrEmpty(_req.body.email) || !isNullOrEmpty(_req.body.password_confirmation) ||
       !isNullOrEmpty(_req.body.phone)) {
@@ -132,7 +131,6 @@ class SiteController {
           lastLogin: Date.now()
         });
         console.log(user);
-
         user = await user.save();
         return res.status(201).render('sites/dang-ky', { success: 'Đăng ký thành công' });
       })

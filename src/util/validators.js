@@ -31,8 +31,12 @@ function isNullOrEmpty(value) {
     return false;
 }
 
-
 module.exports = {
     isEmailValid,
     isNullOrEmpty
 };
+
+// export default {
+//     isEmailValid,
+//     isNullOrEmpty
+// };
