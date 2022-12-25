@@ -99,6 +99,9 @@ class SiteController {
     if (!isEmailValid(_req.body.email)) {
       return res.status(401).render('sites/dang-ky', { error: 'Email chưa đúng định dạng' });
     }
+    if (_req.body.password != _req.body.password_confirmation) {
+      return res.status(401).render('sites/dang-ky', { error: 'Mật khẩu phải giống nhau' });
+    }
 
     User.findOne({ $or: [{ userName: _req.body.userName }, { email: _req.body.email }, { phone: _req.body.phone }] })
       .then(async user => {
@@ -110,8 +113,6 @@ class SiteController {
             return res.status(401).render('sites/dang-ky', { error: 'Email đã được sử dụng' });
           } else if (user.phone === _req.body.phone) {
             return res.status(401).render('sites/dang-ky', { error: 'Số điện thoại đã được sử dụng' });
-          } else if (_req.body.password != _req.body.password_confirmation) {
-            return res.status(401).render('sites/dang-ky', { error: 'Mật khẩu phải giống nhau' });
           }
         }
 
