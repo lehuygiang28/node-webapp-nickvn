@@ -3,6 +3,7 @@
 
 ### Member
 * Login
+* Logout
 * Register
 * Show product
 
