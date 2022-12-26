@@ -3,6 +3,7 @@ const express = require('express');
 const handlebars = require('express-handlebars');
 const morgan = require('morgan');
 const session = require('express-session');
+const flash = require('express-flash');
 require('dotenv').config({ path: path.resolve(__dirname, './config.env') });
 
 
@@ -40,6 +41,16 @@ app.use(function(_req, res, next) {
 // Http logger
 app.use(morgan('combined'));
 
+// Flash express to send msg by redirect
+app.use(flash());
+// Custom flash middleware -- from Ethan Brown's book, 'Web Development with Node & Express'
+app.use(function(_req, res, next){
+  // if there's a flash message in the session request, make it available in the response, then delete it
+  res.locals.sessionFlash = _req.session.sessionFlash;
+  delete _req.session.sessionFlash;
+  next();
+});
+
 // Template engine
 app.engine(
   "hbs",
@@ -50,6 +61,32 @@ app.engine(
         return value.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
         // return value.toLocaleString('vi-VN', {currency: 'VND', style: 'currency'});
       },
+      ifCondition: (a, operator, b, options) => {
+        switch (operator) {
+          case '==':
+            return (a == b) ? options.fn(this) : options.inverse(this);
+          case '===':
+            return (a === b) ? options.fn(this) : options.inverse(this);
+          case '!=':
+            return (a != b) ? options.fn(this) : options.inverse(this);
+          case '!==':
+            return (a !== b) ? options.fn(this) : options.inverse(this);
+          case '<':
+            return (a < b) ? options.fn(this) : options.inverse(this);
+          case '<=':
+            return (a <= b) ? options.fn(this) : options.inverse(this);
+          case '>':
+            return (a > b) ? options.fn(this) : options.inverse(this);
+          case '>=':
+            return (a >= b) ? options.fn(this) : options.inverse(this);
+          case '&&':
+            return (a && b) ? options.fn(this) : options.inverse(this);
+          case '||':
+            return (a || b) ? options.fn(this) : options.inverse(this);
+          default:
+            return options.inverse(this);
+        }
+      }
     }
   })
 );

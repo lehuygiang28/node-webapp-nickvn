@@ -1,0 +1,564 @@
+<script> document.title = 'Chi tiết acc liên minh {{acc.product_id}}' </script>
+
+<script>
+    const product_id = '{{acc.product_id}}';
+</script>
+
+<!-- BEGIN: PAGE CONTAINER -->
+<div class="c-layout-page">
+    <!-- BEGIN: PAGE CONTENT -->
+
+    <div class="c-content-box c-size-lg c-overflow-hide c-bg-white">
+        <div class="container">
+
+            <nav aria-label="breadcrumb" style="display:none">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/" title="Trang chủ">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/garena/lien-minh">Tài khoản liên minh số
+                            #{{acc.product_id}}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">#{{acc.product_id}}</li>
+                </ol>
+            </nav>
+            <div class="c-shop-product-details-4">
+                <div class="row">
+                    <div class="col-md-4 m-b-20">
+                        <div class="c-product-header">
+                            <!--<h4 class="c-font-uppercase c-font-bold">Liên minh huyền thoại - Việt Nam</h4>-->
+                            <div class="c-content-title-1">
+                                <h3 class="c-font-uppercase c-font-bold">Tài khoản liên minh số #{{acc.product_id}}</h3>
+                                <span class="c-font-red c-font-bold">#{{acc.product_id}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 visible-sm visible-xs visible-sm">
+
+                        <div class="text-center m-t-20">
+                            <img class="img-responsive img-thumbnail" src="{{acc.img.[0]}}" />
+                        </div>
+
+                        <div class="c-product-meta">
+                            <div class="c-content-divider">
+                                <i class="icon-dot"></i>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 col-xs-6 c-product-variant">
+                                    <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">
+                                        Tướng: <span class="c-font-red">{{acc.champ}}</span></p>
+                                </div>
+
+
+                                <div class="col-sm-4 col-xs-6 c-product-variant">
+                                    <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">
+                                        Skin: <span class="c-font-red">{{acc.skin}}</span></p>
+                                </div>
+
+
+                                <div class="col-sm-4 col-xs-6 c-product-variant">
+                                    <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Bảng
+                                        Ngọc: <span class="c-font-red"></span></p>
+                                </div>
+
+
+
+                                <div class="col-sm-4 col-xs-6 c-product-variant">
+                                    <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">
+                                        Rank: <span class="c-font-red">{{acc.rank}}</span></p>
+                                </div>
+
+
+                                <div class="col-sm-4 col-xs-6 c-product-variant">
+                                    <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">
+                                        Trạng Thái: <span class="c-font-red">{{acc.StatusAccount}}</span></p>
+                                </div>
+
+
+                                <div class="col-sm-12 col-xs-12 c-product-variant">
+                                    <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Nổi
+                                        bật: <span class="c-font-red"></span></p>
+
+                                </div>
+                            </div>
+                            <div class="c-content-divider">
+                                <i class="icon-dot"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="c-product-meta">
+                        <div class="c-product-price c-theme-font" style="float: none;text-align: center">
+
+                        </div>
+                        <div style="display: none">
+                            <div class="position0">
+                                CARD {{vndCurrency acc.price}}
+                            </div>
+                            <div class="position1">
+                                ATM {{vndCurrency acc.price}}
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(".c-product-price").append($(".position0"));
+                            $(".c-product-price").append($(".position1"));
+                        </script>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <div class="c-product-header">
+                            <div class="c-content-title-1">
+
+                                <button type="button" id="BuyNowBtn"
+                                    class="btn c-btn btn-lg c-theme-btn c-font-uppercase c-font-bold c-btn-square m-t-20">Mua
+                                    ngay</button>
+
+                                <a type="button"
+                                    class="btn c-btn btn-lg btn-danger c-font-uppercase c-font-bold c-btn-square m-t-20 load-modal"
+                                    href="#">Trả góp</a>
+
+
+                                <a type="button"
+                                    class="btn c-btn btn-lg c-bg-green-4 c-font-white c-font-uppercase c-font-bold c-btn-square m-t-20"
+                                    asp-action="NapThe" asp-controller="User">ATM - Ví điện tử</a>
+                                <a class="btn c-btn btn-lg c-bg-green-4 c-font-white c-font-uppercase c-font-bold c-btn-square m-t-20"
+                                    asp-action="NapThe" asp-controller="User">Nạp thẻ cào</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="c-product-meta visible-md visible-lg">
+                    <div class="c-content-divider">
+                        <i class="icon-dot"></i>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-4 col-xs-6 c-product-variant">
+                            <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Tướng: <span
+                                    class="c-font-red">{{acc.champ}}</span></p>
+                        </div>
+
+
+                        <div class="col-sm-4 col-xs-6 c-product-variant">
+                            <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Skin: <span
+                                    class="c-font-red">{{acc.skin}}</span></p>
+                        </div>
+
+
+                        <div class="col-sm-4 col-xs-6 c-product-variant">
+                            <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Bảng Ngọc:
+                                <span class="c-font-red"></span>
+                            </p>
+                        </div>
+
+
+
+                        <div class="col-sm-4 col-xs-6 c-product-variant">
+                            <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Rank: <span
+                                    class="c-font-red">{{acc.rank}}</span></p>
+                        </div>
+
+
+                        <div class="col-sm-4 col-xs-6 c-product-variant">
+                            <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Trạng Thái:
+                                <span class="c-font-red">{{acc.StatusAccount}}</span>
+                            </p>
+                        </div>
+
+
+                        <div class="col-sm-12 col-xs-12 c-product-variant">
+
+                            <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Nổi bật:
+                                <span class="c-font-red"></span>
+                            </p>
+
+
+                        </div>
+                    </div>
+
+                    <div class="c-content-divider">
+                        <i class="icon-dot"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container m-t-20 content_post">
+
+            {{#with acc.img as | images |}}
+            {{#each images}}
+            <p>
+                <a rel="gallery1" data-fancybox="images" href="{{this}}">
+                    <img class="img-responsive img-thumbnail" src="{{this}}" />
+                </a>
+            </p>
+            {{/each}}
+            {{/with}}
+
+            <div class="buy-footer" style="text-align: center">
+                <button type="button" id="BuyNowBtn1"
+                    class="btn c-btn btn-lg c-theme-btn c-font-uppercase c-font-bold c-btn-square m-t-20 load-modal">Mua
+                    ngay</button>
+            </div>
+
+        </div>
+
+        <div class="container m-t-20 ">
+
+            <div class="game-item-view" style="margin-top: 40px">
+                <div class="c-content-title-1">
+                    <h3 class="c-center c-font-uppercase c-font-bold">Tài khoản liên quan</h3>
+                    <div class="c-line-center c-theme-bg"></div>
+                </div>
+                <div class="row row-flex  item-list">
+
+                    {{!-- @{
+                    var randomAcc = ViewBag.randomAcc;
+                    List<Lienminh> accRandom = (List<Lienminh>)randomAcc;
+
+                            foreach(Lienminh random in accRandom)
+                            {
+                            <div class="col-sm-6 col-md-3">
+                                <div class="classWithPad">
+                                    <div class="image">
+
+                                        <a href=''>
+                                            <img src="@random.ImgThumb">
+                                            <span class="ms">MS: @random.ProductId</span>
+                                        </a>
+
+                                    </div>
+                                    <div class="description">
+
+                                    </div>
+                                    <div class="attribute_info">
+                                        <div class="row">
+
+                                            <div class="col-xs-6 a_att">
+                                                Tướng: <b>@random.Champ</b>
+                                            </div>
+
+
+                                            <div class="col-xs-6 a_att">
+                                                Skin: <b>@random.Skin</b>
+                                            </div>
+
+
+                                            <div class="col-xs-6 a_att">
+                                                Bảng Ngọc: <b></b>
+                                            </div>
+
+
+
+                                            <div class="col-xs-6 a_att">
+                                                Rank: <b>@random.StatusAccount</b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="a-more">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <div class="price_item">
+                                                    @vndFormat((int?)random.PriceAtm)
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6 ">
+                                                <div class="view">
+                                                    <a href=''>Chi
+                                                        tiết</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                            } --}}
+                </div>
+
+            </div>
+
+            <div class="tab-vertical tutorial_area">
+                <div class="panel-group" id="accordion">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h5 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="">Thử vận may liên minh chỉ với
+                                    12k -18k - 60k <i class="glyphicon glyphicon-flag"></i></a>
+                            </h5>
+                        </div>
+                        <div id="tab1" class="panel-collapse collapse in" aria-expanded="true" style="">
+                            <div class="panel-body">
+                                <p>Ngo&agrave;i <a href="#" target="_blank"><strong>B&aacute;n Nick Li&ecirc;n Minh
+                                            Huyền
+                                            Thoại</strong></a>&nbsp;theo c&aacute;c th&ocirc;ng tin đ&atilde; show
+                                    sẵn.<strong><a href="" target="_blank">Shop
+                                            chuy&ecirc;n b&aacute;n acc li&ecirc;n minh random</a></strong>&nbsp;cho
+                                    c&aacute;c bạn thử vận may với c&aacute;c g&oacute;i ưu đ&atilde;i kh&aacute;c nhau
+                                    :</p>
+
+                                <p>-&nbsp;<strong><a href="#" target="_blank">Random li&ecirc;n minh sơ cấp
+                                            12k&nbsp;</a></strong></p>
+
+                                <p>-&nbsp;<strong><a href="#" target="_blank">Random li&ecirc;n minh trung cấp
+                                            18k</a></strong></p>
+
+                                <p>-&nbsp;<strong><a href="#" target="_blank">Random li&ecirc;n minh cao cấp
+                                            60k</a></strong></p>
+
+                                <p>.C&aacute;c bạn sẽ c&oacute; cơ hội nhận được những&nbsp;<strong>acc LMHT -
+                                        li&ecirc;n minh -&nbsp;LOl ngẫu nhi&ecirc;n</strong>&nbsp;c&oacute; thể
+                                    l&agrave; acc v&iacute;p,acc c&ugrave;i, acc tầm trung..vv</p>
+
+                                <p>Mỗi mức gi&aacute; để c&oacute; tỷ lệ random kh&aacute;c nhau.N&agrave;o n&agrave;o
+                                    nhanh ch&oacute;ng thử vậy may của m&igrave;nh th&ocirc;i.&nbsp;<span
+                                        style="color:#e74c3c"><strong>T&iacute;ch cực quay tay vận may sẽ
+                                            đến</strong></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h5 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="">Bán RP liên minh - Cày Thuê
+                                    Rank Liên Minh <i class="glyphicon glyphicon-flag"></i></a>
+                            </h5>
+                        </div>
+                        <div id="tab1" class="panel-collapse collapse in" aria-expanded="true" style="">
+                            <div class="panel-body">
+                                <p>Ngo&agrave;i shop <strong><a href="#" target="_blank">b&aacute;n nick Li&ecirc;n
+                                            Minh</a></strong> b&ecirc;n
+                                    m&igrave;nh c&oacute; c&oacute; <strong>b&aacute;n&nbsp;RP li&ecirc;n minh
+                                        gi&aacute; rẻ</strong>&nbsp;v&agrave; <strong>C&agrave;y Thu&ecirc;&nbsp;Rank
+                                        Li&ecirc;n Minh</strong> nữa nh&eacute;.</p>
+
+                                <p>C&aacute;c bạn c&oacute; thể l&ecirc;n web <strong><a href="#"
+                                            target="_blank">Dichvu.me</a></strong> - Website t&iacute;ch hợp tất cả
+                                    c&aacute;c <strong>dịch vụ game online</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h5 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="">Hướng dẫn đổi thông tin nick
+                                    liên minh <i class="glyphicon glyphicon-flag"></i></a>
+                            </h5>
+                        </div>
+                        <div id="tab1" class="panel-collapse collapse in" aria-expanded="true" style="">
+                            <div class="panel-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="LoadModal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method='POST' action="" accept-charset='UTF-8' class='form-horizontal'
+                    enctype='multipart/form-data'>
+
+                    <div class='modal-header'>
+                        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>×</span>
+                        </button>
+                        <h4 class='modal-title'>Xác nhận mua tài khoản</h4>
+                    </div>
+
+                    <div class='modal-body'>
+                        <div class='c-content-tab-4 c-opt-3' role='tabpanel'>
+                            <ul class='nav nav-justified' role='tablist'>
+                                <li role='presentation' class='active'>
+                                    <a href='#payment' role='tab' data-toggle='tab' class='c-font-16'>Thanh toán</a>
+                                </li>
+                                <li role='presentation'>
+                                    <a href='#info' role='tab' data-toggle='tab' class='c-font-16'>Tài khoản</a>
+                                </li>
+                            </ul>
+                            <div class='tab-content'>
+
+                                <div role='tabpanel' class='tab-pane fade in active' id='payment'>
+                                    <ul class='c-tab-items p-t-0 p-b-0 p-l-5 p-r-5'>
+                                        <li class='c-font-dark'>
+                                            <table class='table table-striped'>
+                                                <tbody>
+                                                    <tr>
+                                                        <th colspan='2'>Thông tin tài khoản #{{acc.product_id}}
+                                                        </th>
+                                                    </tr>
+                                                </tbody>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Nhà phát hành:</td>
+                                                        <th>Garena</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tên game:</td>
+                                                        <th>Liên Minh Huyền Thoại</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Giá tiền:</td>
+                                                        <th class='text-info'>{{vndCurrency acc.price}}
+                                                        </th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div role='tabpanel' class='tab-pane fade' id='info'>
+                                    <ul class='c-tab-items p-t-0 p-b-0 p-l-5 p-r-5'>
+                                        <li class='c-font-dark'>
+                                            <table class='table table-striped'>
+                                                <tbody>
+                                                    <tr>
+                                                        <th colspan='2'>Chi tiết tài khoản #{{acc.product_id}}</th>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width: 50%'>Tướng:</td>
+                                                        <td class='text-danger' style='font-weight: 700'>
+                                                            {{acc.champ}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width: 50%'>Skin:</td>
+                                                        <td class='text-danger' style='font-weight: 700'>
+                                                            {{acc.skin}}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width: 50%'>Bảng Ngọc:</td>
+                                                        <td class='text-danger' style='font-weight: 700'></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width:50%'>Rank:</td>
+                                                        <td class='text-danger' style='font-weight: 700'>
+                                                            {{acc.rank}}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width:50%'>Trạng Thái:</td>
+                                                        <td class='text-danger' style='font-weight: 700'>
+                                                            {{acc.StatusAccount}}
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class='form-group '>
+                            <label class='col-md-3 form-control-label'>Mã giảm giá:</label>
+                            <div class='col-md-7'>
+                                <input type='text' class='form-control c-square c-theme' name='coupon'
+                                    placeholder='Mã giảm giá' value=''>
+                                <span class='help-block'>Nhập mã giảm giá nếu có để nhận ưu đãi</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{#if session.User}}
+
+                    {{#ifCondition session.User.money '<' acc.price}} <div class='form-group'>
+                        <label class='col-md-12 form-control-label text-danger'
+                            style='text-align: center;margin: 10px 0;'>
+                            Bạn không đủ số dư để mua tài khoản này. Bạn hãy click vào nút nạp thẻ để nạp thêm và mua
+                            tài khoản.
+                        </label>
+            </div>
+            <div style='clear: both'></div>
+            <div class='modal-footer'>
+                <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='/nap-the'>Nạp thẻ
+                    cào</a>
+                <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' href='/nap-the'>Nạp từ
+                    atm - ví
+                    điện tử</a>
+
+                <button type='button' class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+                    data-dismiss='modal'>Đóng</button>
+            </div>
+            {{else}}
+
+            <div class='form-group '>
+                <label class='col-md-12 form-control-label text-danger' style='text-align: center;margin: 10px 0; '>
+
+                </label>
+            </div>
+            <div style='clear: both'></div>
+            <div class='modal-footer'>
+                <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' id="linkBuyNow"
+                    href="">Xác nhận mua ngay</a>
+                <button type='button' class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+                    data-dismiss='modal'>Đóng</button>
+                <script>
+                    document.getElementById('linkBuyNow').href = '/lien-minh/acc-lien-minh/' + product_id + '/buy';
+                </script>
+            </div>
+
+            {{/ifCondition}}
+
+            {{else}}
+
+            <div class='form-group '>
+                <label class='col-md-12 form-control-label text-danger' style='text-align: center;margin: 10px 0;'>
+                    Bạn phải đăng nhập mới có thể mua tài khoản tự động.
+                </label>
+            </div>
+            <div style='clear: both'></div>
+            <div class='modal-footer'>
+                <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='/dang-nhap'>Đăng
+                    nhập</a>
+                <button type='button' class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+                    data-dismiss='modal'>Đóng</button>
+            </div>
+        </div>
+        {{/if}}
+
+        </form>
+    </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="noticeModal" role="dialog" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="loader" style="text-align: center"><img src="/assets/images/loader.gif"
+                style="width: 50px;height: 50px;display: none"></div>
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+<!-- END: PAGE CONTENT -->
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#BuyNowBtn").click(function () {
+            $("#LoadModal").modal('show');
+        });
+    });
+    $(document).ready(function () {
+        $("#BuyNowBtn1").click(function () {
+            $("#LoadModal").modal('show');
+        });
+    });
+</script>
+
+<!-- END: PAGE CONTAINER -->

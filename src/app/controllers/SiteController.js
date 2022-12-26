@@ -63,7 +63,7 @@ class SiteController {
 
           // Set the session value
           _req.session.User = {
-            id: user._id,
+            _id: user._id,
             userName: user.userName,
             money: user.money,
             role: user.role
