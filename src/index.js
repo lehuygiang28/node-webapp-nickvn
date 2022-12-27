@@ -4,7 +4,7 @@ const handlebars = require('express-handlebars');
 const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('express-flash');
-require('dotenv').config({ path: path.resolve(__dirname, '/config/env/.env') });
+require('dotenv').config({ path: path.resolve(__dirname, './config/env/.env') });
 
 
 const app = express();

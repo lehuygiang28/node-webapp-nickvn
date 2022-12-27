@@ -7,15 +7,13 @@ const { renewUserSession } = require('../../util/renewSession');
 const { sendMessage } = require('../../util/flash-message');
 const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer');
 const { logger } = require('../../util/logger');
-// const logger = require('node-color-log');
-// logger.setDate(() => (new Date()).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " "));
 
 class LienMinhController {
 
     // GET /lien-minh
     showLienMinhCategory(_req, res, next) {
 
-        logger.bold().info('ID Slug: ');
+        logger.bold().info('TEST Logger');
 
         // Get all the categories with keywords 'lien-minh'
         Category.findOne({ slug: _req.originalUrl.split('/').slice(1).join('/') })
