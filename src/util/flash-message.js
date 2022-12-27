@@ -5,15 +5,15 @@ function sendMessage(_req, res, next, message) {
   }
 
   try {
-    console.log(`Message buy product: ${message.message}`);
     _req.session.sessionFlash = {
       error: message.error || undefined,
       success: message.success || undefined,
       message: message.message
-    }
+    };
+    console.log(`Message buy product: ${message.message}`);
     return;
   } catch (err) {
-    next(err);
+    next();
   }
 }
 

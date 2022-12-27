@@ -19,7 +19,8 @@
             <form method="POST">
                 {{!-- <input type="hidden" name="_token" value=""> --}}
                 <div class="form-group has-feedback">
-                    <input type="text" class="form-control" name="username" value="" placeholder="Tài khoản của Web" required>
+                    <input type="text" class="form-control" name="username" id="username" value="" placeholder="Tài khoản của Web"
+                        required>
                     <span class="fa-solid fa-user form-control-feedback"></span>
 
                 </div>
@@ -28,7 +29,7 @@
                     <span class="fa-solid fa-lock form-control-feedback"></span>
                 </div>
 
-                <div class="form-group has-feedback g-recaptcha" data-sitekey=''></div>
+                {{!-- <div class="form-group has-feedback g-recaptcha" data-sitekey=''></div> --}}
 
                 <div class="row">
                     <div class="col-xs-6">
@@ -114,5 +115,26 @@
     });
 </script>
 
+<script>
+    const rmCheck = document.getElementById("remember"),
+        usernameInput = document.getElementById("username");
 
+    if (localStorage.checkbox && localStorage.checkbox !== "") {
+        rmCheck.setAttribute("checked", "checked");
+        usernameInput.value = localStorage.username;
+    } else {
+        rmCheck.removeAttribute("checked");
+        usernameInput.value = "";
+    }
+
+    function lsRememberMe() {
+        if (rmCheck.checked && usernameInput.value !== "") {
+            localStorage.username = usernameInput.value;
+            localStorage.checkbox = rmCheck.value;
+        } else {
+            localStorage.username = "";
+            localStorage.checkbox = "";
+        }
+    }
+</script>
 <!-- END: PAGE CONTAINER -->
