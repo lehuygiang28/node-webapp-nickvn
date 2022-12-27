@@ -4,11 +4,11 @@ const handlebars = require('express-handlebars');
 const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('express-flash');
-require('dotenv').config({ path: path.resolve(__dirname, './config.env') });
+require('dotenv').config({ path: path.resolve(__dirname, './.env') });
 
 
 const app = express();
-const port = process.env.NODE_PORT || 3000;
+const port = process.env.NODE_PORT || 8081;
 // const port = 8081;
 
 const route = require('./routes');
