@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('express-flash');
 require('dotenv').config({ path: path.resolve(__dirname, './config/env/.env') });
+const sortMiddleware = require('./app/middlewares/sortMiddleware');
 
 
 const app = express();
@@ -17,9 +18,10 @@ const db = require('./config/db');
 // Connect to mongodb
 db.connect();
 
-app.use(express.static('src\\public'));
+// Use static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Middleware
+// Middleware 
 app.use(express.urlencoded({
     extended: true
 }));
@@ -32,7 +34,7 @@ app.use(session({
     saveUninitialized: false
 }));
 
-// Get session to handlebars
+// Midddleware Get session to handlebars 
 app.use(function(_req, res, next) {
     res.locals.session = _req.session;
     next();
@@ -41,6 +43,7 @@ app.use(function(_req, res, next) {
 // Http logger
 app.use(morgan('combined'));
 
+// CUSTOM MIDDLEWARES
 // Flash express to send msg by redirect
 app.use(flash());
 // Custom flash middleware -- from Ethan Brown's book, 'Web Development with Node & Express'
@@ -50,45 +53,15 @@ app.use(function(_req, res, next) {
     delete _req.session.sessionFlash;
     next();
 });
+// Sort
+app.use(sortMiddleware);
 
 // Template engine
 app.engine(
     "hbs",
     handlebars.engine({
         extname: ".hbs",
-        helpers: {
-            vndCurrency: (value) => {
-                return value.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-                // return value.toLocaleString('vi-VN', {currency: 'VND', style: 'currency'});
-            },
-            dateFormat: require('handlebars-dateformat'),
-            ifCondition: (a, operator, b, options) => {
-                switch (operator) {
-                    case '==':
-                        return (a == b) ? options.fn(this) : options.inverse(this);
-                    case '===':
-                        return (a === b) ? options.fn(this) : options.inverse(this);
-                    case '!=':
-                        return (a != b) ? options.fn(this) : options.inverse(this);
-                    case '!==':
-                        return (a !== b) ? options.fn(this) : options.inverse(this);
-                    case '<':
-                        return (a < b) ? options.fn(this) : options.inverse(this);
-                    case '<=':
-                        return (a <= b) ? options.fn(this) : options.inverse(this);
-                    case '>':
-                        return (a > b) ? options.fn(this) : options.inverse(this);
-                    case '>=':
-                        return (a >= b) ? options.fn(this) : options.inverse(this);
-                    case '&&':
-                        return (a && b) ? options.fn(this) : options.inverse(this);
-                    case '||':
-                        return (a || b) ? options.fn(this) : options.inverse(this);
-                    default:
-                        return options.inverse(this);
-                }
-            }
-        }
+        helpers: require('./helpers/handlebars'),
     })
 );
 
