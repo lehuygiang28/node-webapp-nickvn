@@ -6,8 +6,9 @@ const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoo
 const { renewUserSession } = require('../../util/renewSession');
 const { sendMessage } = require('../../util/flash-message');
 const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer');
-const logger = require('node-color-log');
-logger.setDate(() => (new Date()).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " "));
+const { logger } = require('../../util/logger');
+// const logger = require('node-color-log');
+// logger.setDate(() => (new Date()).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " "));
 
 class LienMinhController {
 
