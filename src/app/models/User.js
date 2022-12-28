@@ -20,8 +20,8 @@ const User = new Schema({
     status: { type: String, default: 'active' },
     avatar: String,
     note: String,
-    createAt: { type: Date, default: Date.now() },
-    updateAt: { type: Date, default: Date.now() },
+    createdAt: { type: Date, default: Date.now() },
+    updatedAt: { type: Date, default: Date.now() },
     lastLogin: { type: Date, default: Date.now() },
 });
 

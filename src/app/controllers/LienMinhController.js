@@ -138,6 +138,7 @@ class LienMinhController {
                                 acc.status_name = "Đã bán";
                                 // Subtraction money of user when buy product
                                 user.money -= acc.price;
+                                user.updatedAt = Date.now();
 
                                 // Save new status of product & new money of user
                                 await acc.save();
@@ -158,7 +159,7 @@ class LienMinhController {
 
                 // Send the error message to views
                 sendMessage(_req, res, next, { success: true, message: 'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn.' });
-                renewUserSession(_req, next);
+                // renewUserSession(_req, next);
                 res.redirect('/lien-minh/acc-lien-minh');
             })
             .catch(next);

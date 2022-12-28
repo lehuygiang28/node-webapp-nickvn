@@ -10,7 +10,7 @@ class SiteController {
 
     // GET homepage
     async home(_req, res, next) {
-        await renewUserSession(_req, next);
+        // await renewUserSession(_req, next);
         Category.find({})
             .then(categories => res.render('sites/home', {
                 categories: mutipleMongooseToObject(categories)

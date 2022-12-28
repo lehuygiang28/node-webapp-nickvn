@@ -6,6 +6,7 @@ const session = require('express-session');
 const flash = require('express-flash');
 require('dotenv').config({ path: path.resolve(__dirname, './config/env/.env') });
 const sortMiddleware = require('./app/middlewares/sortMiddleware');
+const { renewUserSession } = require('./app/middlewares/renewUserSession');
 const favicon = require('serve-favicon');
 
 
@@ -47,9 +48,10 @@ app.use(function(_req, res, next) {
 // Http logger
 app.use(morgan('combined'));
 
-// CUSTOM MIDDLEWARES
-// Flash express to send msg by redirect
+// Flash express to send msg
 app.use(flash());
+
+// --- CUSTOM MIDDLEWARES ---
 // Custom flash middleware -- from Ethan Brown's book, 'Web Development with Node & Express'
 app.use(function(_req, res, next) {
     // if there's a flash message in the session request, make it available in the response, then delete it
@@ -59,6 +61,11 @@ app.use(function(_req, res, next) {
 });
 // Sort
 app.use(sortMiddleware);
+// Renew User Session
+app.use(function(_req, res, next) {
+    renewUserSession(_req, res, next);
+});
+// --- CUSTOM MIDDLEWARES END ---
 
 // Template engine
 app.engine(
