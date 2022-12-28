@@ -6,6 +6,7 @@ const session = require('express-session');
 const flash = require('express-flash');
 require('dotenv').config({ path: path.resolve(__dirname, './config/env/.env') });
 const sortMiddleware = require('./app/middlewares/sortMiddleware');
+const favicon = require('serve-favicon');
 
 
 const app = express();
@@ -17,6 +18,9 @@ const db = require('./config/db');
 
 // Connect to mongodb
 db.connect();
+
+// Use favicon.ico
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 // Use static folder
 app.use(express.static(path.join(__dirname, 'public')));
