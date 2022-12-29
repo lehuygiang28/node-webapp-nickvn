@@ -7,6 +7,7 @@ const { createHash, compare } = require('../../util/bcrypt');
 
 
 class UserController {
+    
     // GET /user
     // GET /user/thong-tin-tai-khoan
     index(_req, res, next) {
@@ -23,17 +24,6 @@ class UserController {
                 }
                 console.log(user);
                 res.render('user/thong-tin-tai-khoan', { user: mongooseToObject(user) });
-
-                // sendMailCallback('gianghuytv28@gmail.com', {
-                //     subject: 'Thông tin tài khoản đã mua tại giang.cf',
-                //     title: 'Thông tin tài khoản đã mua',
-                //     context: `Tài khoản: ${user.userName}<br>Mật khẩu: ${user.password}`
-                // }, () => {
-                //     console.log('CALLBACK CALLED');
-                //     console.log(`Email sent to ${user.email}`);
-                //     sendMessage(_req, res, next, { success: true, message: 'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn' });
-                // });
-
             })
             .catch(next);
     }
@@ -44,10 +34,10 @@ class UserController {
             sendMessage(_req, res, next, { error: true, message: 'Bạn chưa đăng nhập!' });
             return res.redirect('/dang-nhap');
         }
-
         res.render('user/doi-mat-khau');
     }
 
+    // POST /user/doi-mat-khau
     changePasswordSolvers(_req, res, next) {
         if (!_req.session.User) {
             sendMessage(_req, res, next, { error: true, message: 'Bạn chưa đăng nhập' });
@@ -84,7 +74,7 @@ class UserController {
             .catch(next);
     };
 
-    // GET /user/puchased
+    // GET /user/tai-khoan-da-mua
     puchased(_req, res, next) {
         res.render('user/tai-khoan-da-mua', {});
     }

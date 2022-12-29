@@ -6,7 +6,7 @@ const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoo
 const { sendMessage } = require('../../util/flash-message');
 const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer');
 const { logger } = require('../../util/logger');
-const { resetProductAndUserPuchased, generateLienMinh } = require('../../util/project_extensions');
+// const { resetProductAndUserPuchased, generateLienMinh } = require('../../util/project_extensions');
 
 class LienMinhController {
 

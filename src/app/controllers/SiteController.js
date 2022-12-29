@@ -78,15 +78,17 @@ class SiteController {
             .catch(next);
     }
 
-    // GET dang-nhap
+    // GET /dang-nhap
     login(_req, res) {
         res.render('sites/dang-nhap');
     }
 
+    // GET /dang-ky
     signup(_req, res) {
         res.render('sites/dang-ky');
     }
 
+    // POST /dang-ky
     signupSolvers(_req, res, next) {
         if (!isNullOrEmpty(_req.body.userName) || !isNullOrEmpty(_req.body.password) ||
             !isNullOrEmpty(_req.body.email) || !isNullOrEmpty(_req.body.password_confirmation) ||
