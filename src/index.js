@@ -10,7 +10,7 @@ const { sortMiddleware } = require('./app/middlewares/sortMiddleware');
 const { renewUserSessionMiddleware } = require('./app/middlewares/renewUserSessionMiddleware');
 const { customSessionFlashMiddleware } = require('./app/middlewares/customSessionFlashMiddleware');
 const { getSessionToViewsMiddleware } = require('./app/middlewares/getSessionToViewsMiddleware');
-const MongoStore = require('connect-mongo');
+// const MongoStore = require('connect-mongo');
 
 
 const app = express();
@@ -40,10 +40,7 @@ app.use(session({
     secret: process.env.SECRET_SESSION_KEY,
     resave: true,
     saveUninitialized: false,
-    store: MongoStore.create({
-        // Store session to MongoDB collection/sessions
-        client: db.getClient()
-    }),
+    store: db.getClientMongoStore(), // Store session to MongoDB collection/sessions
     cookie: {
         secure: false,
         httpOnly: true,
