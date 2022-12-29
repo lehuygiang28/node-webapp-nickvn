@@ -10,6 +10,8 @@ const { sortMiddleware } = require('./app/middlewares/sortMiddleware');
 const { renewUserSessionMiddleware } = require('./app/middlewares/renewUserSessionMiddleware');
 const { customSessionFlashMiddleware } = require('./app/middlewares/customSessionFlashMiddleware');
 const { getSessionToViewsMiddleware } = require('./app/middlewares/getSessionToViewsMiddleware');
+const MongoStore = require('connect-mongo');
+
 
 const app = express();
 const port = process.env.NODE_PORT || 8081;
@@ -37,7 +39,16 @@ app.use(express.json());
 app.use(session({
     secret: process.env.SECRET_SESSION_KEY,
     resave: true,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: MongoStore.create({
+        // Store session to MongoDB collection/sessions
+        client: db.getClient()
+    }),
+    cookie: {
+        secure: false,
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7, // One week
+    },
 }));
 
 // Midddleware Get session to handlebars 

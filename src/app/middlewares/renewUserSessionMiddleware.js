@@ -10,15 +10,15 @@ const { logger } = require('../../util/logger');
  * Assign session to _req.session.User
  */
 function renewUserSessionMiddleware(_req, res, next) {
-
     if (!_req.session.User) {
         logger.info('Session not created!');
         return next();
     } else {
+        console.log(_req.session);
         User.findById(_req.session.User._id)
             .then((user) => {
                 if (!user) {
-                    logger.info('User session not found, destroy session!');
+                    logger.info('User in session not found, destroy wrong session!');
                     _req.session.User.destroy();
                     return next();
                 } else {
@@ -29,7 +29,7 @@ function renewUserSessionMiddleware(_req, res, next) {
                         money: user.money,
                         role: user.role
                     })
-                    logger.info(`Set session completed userName: ${_req.session.User.userName}`);
+                    logger.info(`Renew User session completed userName: ${_req.session.User.userName}`);
                 }
             })
             .catch(next);
@@ -38,4 +38,6 @@ function renewUserSessionMiddleware(_req, res, next) {
     next();
 }
 
-module.exports = { renewUserSessionMiddleware };
+module.exports = {
+    renewUserSessionMiddleware,
+};

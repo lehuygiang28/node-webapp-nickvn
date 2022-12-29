@@ -20,4 +20,8 @@ async function connect() {
     
 }
 
-module.exports = { connect };
+function getClient() {
+  return mongoose.connection.getClient();
+}
+
+module.exports = { connect, getClient };
