@@ -96,31 +96,32 @@
                         </li>
                     </ul>
                     </p>
-
                 </div>
+
                 <div style="text-align: center;margin: 15px 0">
                     <span class="viewmore">Xem tất cả »</span>
                 </div>
 
             </div>
         </div>
-        <div class="row  hidden-xs hidden-sm" style="margin-bottom: 15px">
+        <div class="row hidden-xs hidden-sm" style="margin-bottom: 15px">
             <div class="m-l-10 m-r-10">
-                <form asp-action="LienMinh" asp-controller="ShopAcc" class="form-inline m-b-10" role="form"
-                    method="get">
+                <form action="" class="form-inline m-b-10" role="form" method="get">
+                    <input type="hidden" name="_sort">
 
                     <div class="col-md-3 col-sm-4 p-5 field-search">
                         <div class="input-group c-square">
                             <span class="input-group-addon">Tìm kiếm</span>
                             <input type="text" class="form-control c-square" value='' placeholder="Tìm kiếm"
-                                name="SearchKey">
-
+                                name="search_key">
                         </div>
                     </div>
+
                     <div class="col-md-3 col-sm-4 p-5 field-search">
                         <div class="input-group c-square">
                             <span class="input-group-addon">Mã số</span>
-                            <input type="number" class="form-control c-square" value='' placeholder="Mã số" name="id">
+                            <input type="number" class="form-control c-square" value='' placeholder="Mã số"
+                                name="product_id">
 
                         </div>
                     </div>
@@ -145,8 +146,8 @@
                         <div class="input-group c-square">
                             <span class="input-group-addon">Sắp xếp</span>
                             <select class="form-control c-square" name="sort_price">
-                                <option value="1">Giá tăng dần</option>
-                                <option value="0">Giá giảm dần</option>
+                                <option value="asc">Giá tăng dần</option>
+                                <option value="desc">Giá giảm dần</option>
                             </select>
 
                         </div>
@@ -154,7 +155,7 @@
 
                     <div class="col-md-3 col-sm-4 p-5 no-radius">
                         <button type="submit" class="btn c-square c-theme c-btn-green">Tìm kiếm</button>
-                        <a class="btn c-square m-l-0 btn-danger" asp-action="LienMinh" asp-controller="ShopAcc">Tất
+                        <a class="btn c-square m-l-0 btn-danger" href="?">Tất
                             cả</a>
                     </div>
                 </form>
@@ -163,8 +164,6 @@
 
         <div class="filter-product-mobile hidden-md hidden-lg">
             <div class="filter-left form-group">
-
-
             </div>
             <div class="filter-right form-group">
                 <a class="btn btn-success" style="display: block">
@@ -188,14 +187,13 @@
                     </div>
                     <hr>
                     <div class="search-list-product">
-                        <form class="form-inline m-b-10" role="form" method="get">
-
-
+                        <form class="form-inline m-b-10" action="" role="form" method="get">
+                            <input type="hidden" name="_sort">
                             <div class="col-md-3 col-sm-4 p-5 field-search">
                                 <div class="input-group c-square">
                                     <span class="input-group-addon">Tìm kiếm</span>
                                     <input type="text" class="form-control c-square" value="" placeholder="Tìm kiếm"
-                                        name="SearchKey">
+                                        name="search_key">
 
                                 </div>
                             </div>
@@ -203,16 +201,15 @@
                                 <div class="input-group c-square">
                                     <span class="input-group-addon">Mã số</span>
                                     <input type="text" class="form-control c-square" value="" placeholder="Mã số"
-                                        name="id">
+                                        name="product_id">
 
                                 </div>
                             </div>
 
-                            <div class="col-md-3 col-sm-4 col-xs-12  p-5 field-search">
+                            <div class="col-md-3 col-sm-4 col-xs-12 p-5 field-search">
                                 <div class="input-group c-square">
                                     <span class="input-group-addon">Giá tiền</span>
                                     <select style="" class="form-control c-square" name="price">
-
                                         <option value="">Chọn giá tiền</option>
                                         <option value="1">Dưới 50K</option>
                                         <option value="2">Từ 50K - 200K</option>
@@ -229,8 +226,8 @@
                                 <div class="input-group c-square">
                                     <span class="input-group-addon">Sắp xếp</span>
                                     <select class="form-control c-square" name="sort_price">
-                                        <option value="1">Giá tăng dần</option>
-                                        <option value="0">Giá giảm dần</option>
+                                        <option value="asc">Giá tăng dần</option>
+                                        <option value="desc">Giá giảm dần</option>
                                     </select>
                                 </div>
                             </div>

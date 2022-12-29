@@ -1,3 +1,12 @@
+/*** 
+ * Set message to request.session.sessionFlash
+ * @param {object} message Object to send a message to views with session
+ * 
+ * Struct Object: 
+ * 
+ * {error: true || false, success: true || false, message: '{string message}'}
+ * 
+ */
 function sendMessage(_req, res, next, message) {
   if (!message) {
     res.status(400).send('Message is required');

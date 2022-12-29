@@ -3,14 +3,12 @@ const Category = require('../models/Category');
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose');
 const { isEmailValid, isNullOrEmpty } = require('../../util/validators');
 const { createHash } = require('../../util/bcrypt');
-const { renewUserSession } = require('../../util/renewSession');
 const bcrypt = require('bcrypt');
 
 class SiteController {
 
     // GET homepage
     async home(_req, res, next) {
-        // await renewUserSession(_req, next);
         Category.find({})
             .then(categories => res.render('sites/home', {
                 categories: mutipleMongooseToObject(categories)

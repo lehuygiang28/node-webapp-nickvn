@@ -3,7 +3,6 @@ const User = require('../models/User');
 const LienMinh = require('../models/LienMinh');
 const UserPuchased = require('../models/UserPuchased');
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose');
-const { renewUserSession } = require('../../util/renewSession');
 const { sendMessage } = require('../../util/flash-message');
 const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer');
 const { logger } = require('../../util/logger');
@@ -13,7 +12,8 @@ class LienMinhController {
 
     // GET /lien-minh
     showLienMinhCategory(_req, res, next) {
-
+        // generateLienMinh(5, next);
+        // resetProductAndUserPuchased()
         logger.bold().info('TEST Logger');
 
         // Get all the categories with keywords 'lien-minh'
@@ -23,13 +23,23 @@ class LienMinhController {
             }))
             .catch(next);
 
-            // resetProductAndUserPuchased(next);
+        // resetProductAndUserPuchased(next);
     }
 
     // GET /lien-minh/acc-lien-minh
     showAccLienMinh(_req, res, next) {
+
+        let lienMinhQuery = LienMinh.find({ status_id: 1005 });
+        logger.info(res.locals._sort);
+
+        // if (_req._sort.hasOwnProperty('_sort')) {
+        //     lienMinhQuery = lienMinhQuery.sort({
+        //     });
+
+        // }
+
         // Get all accounts lien-minh in the database
-        LienMinh.find({ status_id: 1005 })
+        lienMinhQuery
             .then(lienminhs => res.render('lien-minh/acc-lien-minh', {
                 lienminhs: mutipleMongooseToObject(lienminhs)
             }))

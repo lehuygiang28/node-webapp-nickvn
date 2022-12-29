@@ -1,8 +1,19 @@
 const nodemailer = require('nodemailer');
 const util = require('util');
 
+/***
+ * Send an email to the user with the callback
+ * @param {String} to The email adress to send
+ * @param {Object} inputContent The content to send
+ * @param callback The callback
+ */
 const sendMailCallback = util.callbackify(sendMail);
 
+/***
+ * Send an email to the user
+ * @param {String} to The email adress to send
+ * @param {Object} inputContent The content to send
+ */
 async function sendMail(to, inputContent) {
     const client = nodemailer.createTransport({
         service: 'gmail',

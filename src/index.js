@@ -1,14 +1,15 @@
-const path = require('path');
 const express = require('express');
+const path = require('path');
 const handlebars = require('express-handlebars');
 const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('express-flash');
 require('dotenv').config({ path: path.resolve(__dirname, './config/env/.env') });
-const sortMiddleware = require('./app/middlewares/sortMiddleware');
-const { renewUserSession } = require('./app/middlewares/renewUserSession');
 const favicon = require('serve-favicon');
-
+const { sortMiddleware } = require('./app/middlewares/sortMiddleware');
+const { renewUserSessionMiddleware } = require('./app/middlewares/renewUserSessionMiddleware');
+const { customSessionFlashMiddleware } = require('./app/middlewares/customSessionFlashMiddleware');
+const { getSessionToViewsMiddleware } = require('./app/middlewares/getSessionToViewsMiddleware');
 
 const app = express();
 const port = process.env.NODE_PORT || 8081;
@@ -40,10 +41,7 @@ app.use(session({
 }));
 
 // Midddleware Get session to handlebars 
-app.use(function(_req, res, next) {
-    res.locals.session = _req.session;
-    next();
-});
+app.use(getSessionToViewsMiddleware);
 
 // Http logger
 app.use(morgan('combined'));
@@ -52,19 +50,12 @@ app.use(morgan('combined'));
 app.use(flash());
 
 // --- CUSTOM MIDDLEWARES ---
-// Custom flash middleware -- from Ethan Brown's book, 'Web Development with Node & Express'
-app.use(function(_req, res, next) {
-    // if there's a flash message in the session request, make it available in the response, then delete it
-    res.locals.sessionFlash = _req.session.sessionFlash;
-    delete _req.session.sessionFlash;
-    next();
-});
+// Custom flash middleware
+app.use(customSessionFlashMiddleware);
 // Sort
 app.use(sortMiddleware);
 // Renew User Session
-app.use(function(_req, res, next) {
-    renewUserSession(_req, res, next);
-});
+app.use(renewUserSessionMiddleware);
 // --- CUSTOM MIDDLEWARES END ---
 
 // Template engine

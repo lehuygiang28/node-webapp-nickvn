@@ -1,5 +1,8 @@
 var emailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
 
+/***
+ * Validate email address, if email is valid return true, otherwise return false
+ */
 function isEmailValid(email) {
     if (!email)
         return false;
@@ -23,6 +26,9 @@ function isEmailValid(email) {
     return true;
 }
 
+/***
+ * Validate input value, if is null or empty or !(input) return true, otherwise return false
+ */
 function isNullOrEmpty(value) {
     if (value)
     {

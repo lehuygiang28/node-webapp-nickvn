@@ -2,6 +2,12 @@ const LienMinh = require('../app/models/LienMinh');
 const UserPuchased = require('../app/models/UserPuchased');
 const { logger } = require('./logger');
 
+
+/**
+ * Generates random product
+ * @param {Number} counters The number of products to generate
+ * @param next Call next middleware
+ */
 function generateLienMinh(counters, next) {
     const firstImg = [
         "/img/default-thumb1.webp",
@@ -68,6 +74,21 @@ function generateLienMinh(counters, next) {
     // .catch(next);
 }
 
+/**
+ * Resets the state of the product and removes all references to it from the user
+ * @param next Call next middleware
+ * 
+ * Step:
+ * 
+ *      1: Resets the state of the product to NOT_SOLD, id: 1005
+ * 
+ *      2: Remove all user puchase history
+ * 
+ *      3: Call next() middleware
+ * 
+ * User:
+ *  abc: 100
+ */
 function resetProductAndUserPuchased(next) {
     LienMinh.find({ status_id: 1006 })
         .then(product => {
@@ -102,7 +123,6 @@ function resetProductAndUserPuchased(next) {
         })
         .catch(next);
 }
-
 module.exports = {
     resetProductAndUserPuchased,
     generateLienMinh
