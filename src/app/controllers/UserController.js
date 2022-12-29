@@ -8,7 +8,7 @@ const { createHash, compare } = require('../../util/bcrypt');
 
 class UserController {
     // GET /user
-    // GET /user/profile
+    // GET /user/thong-tin-tai-khoan
     index(_req, res, next) {
         if (!_req.session.User) {
             sendMessage(_req, res, next, { error: true, message: 'Bạn chưa đăng nhập' });
@@ -22,7 +22,7 @@ class UserController {
                     return res.redirect('/dang-nhap');
                 }
                 console.log(user);
-                res.render('user/profile', { user: mongooseToObject(user) });
+                res.render('user/thong-tin-tai-khoan', { user: mongooseToObject(user) });
 
                 // sendMailCallback('gianghuytv28@gmail.com', {
                 //     subject: 'Thông tin tài khoản đã mua tại giang.cf',
