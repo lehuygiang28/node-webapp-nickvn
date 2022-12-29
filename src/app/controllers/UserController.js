@@ -38,14 +38,14 @@ class UserController {
             .catch(next);
     }
 
-    // GET /user/change-password
+    // GET /user/doi-mat-khau
     changePassword(_req, res, next) {
         if (!_req.session.User) {
             sendMessage(_req, res, next, { error: true, message: 'Bạn chưa đăng nhập!' });
             return res.redirect('/dang-nhap');
         }
 
-        res.render('user/change-password');
+        res.render('user/doi-mat-khau');
     }
 
     changePasswordSolvers(_req, res, next) {
@@ -55,11 +55,11 @@ class UserController {
         }
 
         if (!_req.body || !_req.body.old_password || !_req.body.new_password || !_req.body.password_confirmation) {
-            return res.render('user/change-password', { error: 'Bạn phải điền đầy đủ các trường!' });
+            return res.render('user/doi-mat-khau', { error: 'Bạn phải điền đầy đủ các trường!' });
         }
 
         if (_req.body.new_password != _req.body.password_confirmation) {
-            return res.render('user/change-password', { error: 'Hai mật khẩu phải giống nhau!' });
+            return res.render('user/doi-mat-khau', { error: 'Hai mật khẩu phải giống nhau!' });
         }
 
         User.findOne({ _id: _req.session.User._id })
@@ -67,16 +67,16 @@ class UserController {
                 compare(_req.body.old_password, user.password, function(err, result) {
                     if (err) {
                         logger.error('Đổi mật khẩu thất bại: ' + err);
-                        return res.render('user/change-password', { error: 'Có lỗi xảy ra, vui lòng thử lại!' });
+                        return res.render('user/doi-mat-khau', { error: 'Có lỗi xảy ra, vui lòng thử lại!' });
                     } else if (!result) {
                         logger.warn('Đổi mật khẩu thất bại');
                         res.status(401);
-                        return res.render('user/change-password', { error: 'Mật khẩu cũ không chính xác!' });
+                        return res.render('user/doi-mat-khau', { error: 'Mật khẩu cũ không chính xác!' });
                     } else {
                         user.password = createHash(_req.body.new_password);
                         user.save().then(() => {
                             logger.info(`Đổi mật khẩu thành công userName: ${user.userName}`);
-                            res.render('user/change-password', { success: 'Đổi mật khẩu thành công!' });
+                            res.render('user/doi-mat-khau', { success: 'Đổi mật khẩu thành công!' });
                         });
                     }
                 });
