@@ -10,6 +10,11 @@ function createHash(data) {
     return bcrypt.hashSync(data, bcrypt.genSaltSync(saltRounds), null)
 }
 
+function compare(a, b, callbackfn){
+    return bcrypt.compare(a, b, callbackfn, saltRounds);
+}
+
 module.exports = {
-    createHash
+    createHash,
+    compare
 }

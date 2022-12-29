@@ -3,9 +3,10 @@ const router = express.Router();
 
 const UserControllers = require('../app/controllers/UserController');
 
-router.get('/change-password', UserControllers.changePassword);
-router.get('/puchased', UserControllers.puchased);
-router.get('/profile', UserControllers.index);
+router.post('/doi-mat-khau', UserControllers.changePasswordSolvers);
+router.get('/doi-mat-khau', UserControllers.changePassword);
+router.get('/tai-khoan-da-mua', UserControllers.puchased);
+router.get('/thong-tin-tai-khoan', UserControllers.index);
 router.get('/', UserControllers.index);
 
 module.exports = router;
