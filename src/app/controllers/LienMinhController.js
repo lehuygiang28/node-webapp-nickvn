@@ -270,6 +270,14 @@ class LienMinhController {
                                     throw new Error();
                                 }
 
+                                /***
+                                 * Function to update the [user, product, product_puchased] when buy product
+                                 * 
+                                 * @param {Object} user Object of user
+                                 * @param {Object} acc Object of product
+                                 * @param {Object} puchased Object of product_puchased
+                                 * @returns {boolean} Return true if update is succesfully, otherwise return false
+                                 */
                                 async function updateAll(user, acc, puchased) {
                                     const session = await mongoose.startSession();
                                     await session.startTransaction();
