@@ -366,10 +366,10 @@
             <div class="col-sm-6 col-md-3">
                 <div class="classWithPad">
                     <div class="image">
-                        <a href='/lien-minh/acc-lien-minh/{{product_id}}'>
+                        <a href='/lien-minh/acc-lien-minh/{{this.product_id}}'>
                             <!-- <a href="/acc/467183"> -->
                             <img src="{{img.[0]}}" alt="{{img.[0]}}">
-                            <span class="ms">MS: {{product_id}}</span>
+                            <span class="ms">MS: {{this.product_id}}</span>
                         </a>
 
                     </div>
@@ -380,11 +380,11 @@
                         <div class="row">
 
                             <div class="col-xs-6 a_att">
-                                Tướng: <b>{{champ}}</b>
+                                Tướng: <b>{{this.champ}}</b>
                             </div>
 
                             <div class="col-xs-6 a_att">
-                                Skin: <b>{{skin}}</b>
+                                Skin: <b>{{this.skin}}</b>
                             </div>
 
                             <div class="col-xs-6 a_att">
@@ -392,18 +392,18 @@
                             </div>
 
                             <div class="col-xs-6 a_att">
-                                Rank: <b>{{rank}}</b>
+                                Rank: <b>{{this.rank}}</b>
                             </div>
                         </div>
                     </div>
                     <div class="a-more">
                         <div class="row">
                             <div class="col-xs-6" style="width: 58%;">
-                                <div class="price_item">{{vndCurrency price}}</div>
+                                <div class="price_item">{{vndCurrency this.price}}</div>
                             </div>
                             <div class="col-xs-6" style="width: 42%;">
                                 <div class="view">
-                                    <a href='/lien-minh/acc-lien-minh/{{product_id}}'>Chi
+                                    <a href='/lien-minh/acc-lien-minh/{{this.product_id}}'>Chi
                                         tiết</a>
                                     <!-- <a href="/acc/467183">Chi tiết</a> -->
                                 </div>

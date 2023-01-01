@@ -2,12 +2,14 @@ const User = require('../models/User');
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose');
 const { sendMessage } = require('../../util/flash-message');
 const { logger } = require('../../util/logger');
-const bcrypt = require('bcrypt');
 const { createHash, compare } = require('../../util/bcrypt');
+const UserPuchased = require('../models/UserPuchased');
+const LienMinh = require('../models/LienMinh');
+// const bcrypt = require('bcrypt');
 
 
 class UserController {
-    
+
     // GET /user
     // GET /user/thong-tin-tai-khoan
     index(_req, res, next) {
@@ -22,7 +24,7 @@ class UserController {
                     sendMessage(_req, res, next, { error: true, message: 'Bạn chưa đăng nhập' });
                     return res.redirect('/dang-nhap');
                 }
-                console.log(user);
+                // console.log(user);
                 res.render('user/thong-tin-tai-khoan', { user: mongooseToObject(user) });
             })
             .catch(next);
@@ -76,7 +78,37 @@ class UserController {
 
     // GET /user/tai-khoan-da-mua
     puchased(_req, res, next) {
-        res.render('user/tai-khoan-da-mua', {});
+        if (!_req.session.User) {
+            return res.redirect('/dang-nhap');
+        }
+
+        /***
+         * If not found user_puchased return without any data
+         * If found user_puchased but not found any puchased return without any data
+         * Otherwise return an array of user_puchased.product_puchased
+         */
+        UserPuchased.findOne({ user_id: _req.session.User._id }).populate({path: 'product_puchased.product'})
+            .then(userPuchased => {
+                if (!userPuchased) {
+                    logger.debug('1 in');
+                    return res.render('user/tai-khoan-da-mua');
+                } else if (userPuchased.product_puchased.length === 0) {
+                    logger.debug('2 in');
+                    return res.render('user/tai-khoan-da-mua');
+                } else {
+                    logger.debug('Sucess in');
+                    // logger.debug(userPuchased);
+                    // console.log(mutipleMongooseToObject(userPuchased.product_puchased.product));
+
+                    // res.json(mutipleMongooseToObject(userPuchased.product_puchased));
+                    
+                    return res.render('user/tai-khoan-da-mua', {
+                        product_puchased: mutipleMongooseToObject(userPuchased.product_puchased),
+                    })
+                }
+            })
+            .catch(next);
+        // res.render('user/tai-khoan-da-mua');
     }
 
 }

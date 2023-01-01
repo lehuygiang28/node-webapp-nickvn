@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Category = new Schema({
+const CategorySchema = new Schema({
     categoryName: {type: String, minLength: 1},
     total: {type: Number},
     img: {type: String, minLength: 1},
@@ -10,4 +10,4 @@ const Category = new Schema({
 });
 
 
-module.exports = mongoose.model('Category', Category);
+module.exports = mongoose.model('Category', CategorySchema);

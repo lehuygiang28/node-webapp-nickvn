@@ -1,0 +1,288 @@
+<script> document.title = `Tài khoản đã mua - ${document.title}`; </script>
+
+<!-- BEGIN: PAGE CONTAINER -->
+<div class="c-layout-page">
+    <!-- BEGIN: PAGE CONTENT -->
+    <div class="m-t-20 visible-sm visible-xs"></div>
+
+    <div class="c-layout-page" style="margin-top: 20px;">
+        <div class="container">
+            <div class="c-layout-sidebar-menu c-theme ">
+                <div class="row">
+                    <div class="col-md-12 col-sm-6 col-xs-6 m-t-15 m-b-20">
+                        <!-- BEGIN: LAYOUT/SIDEBARS/SHOP-SIDEBAR-DASHBOARD -->
+                        <div class="c-content-title-3 c-title-md c-theme-border">
+                            <h3 class="c-left c-font-uppercase">Menu tài khoản</h3>
+                            <div class="c-line c-dot c-dot-left "></div>
+                        </div>
+
+                        <div class="c-content-ver-nav">
+                            <ul class="c-menu c-arrow-dot c-square c-theme">
+                                <li><a href="/user/thong-tin-tai-khoan">Thông tin tài khoản</a></li>
+
+
+                                {{!-- @* <li><a href="#" class="p-quantity ">Hộp thư
+                                        <span id="quantity_noti" class="quantity">0</span>
+                                    </a>
+                                </li>
+                                <li><a href="#" class="">Lịch sử giao dịch </a></li>
+                                <li>
+                                    <a data-toggle="collapse" data-parent="#accordion1" class="cmenu-parrent collapsed"
+                                        href="#menuchild_roll">Lịch sử vòng quay
+                                        (0)</a>
+                                    <ul id="menuchild_roll" class="children collapse">
+                                    </ul>
+                                </li>
+                                <li><a href="#" class="">Rút quà mở rương (0)</a></li>
+                                <li><a href="#" class="">Tài khoản ngân hàng</a></li>
+                                <li><a href="#" class="">Rút tiền ra ATM - Ví</a></li> *@ --}}
+
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-sm-6 col-xs-6 m-t-15">
+                        <div class="c-content-title-3 c-title-md c-theme-border">
+                            <h3 class="c-left c-font-uppercase">Menu giao dịch</h3>
+                            <div class="c-line c-dot c-dot-left "></div>
+                        </div>
+                        <div class="c-content-ver-nav m-b-20">
+                            <ul class="c-menu c-arrow-dot c-square c-theme">
+                                <li><a href="">Nạp thẻ tự động</a></li>
+
+                                <li><a href="">Lịch sử nạp thẻ</a></li>
+                                {{!-- @* <li><a href="#" class="">Nạp Ví / ATM tự động</a></li> *@ --}}
+
+                                <li><a href="/user/tai-khoan-da-mua" class="active">Tài khoản đã mua</a>
+                                </li>
+                                {{!-- @* <li><a href="#" class="">Tà/ --}}
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="c-layout-sidebar-content ">
+                <!-- BEGIN: PAGE CONTENT -->
+                <!-- BEGIN: CONTENT/SHOPS/SHOP-CUSTOMER-DASHBOARD-1 -->
+
+
+                <div class="c-content-title-1">
+                    <h3 class="c-font-uppercase c-font-bold">Tài khoản đã mua</h3>
+                    <div class="c-line-left"></div>
+                </div>
+                <form class="form-horizontal form-find m-b-20" role="form" method="get">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group m-b-10 c-square ">
+                                <span class="input-group-addon" id="basic-addon1">Mã tài khoản #</span>
+                                <input type="text" class="form-control c-square c-theme" name="id" value="" autofocus
+                                    placeholder="Mã tài khoản">
+                            </div>
+                        </div>
+                        {{!-- <div class="col-md-4">
+                            <div class="input-group m-b-10 c-square">
+                                <span class="input-group-addon" id="basic-addon1">Game</span>
+                                <select id="group_id" name="group_id" class="form-control c-square c-theme">
+                                    <option value="">-- Tất cả các game --</option>
+                                    <option value='18'> Li&ecirc;n qu&acirc;n</option>
+                                    <option value='1291'> Danh Mục Game Tốc Chiến</option>
+                                    <option value='772'> Free Fire - FF</option>
+                                    <option value='17'> Li&ecirc;n minh</option>
+                                    <option value='801'> Pubg Mobile</option>
+                                    <option value='1298'> Danh Mục Game Gọi Rồng Online</option>
+                                    <option value='700'> CrossFire Mobile - China</option>
+                                    <option value='32'> Ngọc rồng</option>
+                                    <option value='1290'> Nick Win Doanh Trại</option>
+                                    <option value='58'> L&agrave;ng L&aacute; Phi&ecirc;u Lưu K&yacute;</option>
+                                    <option value='83'> Ninja School</option>
+                                    <option value='96'> Hiệp Sĩ Online</option>
+                                    <option value='267'> Truy K&iacute;ch</option>
+                                    <option value='1236'> Dấu Ấn Rồng</option>
+                                    <option value='670'> Kh&iacute; Ph&aacute;ch Anh H&ugrave;ng</option>
+                                    <option value='747'> Zing Speed Mobile</option>
+                                    <option value='19'> Đột k&iacute;ch</option>
+                                    <option value='73'> Hải Tặc T&iacute; Hon</option>
+                                    <option value='115'> Avatar 2d</option>
+                                    <option value='687'> Tập K&iacute;ch</option>
+                                    <option value='147'> Avatar Musik</option>
+                                    <option value='817'> AOG - Đấu trường vinh quang</option>
+                                    <option value='829'> Blade and soul - BNS</option>
+                                    <option value='141'> Army II</option>
+                                    <option value='229'> Sơn Thủy Ph&acirc;n Tranh</option>
+                                    <option value='831'> THỬ VẬN MAY LI&Ecirc;N QU&Acirc;N VIP 1</option>
+                                    <option value='832'> THỬ VẬN MAY LI&Ecirc;N QU&Acirc;N 32K</option>
+                                    <option value='833'> THỬ VẬN MAY LI&Ecirc;N QU&Acirc;N VIP 2</option>
+                                    <option value='834'> THỬ VẬN MAY LI&Ecirc;N QU&Acirc;N 130K</option>
+                                    <option value='835'> THỬ VẬN MAY LI&Ecirc;N QU&Acirc;N VIP 3</option>
+                                    <option value='836'> THỬ VẬN MAY LI&Ecirc;N QU&Acirc;N 320K</option>
+                                    <option value='276'> THỬ VẬN MAY ĐỘT K&Iacute;CH 12K</option>
+                                    <option value='1192'> Thử Vận May Free Fire Vip Đặc Biệt - 50.000đ</option>
+                                    <option value='787'> Thử Vận May Free Fire Vip 3 - 35.000đ</option>
+                                    <option value='830'> Thử Vận May Free Fire Vip 4 - 70.000đ</option>
+                                    <option value='302'> Thử vận may pubg mobile 40k</option>
+                                    <option value='536'> Thử vận may pubg mobile 60k</option>
+                                    <option value='534'> Thử vận may li&ecirc;n minh 30k</option>
+                                    <option value='535'> THỬ VẬN MAY LI&Ecirc;N MINH</option>
+                                    <option value='1191'> Thử vận may zing speed 35k</option>
+                                    <option value='837'> Thử vận may zing speed 50k</option>
+                                    <option value='838'> Thử vận may l&agrave;ng l&aacute; gi&aacute; 30k</option>
+                                    <option value='839'> Thử vận may l&agrave;ng l&aacute; gi&aacute; 80k</option>
+                                    <option value='840'> Thử vận may l&agrave;ng l&aacute; gi&aacute; 150k</option>
+                                    <option value='966'> THỬ VẬN MAY FO4 65k</option>
+                                    <option value='967'> THỬ VẬN MAY FO4 300k</option>
+                                    <option value='968'> THỬ VẬN MAY FO4 500k</option>
+                                    <option value='1204'> Nick S&ograve; Gi&aacute; Rẻ</option>
+                                    <option value='1253'> Thử Vận May Ngọc Rồng 30k</option>
+                                    <option value='1076'> Mở Rương Qu&acirc;n Huy</option>
+                                    <option value='1078'> Mở Rương Kim Cương</option>
+                                    <option value='1112'> Mở Rương Gem ( CF Mobile )</option>
+                                    <option value='1087'> Mở Rương +UC ( PUBG MOBILE )</option>
+                                    <option value='1088'> Mở Rương +RP ( LMHT )</option>
+                                    <option value='1113'> Mở Rương Sohacoin ( l&agrave;ng l&aacute; )</option>
+                                    <option value='1124'> Mở Rương Point ( zingspeed mobile )</option>
+                                    <option value='764'> Mobile Legends Bang Bang</option>
+                                    <option value='242'> Game Bản Quyền</option>
+                                    <option value='661'> PlayerUnknown&#039;s Battlegrounds PUBG</option>
+                                    <option value='107'> 5ltb - Ngũ Long Tranh B&aacute;</option>
+                                    <option value='841'> Thử vận may l&agrave;ng l&aacute; si&ecirc;u cấp</option>
+                                    <option value='296'> Li&ecirc;n Qu&acirc;n (Random Trung Cấp)</option>
+                                    <option value='823'> Blade and soul</option>
+                                    <option value='1190'> Thử Vận May Zingspeed Mobile 35k</option>
+                                    <option value='286'> Li&ecirc;n Qu&acirc;n (Random Sơ Cấp)</option>
+                                    <option value='1089'> Hộp Qu&agrave; Gem ( CF Mobile )</option>
+                                    <option value='1308'> Mua Nick Random Blox Fruit</option>
+                                </select>
+
+                            </div>
+                        </div> --}}
+                        {{!-- <div class="col-md-4">
+                            <div class="input-group m-b-10 c-square">
+                                <span class="input-group-addon" id="basic-addon1">Trạng thái</span>
+                                <select name="status" class="form-control c-square c-theme">.
+                                    <option value=""> Tất cả </option>
+                                    <option value="1">
+                                        Mua thành công
+                                    </option>
+                                    <option value="2">
+                                        Chờ kiểm tra tài khoản
+                                    </option>
+                                </select>
+                            </div>
+                        </div> --}}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group m-b-10 c-square">
+                                <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
+                                    data-rtl="false">
+                                    <span class="input-group-btn">
+                                        <button class="btn default c-btn-square p-l-10 p-r-10" type="button"><i
+                                                class="fa fa-calendar"></i></button>
+                                    </span>
+                                    <input type="text" class="form-control c-square c-theme" name="started_at"
+                                        autocomplete="off" autofocus placeholder="Từ ngày" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group m-b-10 c-square">
+                                <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
+                                    data-rtl="false">
+                                    <span class="input-group-btn">
+                                        <button class="btn default c-btn-square p-l-10 p-r-10" type="button"><i
+                                                class="fa fa-calendar"></i></button>
+                                    </span>
+                                    <input type="text" class="form-control c-square c-theme" name="ended_at"
+                                        autocomplete="off" placeholder="Đến ngày" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group m-b-10 c-square">
+                                <span class="input-group-addon" id="basic-addon1">Số tiền</span>
+                                <select name="game" class="form-control c-square c-theme">
+                                    <option value="">Chọn giá tiền</option>
+                                    <option value="duoi-50k">Dưới 50K</option>
+                                    <option value="tu-50k-200k">Từ 50K - 200K</option>
+                                    <option value="tu-200k-500k">Từ 200K - 500K</option>
+                                    <option value="tu-500k-1-trieu">Từ 500K - 1 Triệu</option>
+                                    <option value="tren-1-trieu">Trên 1 Triệu</option>
+                                    <option value="tren-5-trieu">Trên 5 Triệu</option>
+                                    <option value="tren-10-trieu">Trên 10 Triệu</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="submit" class="btn c-theme-btn c-btn-square m-b-10" value="Tìm kiếm">
+                            <a class="btn c-btn-square m-b-10 btn-danger" href="#">Tất cả</a>
+                        </div>
+                    </div>
+                </form>
+
+                <table class="table table-hover table-custom-res">
+                    <thead>
+                        <tr>
+                            <th>Thời gian</th>
+                            <th>ID</th>
+                            <th>Game</th>
+                            <th>Tài khoản</th>
+                            <th>Mật khẩu</th>
+                            <th>Trị giá</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#if product_puchased}}
+                        {{#each product_puchased}}
+                        {{#with product as | product |}}
+                        {{#each product}}
+                        <tr>
+                            <td>{{dateFormat this.createAt "DD/MM/YYYY"}}</td>
+                            <td>{{this.product_id}}</td>
+                            <td>{{this.game.name}}</td>
+                            <td>{{this.userName}}</td>
+                            <td>
+                                ********
+                            </td>
+                            <td>{{vndCurrency this.price}}</td>
+                            <td>
+                                <a href="/user/gui-lai-tai-khoan?game={{#with this.game}}{{this.id}}{{/with}}&id={{this.product_id}}"
+                                    class="btn btn-info text-info">
+                                    Gửi lại tài khoản</a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        {{/with}}
+                        {{/each}}
+                        {{else}}
+                        <tr>
+                            <td colspan="6">Không có dữ liệu</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">Bạn chưa mua tài khoản nào, <a href="/" class="text-info">click mua ngay
+                                </a>!</td>
+                        </tr>
+                        {{/if}}
+
+                    </tbody>
+                </table>
+                <!-- END: PAGE CONTENT -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- END: PAGE CONTENT -->
+
+
+
+    <!-- END: PAGE CONTENT -->
+</div>
+
+<!-- END: PAGE CONTAINER -->

@@ -46,6 +46,7 @@ function generateLienMinh(counters, next) {
         let product = new LienMinh({
             userName: 'shop' + randomString(6),
             password: 'passw' + randomString(8),
+            game_name: 'Liên Minh',
             price: randomNumber(10000, 20000000),
             champ: randomNumber(20, 199),
             skin: randomNumber(50, 600),

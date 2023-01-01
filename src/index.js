@@ -10,7 +10,6 @@ const { sortMiddleware } = require('./app/middlewares/sortMiddleware');
 const { renewUserSessionMiddleware } = require('./app/middlewares/renewUserSessionMiddleware');
 const { customSessionFlashMiddleware } = require('./app/middlewares/customSessionFlashMiddleware');
 const { getSessionToViewsMiddleware } = require('./app/middlewares/getSessionToViewsMiddleware');
-// const MongoStore = require('connect-mongo');
 
 
 const app = express();

@@ -2,10 +2,12 @@ const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 const Schema = mongoose.Schema;
 
-const LienMinh = new Schema({
+const LienMinhSchema = new Schema({
+    // _id: {type: mongoose.SchemaTypes.ObjectId},
     product_id: { type: Number, require: true },
     userName: { type: String, minLength: 1 },
     password: { type: String, minLength: 1 },
+    game_name: { type: String },
     price: { type: Number, min: 0 },
     champ: { type: Number, min: 0 },
     skin: { type: Number, min: 0 },
@@ -19,5 +21,5 @@ const LienMinh = new Schema({
     product_id: false
 });
 
-LienMinh.plugin(AutoIncrement, { inc_field: 'product_id' });
-module.exports = mongoose.model('LienMinh', LienMinh);
+LienMinhSchema.plugin(AutoIncrement, { inc_field: 'product_id' });
+module.exports = mongoose.model('LienMinh', LienMinhSchema);

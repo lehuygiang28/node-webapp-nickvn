@@ -5,6 +5,7 @@ const { isEmailValid, isNullOrEmpty } = require('../../util/validators');
 const { createHash } = require('../../util/bcrypt');
 const bcrypt = require('bcrypt');
 
+
 class SiteController {
 
     // GET homepage
@@ -121,6 +122,7 @@ class SiteController {
                     email: _req.body.email,
                     phone: _req.body.phone,
                     password: createHash(_req.body.password),
+                    accessToken: generateAccessToken(_req.body.userName),
                     fullName: _req.body.userName + _req.body.phone,
                     money: 0,
                     role: 'member',

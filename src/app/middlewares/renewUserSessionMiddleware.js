@@ -14,7 +14,7 @@ function renewUserSessionMiddleware(_req, res, next) {
         logger.info('Session not created!');
         return next();
     } else {
-        console.log(_req.session);
+        // console.log(_req.session);
         User.findById(_req.session.User._id)
             .then((user) => {
                 if (!user) {

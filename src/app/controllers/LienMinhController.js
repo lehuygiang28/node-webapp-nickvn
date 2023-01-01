@@ -6,7 +6,7 @@ const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoo
 const { sendMessage } = require('../../util/flash-message');
 const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer');
 const { logger } = require('../../util/logger');
-// const { resetProductAndUserPuchased, generateLienMinh } = require('../../util/project_extensions');
+const { resetProductAndUserPuchased, generateLienMinh } = require('../../util/project_extensions');
 
 class LienMinhController {
 
@@ -28,7 +28,7 @@ class LienMinhController {
 
     // GET /lien-minh/acc-lien-minh
     showAccLienMinh(_req, res, next) {
-
+        // generateLienMinh(4, next);
         let lienMinhQuery = LienMinh.find({ status_id: 1005 });
         logger.info(res.locals._sort);
 
@@ -40,9 +40,18 @@ class LienMinhController {
 
         // Get all accounts lien-minh in the database
         lienMinhQuery
-            .then(lienminhs => res.render('lien-minh/acc-lien-minh', {
-                lienminhs: mutipleMongooseToObject(lienminhs)
-            }))
+            .then(lienminhs => {
+
+                // const a = lienminhs.forEach((item) => {
+                //     if (item.product_id == 564){
+                //         console.log(item);
+                //     }
+                // })
+
+                res.render('lien-minh/acc-lien-minh', {
+                    lienminhs: mutipleMongooseToObject(lienminhs)
+                });
+            })
             .catch(next);
     }
 
@@ -85,6 +94,115 @@ class LienMinhController {
             return res.redirect('/lien-minh/acc-lien-minh');
         }
 
+        // let session = null;
+        // LienMinh.startSession()
+        //     .then((_session) => {
+        //         session = _session;
+        //         logger.debug(`Start session: ${session}`);
+        //         return session.withTransaction(() => {
+        //             return (
+        //                 LienMinh.findOneAndUpdate({ product_id: _req.params.id })
+        //                 .then(account => {
+
+        //                     if (!account) {
+        //                         // sendMessage: Send the error message to views
+        //                         sendMessage(_req, res, next, { error: true, message: 'Không tìm thấy tài khoản' });
+        //                         return res.redirect('/lien-minh/acc-lien-minh');
+        //                     }
+        //                     if (account.status_id != 1005) {
+        //                         sendMessage(_req, res, next, { error: true, message: 'Tài khoản đã được bán' });
+        //                         return res.redirect('/lien-minh/acc-lien-minh');
+        //                     }
+
+        //                     // Check user is existing
+        //                     User.findById(_req.session.User._id)
+        //                         .then(user => {
+        //                             if (!user) {
+        //                                 // Send the error message to views
+        //                                 sendMessage(_req, res, next, { error: true, message: 'Bạn phải đăng nhập trước khi mua' });
+        //                                 return res.redirect('/lien-minh/acc-lien-minh/');
+        //                             }
+        //                             // console.log(`User ID: ${user._id}`);
+        //                             // logger.info(`User ID: ${user._id}`);
+
+        //                             // Find the cart by id
+        //                             UserPuchased.findOneAndUpdate({ user_id: user._id })
+        //                                 .then(async userPuchased => {
+        //                                     // If cart is not existing, create the new one
+        //                                     if (!userPuchased) {
+        //                                         // Define the new cart
+        //                                         let newPuchased = new UserPuchased({
+        //                                             user_id: user._id,
+        //                                             product_puchased: [{
+        //                                                 // product_obj_id: acc._id,
+        //                                                 // product_id: acc.product_id,
+        //                                                 // product_name: 'Liên Minh',
+        //                                                 // price: acc.price,
+        //                                                 product: account,
+        //                                                 created_at: Date.now()
+        //                                             }]
+        //                                         });
+        //                                         // Save the new cart to the database and callback logger
+        //                                         newPuchased.save(() => {
+        //                                             // console.log(`Create new puchase objId: ${newId}`);
+        //                                             logger.info(`Create new puchase objId: ${newPuchased._id}`);
+        //                                         });
+        //                                     } else {
+        //                                         // If cart is existing, update the cart
+        //                                         userPuchased.product_puchased.push({
+        //                                             // product_obj_id: acc._id,
+        //                                             // product_id: acc.product_id,
+        //                                             // price: acc.price,
+        //                                             product: account,
+        //                                             created_at: Date.now()
+        //                                         });
+        //                                         userPuchased.save(() => {
+        //                                             // console.log(`Update puchase objId: ${userPuchased._id}`);
+        //                                             logger.info(`Push puchase objId: ${userPuchased._id}`);
+        //                                         });
+        //                                     }
+
+        //                                     // Change status of product
+        //                                     account.status_id = 1006;
+        //                                     account.status_name = "Đã bán";
+        //                                     // Subtraction money of user when buy product
+        //                                     user.money -= account.price;
+        //                                     user.updatedAt = Date.now();
+
+        //                                     // Save new status of product & new money of user
+        //                                     await account.update();
+        //                                     await user.update();
+        //                                     // await session.commitTransaction();
+
+        //                                     // Send email to user
+        //                                     sendMailCallback(user.email, {
+        //                                         subject: 'Thông tin tài khoản đã mua tại giang.cf',
+        //                                         title: `Thông tin tài khoản đã mua #${account.product_id}`,
+        //                                         context: `Tài khoản: ${account.userName}<br>Mật khẩu: ${account.password}`
+        //                                     }, () => {
+        //                                         logger.info(`Mail sent successful to: ${user.email}`);
+        //                                     });
+
+        //                                     // Send the success message to views
+        //                                     sendMessage(_req, res, next, { success: true, message: 'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn.' });
+        //                                     // renewUserSession(_req, next);
+        //                                     res.redirect('/lien-minh/acc-lien-minh');
+        //                                 })
+        //                                 .catch(next);
+        //                         })
+        //                         .catch(next);
+        //                 })
+        //                 .catch(next)
+        //             );
+        //         })
+        //     })
+        //     .then(() => {
+        //         session.endSession(() => {
+        //             logger.debug('End session');
+        //         });
+        //     })
+        //     .catch(next);
+
         // Find the product by id
         LienMinh.findOne({ product_id: _req.params.id })
             .then(acc => {
@@ -105,9 +223,8 @@ class LienMinhController {
                             sendMessage(_req, res, next, { error: true, message: 'Bạn phải đăng nhập trước khi mua' });
                             return res.redirect('/lien-minh/acc-lien-minh/');
                         }
-
                         // console.log(`User ID: ${user._id}`);
-                        logger.info(`User ID: ${user._id}`);
+                        // logger.info(`User ID: ${user._id}`);
 
                         // Find the cart by id
                         UserPuchased.findOne({ user_id: user._id })
@@ -118,9 +235,11 @@ class LienMinhController {
                                     let newPuchased = new UserPuchased({
                                         user_id: user._id,
                                         product_puchased: [{
-                                            product_obj_id: acc._id,
-                                            product_id: acc.product_id,
-                                            price: acc.price,
+                                            // product_obj_id: acc._id,
+                                            // product_id: acc.product_id,
+                                            // product_name: 'Liên Minh',
+                                            // price: acc.price,
+                                            product: acc,
                                             created_at: Date.now()
                                         }]
                                     });
@@ -132,14 +251,15 @@ class LienMinhController {
                                 } else {
                                     // If cart is existing, update the cart
                                     userPuchased.product_puchased.push({
-                                        product_obj_id: acc._id,
-                                        product_id: acc.product_id,
-                                        price: acc.price,
+                                        // product_obj_id: acc._id,
+                                        // product_id: acc.product_id,
+                                        // price: acc.price,
+                                        product: acc,
                                         created_at: Date.now()
                                     });
                                     userPuchased.save(() => {
                                         // console.log(`Update puchase objId: ${userPuchased._id}`);
-                                        logger.info(`Update puchase objId: ${userPuchased._id}`);
+                                        logger.info(`Push puchase objId: ${userPuchased._id}`);
                                     });
                                 }
 
