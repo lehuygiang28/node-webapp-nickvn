@@ -15,7 +15,7 @@ class LienMinhController {
     showLienMinhCategory(_req, res, next) {
         // generateLienMinh(3, next);
         // resetProductAndUserPuchased();
-        logger.bold().info('TEST Logger');
+        // logger.bold().info('TEST Logger');
 
         // Get all the categories with keywords 'lien-minh'
         Category.findOne({ slug: _req.originalUrl.split('/').slice(1).join('/') })
