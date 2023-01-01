@@ -7,7 +7,10 @@ const LienMinhSchema = new Schema({
     product_id: { type: Number, require: true },
     userName: { type: String, minLength: 1 },
     password: { type: String, minLength: 1 },
-    game_name: { type: String },
+    game: {
+        id: { type: Number, require: true },
+        name: { type: String, default: 'Liên Minh' },
+    },
     price: { type: Number, min: 0 },
     champ: { type: Number, min: 0 },
     skin: { type: Number, min: 0 },

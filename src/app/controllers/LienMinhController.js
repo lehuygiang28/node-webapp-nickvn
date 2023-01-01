@@ -7,12 +7,14 @@ const { sendMessage } = require('../../util/flash-message');
 const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer');
 const { logger } = require('../../util/logger');
 const { resetProductAndUserPuchased, generateLienMinh } = require('../../util/project_extensions');
+const db = require('../../config/db');
+const mongoose = require('mongoose');
 
 class LienMinhController {
 
     // GET /lien-minh
     showLienMinhCategory(_req, res, next) {
-        // generateLienMinh(5, next);
+        // generateLienMinh(3, next);
         // resetProductAndUserPuchased()
         logger.bold().info('TEST Logger');
 
@@ -77,19 +79,10 @@ class LienMinhController {
     // Get lien-minh/acc-lien-minh/:id/buy
     buyNowSolvers(_req, res, next) {
         // console.log('ID Slug: ' + _req.params.id);
-        logger.info('ID Slug Buy: ' + _req.params.id);
-
-        // console.log('URL: ' + url);
-        // _req.flash('error', 'Bạn phải đăng nhập trước khi mua');
-        // sendMessage(_req, res, next, {type: 'error', message: 'Bạn phải đăng nhập trước khi mua'});
-        // res.redirect(url);
+        // logger.info('ID Slug Buy: ' + _req.params.id);
 
         // Check session if not login, otherwise...
         if (!_req.session.User) {
-            // _req.session.sessionFlash = {
-            //   type: 'error',
-            //   message: 'Bạn phải đăng nhập trước khi mua'
-            // }
             sendMessage(_req, res, next, { error: true, message: 'Bạn phải đăng nhập trước khi mua' });
             return res.redirect('/lien-minh/acc-lien-minh');
         }
@@ -205,7 +198,8 @@ class LienMinhController {
 
         // Find the product by id
         LienMinh.findOne({ product_id: _req.params.id })
-            .then(acc => {
+            .then(account => {
+                let acc = account;
                 if (!acc) {
                     // Send the error message to views
                     sendMessage(_req, res, next, { error: true, message: 'Không tìm thấy tài khoản' });
@@ -217,7 +211,8 @@ class LienMinhController {
                 }
                 // Check user is existing
                 User.findById(_req.session.User._id)
-                    .then(user => {
+                    .then(userFound => {
+                        let user = userFound;
                         if (!user) {
                             // Send the error message to views
                             sendMessage(_req, res, next, { error: true, message: 'Bạn phải đăng nhập trước khi mua' });
@@ -227,40 +222,27 @@ class LienMinhController {
                         // logger.info(`User ID: ${user._id}`);
 
                         // Find the cart by id
-                        UserPuchased.findOne({ user_id: user._id })
-                            .then(async userPuchased => {
+                        UserPuchased.findOneAndUpdate({ user_id: user._id })
+                            .then(async userPuchasedFound => {
+                                let userPuchased = userPuchasedFound;
                                 // If cart is not existing, create the new one
                                 if (!userPuchased) {
                                     // Define the new cart
-                                    let newPuchased = new UserPuchased({
+                                    userPuchased = new UserPuchased({
                                         user_id: user._id,
                                         product_puchased: [{
-                                            // product_obj_id: acc._id,
-                                            // product_id: acc.product_id,
-                                            // product_name: 'Liên Minh',
-                                            // price: acc.price,
                                             product: acc,
                                             created_at: Date.now()
-                                        }]
+                                        }, ]
                                     });
-                                    // Save the new cart to the database and callback logger
-                                    newPuchased.save(() => {
-                                        // console.log(`Create new puchase objId: ${newId}`);
-                                        logger.info(`Create new puchase objId: ${newId}`);
-                                    });
+
                                 } else {
                                     // If cart is existing, update the cart
                                     userPuchased.product_puchased.push({
-                                        // product_obj_id: acc._id,
-                                        // product_id: acc.product_id,
-                                        // price: acc.price,
                                         product: acc,
                                         created_at: Date.now()
                                     });
-                                    userPuchased.save(() => {
-                                        // console.log(`Update puchase objId: ${userPuchased._id}`);
-                                        logger.info(`Push puchase objId: ${userPuchased._id}`);
-                                    });
+
                                 }
 
                                 // Change status of product
@@ -270,27 +252,57 @@ class LienMinhController {
                                 user.money -= acc.price;
                                 user.updatedAt = Date.now();
 
-                                // Save new status of product & new money of user
-                                await acc.save();
-                                await user.save();
+                                if (updateAll(user, acc, userPuchased)) {
+                                    // Send email to user
+                                    sendMailCallback(user.email, {
+                                        subject: 'Thông tin tài khoản đã mua tại giang.cf',
+                                        title: `Thông tin tài khoản đã mua #${acc.product_id}`,
+                                        // context: `Tài khoản: ${acc.userName}<br>Mật khẩu: ${acc.password}`,
+                                        heading: `Xin chào, bạn đã mua thành công tài khoản ${acc.game.name} mã số ${acc.product_id}!`,
+                                        userName: acc.userName.toString(),
+                                        password: acc.password.toString(),
+                                    }, () => {
+                                        logger.info(`Mail sent successful to: ${user.email}`);
+                                    });
+                                    sendMessage(_req, res, next, { success: true, message: 'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn.' });
+                                    return res.redirect('/lien-minh/acc-lien-minh');
+                                } else {
+                                    throw new Error();
+                                }
 
-                                // Send email to user
-                                sendMailCallback(user.email, {
-                                    subject: 'Thông tin tài khoản đã mua tại giang.cf',
-                                    title: `Thông tin tài khoản đã mua #${acc.product_id}`,
-                                    context: `Tài khoản: ${acc.userName}<br>Mật khẩu: ${acc.password}`
-                                }, () => {
-                                    logger.info(`Mail sent successful to: ${user.email}`);
-                                });
+                                async function updateAll(user, acc, puchased) {
+                                    const session = await mongoose.startSession();
+                                    await session.startTransaction();
+                                    try {
+                                        await user.save();
+                                        await acc.save();
+                                        await puchased.save()
+                                        await session.commitTransaction();
+                                        return true;
+                                    } catch (err) {
+                                        logger.error(`Error when saving buy: ${err}`);
+                                        await session.abortTransaction();
+                                        return false;
+                                    } finally {
+                                        session.endSession();
+                                    }
+                                }
+
                             })
-                            .catch(next);
+                            .catch((err) => {
+                                logger.error(err);
+                                logger.error(err.message);
+
+                                sendMessage(_req, res, next, { error: true, message: "Có lỗi xảy ra khi mua hàng" });
+                                return res.redirect('/lien-minh/acc-lien-minh');
+                            });
                     })
                     .catch(next);
 
                 // Send the error message to views
-                sendMessage(_req, res, next, { success: true, message: 'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn.' });
-                // renewUserSession(_req, next);
-                res.redirect('/lien-minh/acc-lien-minh');
+                // sendMessage(_req, res, next, { success: true, message: 'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn.' });
+                // // renewUserSession(_req, next);
+                // res.redirect('/lien-minh/acc-lien-minh');
             })
             .catch(next);
     }

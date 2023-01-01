@@ -20,24 +20,6 @@
                             <ul class="c-menu c-arrow-dot c-square c-theme">
                                 <li><a href="/user/thong-tin-tai-khoan">Thông tin tài khoản</a></li>
 
-
-                                {{!-- @* <li><a href="#" class="p-quantity ">Hộp thư
-                                        <span id="quantity_noti" class="quantity">0</span>
-                                    </a>
-                                </li>
-                                <li><a href="#" class="">Lịch sử giao dịch </a></li>
-                                <li>
-                                    <a data-toggle="collapse" data-parent="#accordion1" class="cmenu-parrent collapsed"
-                                        href="#menuchild_roll">Lịch sử vòng quay
-                                        (0)</a>
-                                    <ul id="menuchild_roll" class="children collapse">
-                                    </ul>
-                                </li>
-                                <li><a href="#" class="">Rút quà mở rương (0)</a></li>
-                                <li><a href="#" class="">Tài khoản ngân hàng</a></li>
-                                <li><a href="#" class="">Rút tiền ra ATM - Ví</a></li> *@ --}}
-
-
                             </ul>
                         </div>
                     </div>
@@ -52,11 +34,9 @@
                                 <li><a href="">Nạp thẻ tự động</a></li>
 
                                 <li><a href="">Lịch sử nạp thẻ</a></li>
-                                {{!-- @* <li><a href="#" class="">Nạp Ví / ATM tự động</a></li> *@ --}}
 
                                 <li><a href="/user/tai-khoan-da-mua" class="active">Tài khoản đã mua</a>
                                 </li>
-                                {{!-- @* <li><a href="#" class="">Tà/ --}}
 
                             </ul>
                         </div>
@@ -252,7 +232,7 @@
                             </td>
                             <td>{{vndCurrency this.price}}</td>
                             <td>
-                                <a href="/user/gui-lai-tai-khoan?game={{#with this.game}}{{this.id}}{{/with}}&id={{this.product_id}}"
+                                <a href="/user/gui-lai-tai-khoan?game={{this.game.id}}&prid={{this.product_id}}&puid={{@root.puchased_id}}"
                                     class="btn btn-info text-info">
                                     Gửi lại tài khoản</a>
                             </td>

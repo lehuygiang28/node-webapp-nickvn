@@ -37,4 +37,8 @@ function getClientMongoStore() {
     });
 }
 
-module.exports = { connect, getClientMongoStore };
+async function createConnection() {
+    return await mongoose.createConnection(process.env.MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true }).asPromise();
+}
+
+module.exports = { connect, getClientMongoStore, createConnection };

@@ -4,7 +4,8 @@ const { sendMessage } = require('../../util/flash-message');
 const { logger } = require('../../util/logger');
 const { createHash, compare } = require('../../util/bcrypt');
 const UserPuchased = require('../models/UserPuchased');
-const LienMinh = require('../models/LienMinh');
+const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer');
+
 // const bcrypt = require('bcrypt');
 
 
@@ -87,7 +88,7 @@ class UserController {
          * If found user_puchased but not found any puchased return without any data
          * Otherwise return an array of user_puchased.product_puchased
          */
-        UserPuchased.findOne({ user_id: _req.session.User._id }).populate({path: 'product_puchased.product'})
+        UserPuchased.findOne({ user_id: _req.session.User._id }).populate({ path: 'product_puchased.product' })
             .then(userPuchased => {
                 if (!userPuchased) {
                     logger.debug('1 in');
@@ -101,8 +102,9 @@ class UserController {
                     // console.log(mutipleMongooseToObject(userPuchased.product_puchased.product));
 
                     // res.json(mutipleMongooseToObject(userPuchased.product_puchased));
-                    
+
                     return res.render('user/tai-khoan-da-mua', {
+                        puchased_id: userPuchased._id,
                         product_puchased: mutipleMongooseToObject(userPuchased.product_puchased),
                     })
                 }
@@ -111,7 +113,48 @@ class UserController {
         // res.render('user/tai-khoan-da-mua');
     }
 
+    // GET /user/gui-lai-tai-khoan
+    resendAccount(_req, res, next) {
+        if (!_req.session.User) {
+            return res.redirect('/dang-nhap');
+        }
+
+        UserPuchased.findOne({ _id: _req.query.puid }).populate('product_puchased.product')
+            .then(puchased => {
+                if (!puchased) {
+                    sendMessage(_req, res, next, { error: true, message: 'Không tìm thấy tài khoản' });
+                    return res.redirect('/user/tai-khoan-da-mua');
+                }
+                let foundProduct = null;
+                puchased.product_puchased.forEach(productPuchased => {
+                    return foundProduct = productPuchased.product.find(prod => prod.product_id === Number(_req.query.prid));
+                });
+
+                User.findById(puchased.user_id).select('email')
+                    .then(userEmail => {
+                        if (!userEmail) {
+                            return res.redirect('/dang-nhap');
+                        }
+                        // Send email to user
+                        sendMailCallback(userEmail, {
+                            subject: 'Thông tin tài khoản đã mua tại giang.cf',
+                            title: `Bạn đang yêu cầu gửi lại thông tin tài khoản #${foundProduct.product_id} trên website`,
+                            context: `Tài khoản: ${foundProduct.userName}<br>Mật khẩu: ${foundProduct.password}`
+                        }, () => {
+                            logger.info(`Mail sent successful to: ${userEmail}`);
+                        });
+                    })
+                    .then(() => {
+                        sendMessage(_req, res, next, { success: true, message: 'Thông tin tài khoản đã được gửi về email của bạn!' });
+                        return res.redirect('/user/tai-khoan-da-mua');
+                    })
+                    .catch(next);
+            })
+            .catch(next);
+        // res.json(_req.query)
+    }
 }
+
 
 // export default new UserController;
 module.exports = new UserController;

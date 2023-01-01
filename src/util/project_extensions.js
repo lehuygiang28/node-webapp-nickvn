@@ -101,7 +101,7 @@ function resetProductAndUserPuchased(next) {
                 productItem.status_id = 1005;
                 productItem.status_name = 'Chưa bán';
                 productItem.save();
-                logger.info('Reset product');
+                logger.info('Reset product successfully');
             });
             UserPuchased.find({})
                 .then(userPuchased => {
@@ -116,7 +116,7 @@ function resetProductAndUserPuchased(next) {
                         }
                         userPuchasedItem.product_puchased = []
                         userPuchasedItem.save();
-                        logger.info('Reset puchased');
+                        logger.info('Reset puchased successfully');
                     });
                 })
                 .catch(next);
