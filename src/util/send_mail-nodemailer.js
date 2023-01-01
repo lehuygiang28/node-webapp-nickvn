@@ -1,4 +1,3 @@
-const console = require('console');
 const nodemailer = require('nodemailer');
 const util = require('util');
 const { emailTemplate } = require('./email-template');
@@ -24,20 +23,8 @@ async function sendMail(to, inputContent) {
             pass: process.env.EMAIL_APP_PASSWORD
         }
     });
-    // var content = '';
-    // content += `
-    //     <div style="padding: 10px; background-color: #003375">
-    //         <div style="padding: 10px; background-color: white;">
-    //             <h4 style="color: #0085ff">${inputContent.title}</h4>
-    //             <span style="color: black">
-    //                 ${inputContent.context}
-    //             </span>
-    //         </div>
-    //     </div>
-    // `;
 
     let mailTemplateHtml = emailTemplate(inputContent);
-    console.log(mailTemplateHtml);
 
     client.sendMail({
         from: "Sender",
@@ -64,7 +51,6 @@ async function sendMail(to, inputContent) {
         }]
     });
     console.log(`Mail sent successful to: ${to}`);
-    console.log(inputContent);
 }
 
 module.exports = {

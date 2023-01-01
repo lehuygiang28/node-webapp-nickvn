@@ -229,7 +229,7 @@ function emailTemplate(inputContent) {
           <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
             
       <div style="line-height: 100%; text-align: left; word-wrap: break-word;">
-        <p style="font-size: 14px; line-height: 100%;"><span style="font-size: 10px; line-height: 10px;">Bạn nhận được email này vi bạn đã thực hiện mua sản phẩm trên website giang.cf, xin cảm ơn !!</span></p>
+        <p style="font-size: 14px; line-height: 100%;"><span style="font-size: 10px; line-height: 10px;">Bạn nhận được email này vi bạn đã thực hiện mua sản phẩm trên website <a href='https://giang.cf' target='_blank'>giang.cf</a>, xin cảm ơn !!</span></p>
       </div>
     
           </td>
