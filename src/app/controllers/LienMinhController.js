@@ -7,7 +7,6 @@ const { sendMessage } = require('../../util/flash-message');
 const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer');
 const { logger } = require('../../util/logger');
 const { resetProductAndUserPuchased, generateLienMinh } = require('../../util/project_extensions');
-const db = require('../../config/db');
 const mongoose = require('mongoose');
 
 class LienMinhController {
@@ -15,7 +14,7 @@ class LienMinhController {
     // GET /lien-minh
     showLienMinhCategory(_req, res, next) {
         // generateLienMinh(3, next);
-        // resetProductAndUserPuchased()
+        // resetProductAndUserPuchased();
         logger.bold().info('TEST Logger');
 
         // Get all the categories with keywords 'lien-minh'
@@ -24,8 +23,6 @@ class LienMinhController {
                 category: mongooseToObject(category)
             }))
             .catch(next);
-
-        // resetProductAndUserPuchased(next);
     }
 
     // GET /lien-minh/acc-lien-minh
