@@ -250,7 +250,6 @@
                                 </div>
                             </div> --}}
 
-
                             {{!-- <div class="col-md-3 col-sm-4 col-xs-12 p-5 field-search">
                                 <div class="input-group c-square">
                                     <span class="input-group-addon">Trạng Thái</span>
@@ -264,6 +263,7 @@
                                     </select>
                                 </div>
                             </div> --}}
+
                             <div class="col-md-3 col-sm-4 p-5 no-radius">
                                 <button type="submit" class="btn c-square c-theme c-btn-green"
                                     style="margin-right: 15px;margin-top: 15px">Tìm kiếm</button>
@@ -361,6 +361,7 @@
             {{!-- <div class="col-sm-12" style="text-align: center;margin: 15px 0;">
                 <h3 style="color: red;">Không có dữ liệu</h3>
             </div> --}}
+            {{#if lienminhs}}
             {{#each lienminhs}}
 
             <div class="col-sm-6 col-md-3">
@@ -412,13 +413,33 @@
                     </div>
                 </div>
             </div>
-            {{/each}}
 
-            {{!-- <div class="col-sm-12" style="text-align: center;margin: 15px 0;">
+            {{/each}}
+            {{else}}
+            <div class="col-sm-12" style="text-align: center;margin: 15px 0;">
                 <h3 style="color: red;">Không có dữ liệu</h3>
-            </div> --}}
+            </div>
+            {{/if}}
+
         </div>
 
+        {{!-- Pagination section: START --}}
+        <nav aria-label="Page navigation" class="text-right">
+            <ul class="pagination">
+
+                {{#paginate pagination type="previous"}}
+                <li {{#if disabled}}class="disabled" {{/if}}><a href="?page={{n}}">&lsaquo;</a></li>
+                {{/paginate}}
+                {{#paginate pagination type="middle" limit="7"}}
+                <li {{#if active}}class="active" {{/if}}><a href="?page={{n}}">{{n}}</a></li>
+                {{/paginate}}
+                {{#paginate pagination type="next"}}
+                <li {{#if disabled}}class="disabled" {{/if}}><a href="?page={{n}}">&rsaquo;</a></li>
+                {{/paginate}}
+
+            </ul>
+        </nav>
+        {{!-- Pagination section: END --}}
 
         <div class="tab-vertical tutorial_area">
             <div class="panel-group" id="accordion">
@@ -476,31 +497,18 @@
                         <div class="panel-body">
                             <p><strong>Shop bán nick liên minh huyền thoại </strong>với nhiều lựa chọn
                                 phong phú, quý khách có thể tìm kiếm theo:</p>
-
                             <p>- Nick liên minh có; skin hiếm</p>
-
                             <p>- Nick liên minh game random&nbsp;</p>
-
                             <p>- Nick liên minh giá rẻ</p>
-
                             <p>- Acc liên minh&nbsp; rank cao thủ , thách đấu.</p>
-
                             <p>- Tài khoản liên minh có; nhiều tướng</p>
-
                             <p>- Tài khoản lm có; nhiều trang phục</p>
-
                             <p>-&nbsp;Acc liên minh trang phục - skin Siêu Việt</p>
-
                             <p>- Nick liên minh bản thử nghiệm</p>
-
                             <p>- Acc liên minh full tướng full skin&nbsp;</p>
-
                             <p>- Acc liên minh 9k</p>
-
                             <p>- Nick liên minh full ngọc</p>
-
                             <p>- Nick liên minh giá rẻ 20k</p>
-
                             <p>- Acc liên minh ngọc 90</p>
                         </div>
                     </div>
@@ -510,6 +518,7 @@
 
 
     </div>
+
     <div class="modal fade" id="LoadModal" role="dialog" style="display: none;" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="loader" style="text-align: center"><img src="/assets/frontend/images/loader.gif"

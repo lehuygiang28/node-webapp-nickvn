@@ -7,13 +7,14 @@ const { sendMessage } = require('../../util/flash-message');
 const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer');
 const { logger } = require('../../util/logger');
 const { resetProductAndUserPuchased, generateLienMinh } = require('../../util/project_extensions');
+const { chiaLayPhanNguyen, chiaLayPhanDu } = require('../../util/caculator');
 const mongoose = require('mongoose');
 
 class LienMinhController {
 
     // GET /lien-minh
     showLienMinhCategory(_req, res, next) {
-        // generateLienMinh(3, next);
+        // generateLienMinh(30, next);
         // resetProductAndUserPuchased();
         // logger.bold().info('TEST Logger');
 
@@ -26,29 +27,64 @@ class LienMinhController {
     }
 
     // GET /lien-minh/acc-lien-minh
-    showAccLienMinh(_req, res, next) {
-        // generateLienMinh(4, next);
-        let lienMinhQuery = LienMinh.find({ status_id: 1005 });
-        logger.info(res.locals._sort);
+    // GET /lien-minh/acc-lien-minh?_paginate&page=:page
+    async showAccLienMinh(_req, res, next) {
+        let filter = { status_id: 1005 };
+        let optionsQuery = {};
+        let pagination = {};
+        let lienMinhQuery;
 
-        // if (_req._sort.hasOwnProperty('_sort')) {
+        // logger.info(res.locals._pagination);
+
+        // if (_req.query.hasOwnProperty('_sort')) {
         //     lienMinhQuery = lienMinhQuery.sort({
         //     });
+        // }
 
+        // logger.debug(_req.query);
+
+        let page = res.locals._pagination.page; // page to get
+        let perPage = res.locals._pagination.per_page; // page size
+        let skip = (res.locals._pagination.per_page * res.locals._pagination.page) - res.locals._pagination.per_page;
+        let totalPages;
+        let totalDocuments;
+
+        await LienMinh.countDocuments(filter).then(result => {
+                console.log(result);
+                totalDocuments = result;
+                totalPages = chiaLayPhanNguyen(totalDocuments, perPage) + (chiaLayPhanDu(totalDocuments, perPage) > 0 ? 1 : 0);
+
+                if (page > totalPages) {
+                    page = totalPages;
+                    return res.redirect(`/lien-minh/acc-lien-minh?page=${page}`);
+                }
+
+                logger.debug(`Page: ${page} - Per Page: ${perPage} - Skip: ${skip} - Total page: ${totalPages} - Total Docs: ${totalDocuments}`);
+
+                Object.assign(optionsQuery, {
+                    skip: skip,
+                    limit: perPage,
+                });
+
+                Object.assign(pagination, {
+                    page: page,
+                    pageCount: totalPages,
+                });
+                // logger.info(optionsQuery);
+            })
+            .catch((err) => {
+                logger.error(err);
+                next();
+            });
         // }
 
         // Get all accounts lien-minh in the database
+        lienMinhQuery = LienMinh.find(filter, {}, optionsQuery);
         lienMinhQuery
             .then(lienminhs => {
-
-                // const a = lienminhs.forEach((item) => {
-                //     if (item.product_id == 564){
-                //         console.log(item);
-                //     }
-                // })
-
-                res.render('lien-minh/acc-lien-minh', {
-                    lienminhs: mutipleMongooseToObject(lienminhs)
+                res.render(`lien-minh/acc-lien-minh`, {
+                    lienminhs: mutipleMongooseToObject(lienminhs),
+                    pagination: pagination
                 });
             })
             .catch(next);

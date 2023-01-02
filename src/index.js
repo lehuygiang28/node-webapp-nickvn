@@ -10,6 +10,7 @@ const { sortMiddleware } = require('./app/middlewares/sortMiddleware');
 const { renewUserSessionMiddleware } = require('./app/middlewares/renewUserSessionMiddleware');
 const { customSessionFlashMiddleware } = require('./app/middlewares/customSessionFlashMiddleware');
 const { getSessionToViewsMiddleware } = require('./app/middlewares/getSessionToViewsMiddleware');
+const { paginationMiddleware } = require('./app/middlewares/paginationMiddleware');
 
 
 const app = express();
@@ -63,6 +64,8 @@ app.use(customSessionFlashMiddleware);
 app.use(sortMiddleware);
 // Renew User Session
 app.use(renewUserSessionMiddleware);
+// Pagination middleware
+app.use(paginationMiddleware);
 // --- CUSTOM MIDDLEWARES END ---
 
 // Template engine

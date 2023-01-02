@@ -6,6 +6,7 @@ module.exports = {
         // return value.toLocaleString('vi-VN', {currency: 'VND', style: 'currency'});
     },
     dateFormat: require('handlebars-dateformat'),
+    paginate: require('handlebars-paginate'),
     ifCondition: (a, operator, b, options) => {
         switch (operator) {
             case '==':
