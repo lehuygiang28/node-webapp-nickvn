@@ -22,7 +22,7 @@ function renewUserSessionMiddleware(_req, res, next) {
                     _req.session.User.destroy();
                     return next();
                 } else {
-                    logger.info(`Get session completed userName: ${_req.session.User.userName}`);
+                    // logger.info(`Get session completed userName: ${_req.session.User.userName}`);
                     Object.assign(_req.session.User, {
                         _id: user._id,
                         userName: user.userName,

@@ -50,7 +50,7 @@ function paginationMiddleware(_req, res, next) {
         per_page: per_page,
         page: page,
     });
-    console.log(res.locals._pagination);
+    // console.log(res.locals._pagination);
 
 
     next();

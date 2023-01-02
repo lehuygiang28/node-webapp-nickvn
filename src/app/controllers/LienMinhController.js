@@ -34,7 +34,7 @@ class LienMinhController {
         let pagination = { page: 1, pageCount: 1 };
         let lienMinhQuery;
 
-        logger.debug(res.locals._sort);
+        // logger.debug(res.locals._sort);
 
         if (_req.query.hasOwnProperty('_sort')) {
 
@@ -47,7 +47,7 @@ class LienMinhController {
                     logger.error(err);
                     next();
                 }
-                logger.warn(productFound);
+                // logger.warn(productFound);
 
                 if (productFound) {
                     return res.redirect(`/lien-minh/acc-lien-minh/${acc.product_id}`);
@@ -98,7 +98,7 @@ class LienMinhController {
             }
         }
 
-        logger.warn(filter);
+        // logger.warn(filter);
 
         let page = res.locals._pagination.page; // page to get
         let perPage = res.locals._pagination.per_page; // page size
@@ -123,7 +123,7 @@ class LienMinhController {
                 return res.redirect(`/lien-minh/acc-lien-minh?page=${page}`);
             }
 
-            logger.debug(`Page: ${page} - Per Page: ${perPage} - Skip: ${skip} - Total page: ${totalPages} - Total Docs: ${totalDocuments}`);
+            // logger.debug(`Page: ${page} - Per Page: ${perPage} - Skip: ${skip} - Total page: ${totalPages} - Total Docs: ${totalDocuments}`);
 
             Object.assign(optionsQuery, {
                 skip: skip,
@@ -178,7 +178,7 @@ class LienMinhController {
     showChiTietAccLienMinhCategory(_req, res, next) {
 
         // console.log('ID Slug: ' + _req.params.id);
-        logger.info('ID Slug: ' + _req.params.id);
+        // logger.info('ID Slug: ' + _req.params.id);
 
         // Find product by product_id, if exists return product to view, otherwise return error msg
         LienMinh.findOne({ product_id: _req.params.id })
