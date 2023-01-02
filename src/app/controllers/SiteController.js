@@ -10,6 +10,9 @@ class SiteController {
 
     // GET homepage
     async home(_req, res, next) {
+        let a = _req;
+        console.log(a);
+
         Category.find({})
             .then(categories => res.render('sites/home', {
                 categories: mutipleMongooseToObject(categories)

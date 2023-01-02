@@ -11,6 +11,7 @@ const { renewUserSessionMiddleware } = require('./app/middlewares/renewUserSessi
 const { customSessionFlashMiddleware } = require('./app/middlewares/customSessionFlashMiddleware');
 const { getSessionToViewsMiddleware } = require('./app/middlewares/getSessionToViewsMiddleware');
 const { paginationMiddleware } = require('./app/middlewares/paginationMiddleware');
+const { changeLayoutMiddleware } = require('./app/middlewares/changeLayoutMiddleware');
 
 
 const app = express();
@@ -66,6 +67,8 @@ app.use(sortMiddleware);
 app.use(renewUserSessionMiddleware);
 // Pagination middleware
 app.use(paginationMiddleware);
+// Change layout middleware
+app.use(changeLayoutMiddleware);
 // --- CUSTOM MIDDLEWARES END ---
 
 // Template engine
@@ -74,6 +77,7 @@ app.engine(
     handlebars.engine({
         extname: ".hbs",
         helpers: require('./helpers/handlebars'),
+        defaultLayout: 'main',
     })
 );
 
