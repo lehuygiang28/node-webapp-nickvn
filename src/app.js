@@ -18,7 +18,7 @@ const app = express();
 const port = process.env.NODE_PORT || 8081;
 // const port = 8081;
 
-const route = require('./routes');
+const route = require('./routes/index.routes');
 const db = require('./config/db');
 
 // Connect to mongodb
