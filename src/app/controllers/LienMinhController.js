@@ -31,17 +31,74 @@ class LienMinhController {
     async showAccLienMinh(_req, res, next) {
         let filter = { status_id: 1005 };
         let optionsQuery = {};
-        let pagination = {};
+        let pagination = { page: 1, pageCount: 1 };
         let lienMinhQuery;
 
-        // logger.info(res.locals._pagination);
+        logger.debug(res.locals._sort);
 
-        // if (_req.query.hasOwnProperty('_sort')) {
-        //     lienMinhQuery = lienMinhQuery.sort({
-        //     });
-        // }
+        if (_req.query.hasOwnProperty('_sort')) {
 
-        // logger.debug(_req.query);
+            if (_req.query.product_id) {
+
+                let productFound;
+                try {
+                    productFound = await LienMinh.findOne({ product_id: _req.query.product_id });
+                } catch (err) {
+                    logger.error(err);
+                    next();
+                }
+                logger.warn(productFound);
+
+                if (productFound) {
+                    return res.redirect(`/lien-minh/acc-lien-minh/${acc.product_id}`);
+                } else {
+                    sendMessage(_req, res, next, { error: true, message: `Không tìm thấy tài khoản số #${_req.query.product_id}` })
+                    return res.render(`lien-minh/acc-lien-minh`, {
+                        pagination: pagination,
+                    });
+                }
+
+                // await LienMinh.findOne({ product_id: _req.query.product_id })
+                //     .then(acc => {
+                //         if (acc) {
+                //             return res.redirect(`/lien-minh/acc-lien-minh/${acc.product_id}`);
+                //         } else {
+                //             sendMessage(_req, res, next, { error: true, message: `Không tìm thấy tài khoản số #${_req.query.product_id}` })
+                //             return res.render(`lien-minh/acc-lien-minh`, {
+                //                 pagination: pagination
+                //             });
+                //         }
+                //     })
+                //     .catch(next);
+            }
+
+            if (res.locals._sort.search_key) {
+                let search_key = res.locals._sort.search_key.toString();
+                Object.assign(filter, {
+                    $or: [
+                        { rank: { $regex: search_key, $options: 'i' } },
+                        { status_account: { $regex: search_key, $options: 'i' } },
+                        { note: { $regex: search_key, $options: 'i' } },
+                    ]
+                });
+            }
+
+            if (res.locals._sort.min && res.locals._sort.max) {
+                Object.assign(filter, {
+                    price: { $gte: res.locals._sort.min, $lte: res.locals._sort.max },
+                });
+
+            }
+
+            if (res.locals._sort.sort_price) {
+                // optionsQuery.sort = { price: res.locals._sort.sort_price };
+                Object.assign(optionsQuery, {
+                    sort: { price: res.locals._sort.sort_price },
+                });
+            }
+        }
+
+        logger.warn(filter);
 
         let page = res.locals._pagination.page; // page to get
         let perPage = res.locals._pagination.per_page; // page size
@@ -49,40 +106,67 @@ class LienMinhController {
         let totalPages;
         let totalDocuments;
 
-        await LienMinh.countDocuments(filter).then(result => {
-                console.log(result);
-                totalDocuments = result;
-                totalPages = chiaLayPhanNguyen(totalDocuments, perPage) + (chiaLayPhanDu(totalDocuments, perPage) > 0 ? 1 : 0);
+        let countDocuments;
+        try {
+            countDocuments = await LienMinh.countDocuments(filter);
+        } catch (error) {
+            logger.error(error);
+            next();
+        }
+        if (countDocuments) {
+            // console.log(`Count docs: ${countDocuments}`);
+            totalDocuments = countDocuments;
+            totalPages = chiaLayPhanNguyen(totalDocuments, perPage) + (chiaLayPhanDu(totalDocuments, perPage) > 0 ? 1 : 0);
 
-                if (page > totalPages) {
-                    page = totalPages;
-                    return res.redirect(`/lien-minh/acc-lien-minh?page=${page}`);
-                }
+            if (page > totalPages) {
+                page = totalPages;
+                return res.redirect(`/lien-minh/acc-lien-minh?page=${page}`);
+            }
 
-                logger.debug(`Page: ${page} - Per Page: ${perPage} - Skip: ${skip} - Total page: ${totalPages} - Total Docs: ${totalDocuments}`);
+            logger.debug(`Page: ${page} - Per Page: ${perPage} - Skip: ${skip} - Total page: ${totalPages} - Total Docs: ${totalDocuments}`);
 
-                Object.assign(optionsQuery, {
-                    skip: skip,
-                    limit: perPage,
-                });
-
-                Object.assign(pagination, {
-                    page: page,
-                    pageCount: totalPages,
-                });
-                // logger.info(optionsQuery);
-            })
-            .catch((err) => {
-                logger.error(err);
-                next();
+            Object.assign(optionsQuery, {
+                skip: skip,
+                limit: perPage,
             });
+
+            Object.assign(pagination, {
+                page: page,
+                pageCount: totalPages,
+            });
+        }
+
+        // await LienMinh.countDocuments(filter).then(result => {
+        //         console.log(result);
+        //         totalDocuments = result;
+        //         totalPages = chiaLayPhanNguyen(totalDocuments, perPage) + (chiaLayPhanDu(totalDocuments, perPage) > 0 ? 1 : 0);
+
+        //         if (page > totalPages) {
+        //             page = totalPages;
+        //             return res.redirect(`/lien-minh/acc-lien-minh?page=${page}`);
+        //         }
+
+        //         logger.debug(`Page: ${page} - Per Page: ${perPage} - Skip: ${skip} - Total page: ${totalPages} - Total Docs: ${totalDocuments}`);
+
+        //         Object.assign(optionsQuery, {
+        //             skip: skip,
+        //             limit: perPage,
+        //         });
+
+        //         Object.assign(pagination, {
+        //             page: page,
+        //             pageCount: totalPages,
+        //         });
+        //         // logger.info(optionsQuery);
+        //     })
+        //     .catch(next);
         // }
 
         // Get all accounts lien-minh in the database
         lienMinhQuery = LienMinh.find(filter, {}, optionsQuery);
-        lienMinhQuery
+        await lienMinhQuery
             .then(lienminhs => {
-                res.render(`lien-minh/acc-lien-minh`, {
+                return res.render(`lien-minh/acc-lien-minh`, {
                     lienminhs: mutipleMongooseToObject(lienminhs),
                     pagination: pagination
                 });

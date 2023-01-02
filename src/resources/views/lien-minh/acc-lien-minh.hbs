@@ -131,13 +131,13 @@
                             <span class="input-group-addon">Giá tiền</span>
                             <select class="form-control c-square" name="price">
                                 <option value="">Chọn giá tiền</option>
-                                <option value="1">Dưới 50K</option>
-                                <option value="2">Từ 50K - 200K</option>
-                                <option value="3">Từ 200K - 500K</option>
-                                <option value="4">Từ 500K - 1 Triệu</option>
-                                <option value="5">Trên 1 Triệu</option>
-                                <option value="6">Trên 5 Triệu</option>
-                                <option value="7">Trên 10 Triệu</option>
+                                <option value=1>Dưới 50K</option>
+                                <option value=2>Từ 50K - 200K</option>
+                                <option value=3>Từ 200K - 500K</option>
+                                <option value=4>Từ 500K - 1 Triệu</option>
+                                <option value=5>Trên 1 Triệu</option>
+                                <option value=6>Trên 5 Triệu</option>
+                                <option value=7>Trên 10 Triệu</option>
                             </select>
                         </div>
                     </div>
@@ -211,13 +211,13 @@
                                     <span class="input-group-addon">Giá tiền</span>
                                     <select style="" class="form-control c-square" name="price">
                                         <option value="">Chọn giá tiền</option>
-                                        <option value="1">Dưới 50K</option>
-                                        <option value="2">Từ 50K - 200K</option>
-                                        <option value="3">Từ 200K - 500K</option>
-                                        <option value="4">Từ 500K - 1 Triệu</option>
-                                        <option value="5">Trên 1 Triệu</option>
-                                        <option value="6">Trên 5 Triệu</option>
-                                        <option value="7">Trên 10 Triệu</option>
+                                        <option value=1>Dưới 50K</option>
+                                        <option value=2>Từ 50K - 200K</option>
+                                        <option value=3>Từ 200K - 500K</option>
+                                        <option value=4>Từ 500K - 1 Triệu</option>
+                                        <option value=5>Trên 1 Triệu</option>
+                                        <option value=6>Trên 5 Triệu</option>
+                                        <option value=7>Trên 10 Triệu</option>
                                     </select>
                                 </div>
                             </div>
@@ -428,13 +428,15 @@
             <ul class="pagination">
 
                 {{#paginate pagination type="previous"}}
-                <li {{#if disabled}}class="disabled" {{/if}}><a href="?page={{n}}">&lsaquo;</a></li>
+                <li {{#if disabled}}class="disabled" {{/if}}><a class="paginate-link" href="?page={{n}}">&lsaquo;</a>
+                </li>
                 {{/paginate}}
                 {{#paginate pagination type="middle" limit="7"}}
-                <li {{#if active}}class="active" {{/if}}><a href="?page={{n}}">{{n}}</a></li>
+                <li {{#if active}}class="active" {{/if}}><a class="paginate-link" href="?page={{n}}">{{n}}</a></li>
                 {{/paginate}}
                 {{#paginate pagination type="next"}}
-                <li {{#if disabled}}class="disabled" {{/if}}><a href="?page={{n}}">&rsaquo;</a></li>
+                <li {{#if disabled}}class="disabled" {{/if}}><a class="paginate-link" href="?page={{n}}">&rsaquo;</a>
+                </li>
                 {{/paginate}}
 
             </ul>
@@ -610,6 +612,21 @@
                     break;
                 }
             }
+        }
+    }
+
+    /***
+    * Import the current href to pagination item to match with search feature
+    */
+    importCurrentHref();
+    function importCurrentHref() {
+        let elements = document.getElementsByClassName('paginate-link');
+        let currentHref = window.location.href;
+        currentHref = currentHref.split("?")[1];
+        let count = elements.length;
+        for (let i = 0; i < count; i++) {
+            let href = `${elements[i].href}&${currentHref}`;
+            elements[i].href = href;
         }
     }
 
