@@ -10,12 +10,20 @@ class SiteController {
 
     // GET homepage
     async home(_req, res, next) {
+        console.log(res.locals.layout);
 
         Category.find({})
             .then(categories => res.render('sites/home', {
                 categories: mutipleMongooseToObject(categories)
             }))
             .catch(next);
+        // Category.find({})
+        //     .then(categories => res.render('sites/home',
+        //         Object.assign(res.locals.layout, {
+        //             categories: mutipleMongooseToObject(categories)
+        //         })
+        //     ))
+        //     .catch(next);
     }
 
     // GET /dang-xuat

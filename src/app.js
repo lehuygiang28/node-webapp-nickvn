@@ -13,22 +13,21 @@ const { getSessionToViewsMiddleware } = require('./app/middlewares/getSessionToV
 const { paginationMiddleware } = require('./app/middlewares/paginationMiddleware');
 const { changeLayoutMiddleware } = require('./app/middlewares/changeLayoutMiddleware');
 
-
 const app = express();
 const port = process.env.NODE_PORT || 8081;
 // const port = 8081;
 
-const route = require('./routes/index.routes');
+const route = require('./routes/index.route');
 const db = require('./config/db');
 
 // Connect to mongodb
 db.connect();
 
 // Use favicon.ico
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.resolve(__dirname, 'public', 'favicon.ico')));
 
 // Use static folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.resolve(__dirname, 'public')));
 
 // Middleware 
 app.use(express.urlencoded({
@@ -58,19 +57,6 @@ app.use(morgan('combined'));
 // Flash express to send msg
 app.use(flash());
 
-// --- CUSTOM MIDDLEWARES ---
-// Custom flash middleware
-app.use(customSessionFlashMiddleware);
-// Sort
-app.use(sortMiddleware);
-// Renew User Session
-app.use(renewUserSessionMiddleware);
-// Pagination middleware
-app.use(paginationMiddleware);
-// Change layout middleware
-app.use(changeLayoutMiddleware);
-// --- CUSTOM MIDDLEWARES END ---
-
 // Template engine
 app.engine(
     "hbs",
@@ -82,7 +68,27 @@ app.engine(
 );
 
 app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'resources', 'views'));
+app.set('views', path.resolve(__dirname, 'resources', 'views'));
+app.set('view layouts', path.resolve(__dirname, 'views', 'layouts'));
+
+
+// --- CUSTOM MIDDLEWARES ---
+// Custom flash middleware
+app.use(customSessionFlashMiddleware);
+
+// Sort
+app.use(sortMiddleware);
+
+// Renew User Session
+app.use(renewUserSessionMiddleware);
+
+// Pagination middleware
+app.use(paginationMiddleware);
+
+// Change layout middleware
+app.use(changeLayoutMiddleware);
+
+// --- CUSTOM MIDDLEWARES END ---
 
 // Routes init
 route(app);
