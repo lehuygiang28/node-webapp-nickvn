@@ -1,6 +1,6 @@
-const siteRouter = require('./site');
-const lienMinhsRouter = require('./lien-minh');
-const userRouter = require('./user');
+const siteRouter = require('./site.route');
+const lienMinhsRouter = require('./lien-minh.route');
+const userRouter = require('./user.route');
 
 function route(app) {
 
