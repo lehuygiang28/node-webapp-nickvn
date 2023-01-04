@@ -4,7 +4,7 @@ const handlebars = require('express-handlebars');
 const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('express-flash');
-require('dotenv').config({ path: path.resolve(__dirname, './config/env/.env') });
+require('dotenv').config({ path: path.resolve(__dirname, `./config/env/${process.env.NODE_ENV}.env`) });
 const favicon = require('serve-favicon');
 const { sortMiddleware } = require('./app/middlewares/sortMiddleware');
 const { renewUserSessionMiddleware } = require('./app/middlewares/renewUserSessionMiddleware');
@@ -15,7 +15,6 @@ const { changeLayoutMiddleware } = require('./app/middlewares/changeLayoutMiddle
 
 const app = express();
 const port = process.env.NODE_PORT || 8081;
-// const port = 8081;
 
 const route = require('./routes/index.route');
 const db = require('./config/db');

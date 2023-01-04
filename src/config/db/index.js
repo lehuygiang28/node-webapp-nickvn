@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
 const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../env/.env') });
 
 
 /***
