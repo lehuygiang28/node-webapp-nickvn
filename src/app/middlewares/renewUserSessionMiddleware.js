@@ -11,7 +11,7 @@ const { logger } = require('../../util/logger');
  */
 function renewUserSessionMiddleware(_req, res, next) {
     if (!_req.session.User) {
-        logger.info('Session not created!');
+        logger.info('User session not set!');
     } else {
         // console.log(_req.session);
         User.findById(_req.session.User._id)
