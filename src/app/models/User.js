@@ -10,12 +10,9 @@ const UserSchema = new Schema({
     fullName: { type: String, maxLength: 255 },
     money: { type: Number, default: 0 },
     role: {
-        type: Object,
-        default: {
-            role_id: 3,
-            role_name_vi: 'Thành viên',
-            role_name_en: 'Member'
-        }
+        role_id: {type: Number, default: 1},
+        role_name_vi: {type: String, default: 'Thành Viên'},
+        role_name_en: {type: String, default: 'Member'}
     },
     status: { type: String, default: 'active' },
     avatar: String,

@@ -31,10 +31,9 @@ class SiteController {
     signout(_req, res, next) {
         try {
             if (_req.session.User) {
-                _req.session.destroy(() => {
-                    console.log('Destroy session completed');
-                    return res.redirect('/?sout=' + 'true');
-                });
+                _req.session.User = null;
+                console.log('Remove `user` session completed');
+                return res.redirect('/?sout=' + 'true');
             } else {
                 return res.redirect('/?sout=' + 'false');
             }

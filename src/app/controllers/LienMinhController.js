@@ -9,6 +9,8 @@ const { logger } = require('../../util/logger');
 const { resetProductAndUserPuchased, generateLienMinh } = require('../../util/project_extensions');
 const { chiaLayPhanNguyen, chiaLayPhanDu } = require('../../util/caculator');
 const mongoose = require('mongoose');
+const { response } = require('express');
+const assert = require('assert');
 
 class LienMinhController {
 
@@ -193,7 +195,7 @@ class LienMinhController {
     }
 
     // Get lien-minh/acc-lien-minh/:id/buy
-    buyNowSolvers(_req, res, next) {
+    async buyNowSolvers(_req, res, next) {
         // console.log('ID Slug: ' + _req.params.id);
         // logger.info('ID Slug Buy: ' + _req.params.id);
 
@@ -203,133 +205,82 @@ class LienMinhController {
             return res.redirect('/lien-minh/acc-lien-minh');
         }
 
-        // Find the product by id
-        LienMinh.findOne({ product_id: _req.params.id })
-            .then(account => {
-                // Unblock scoped of object product(account)
-                let acc = account;
+        try {
+            let lienMinhFound;
+            let userFound;
+            let puchasedFound;
 
-                // Check product is existing
-                if (!acc) {
-                    // Send the error message to views
-                    sendMessage(_req, res, next, { error: true, message: 'Không tìm thấy tài khoản' });
-                    return res.redirect('/lien-minh/acc-lien-minh');
-                }
-                if (acc.status_id != 1005) {
-                    sendMessage(_req, res, next, { error: true, message: 'Tài khoản đã được bán' });
-                    return res.redirect('/lien-minh/acc-lien-minh');
-                }
-
-                User.findById(_req.session.User._id)
-                    .then(userFound => {
-                        // Unblock scoped of object user
-                        let user = userFound;
-
-                        // Check user is existing
-                        if (!user) {
-                            // Send the error message to views
-                            sendMessage(_req, res, next, { error: true, message: 'Bạn phải đăng nhập trước khi mua' });
-                            return res.redirect('/lien-minh/acc-lien-minh/');
-                        }
-                        // console.log(`User ID: ${user._id}`);
-                        // logger.info(`User ID: ${user._id}`);
-
-                        // Find the cart by id
-                        UserPuchased.findOneAndUpdate({ user_id: user._id })
-                            .then(async userPuchasedFound => {
-                                // Unblock scoped of object userPuchased
-                                let userPuchased = userPuchasedFound;
-
-                                // If cart is not existing, create the new one
-                                if (!userPuchased) {
-                                    // Define the new cart
-                                    userPuchased = new UserPuchased({
-                                        user_id: user._id,
-                                        product_puchased: [{
-                                            product: acc,
-                                            created_at: Date.now()
-                                        }, ]
-                                    });
-
-                                } else {
-                                    // If cart is existing, update the cart
-                                    userPuchased.product_puchased.push({
-                                        product: acc,
-                                        created_at: Date.now()
-                                    });
-                                }
-
-                                // Change status of product
-                                acc.status_id = 1006;
-                                acc.status_name = "Đã bán";
-                                // Subtraction money of user when buy product
-                                user.money -= acc.price;
-                                user.updatedAt = Date.now();
-
-                                // Update the buy request(update user, acc, puchased)
-                                let isUpdateSuccess = updateAll(user, acc, userPuchased);
-
-                                if (isUpdateSuccess) {
-                                    // Send email to user
-                                    sendMailCallback(user.email, {
-                                        subject: 'Thông tin tài khoản đã mua tại giang.cf',
-                                        title: `Thông tin tài khoản đã mua #${acc.product_id}`,
-                                        // context: `Tài khoản: ${acc.userName}<br>Mật khẩu: ${acc.password}`,
-                                        heading: `Xin chào, bạn đã mua thành công tài khoản ${acc.game.name} mã số ${acc.product_id}!`,
-                                        userName: acc.userName.toString(),
-                                        password: acc.password.toString(),
-                                    }, () => {
-                                        logger.info(`Mail sent successful to: ${user.email}`);
-                                    });
-                                    sendMessage(_req, res, next, { success: true, message: 'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn.' });
-                                    return res.redirect('/lien-minh/acc-lien-minh');
-                                } else {
-                                    throw new Error();
-                                }
-
-                                /***
-                                 * Function to update the [user, product, product_puchased] when buy product
-                                 * 
-                                 * @param {Object} user Object of user
-                                 * @param {Object} acc Object of product
-                                 * @param {Object} puchased Object of product_puchased
-                                 * @returns {boolean} Return true if update is succesfully, otherwise return false
-                                 */
-                                async function updateAll(user, acc, puchased) {
-                                    const session = await mongoose.startSession();
-                                    session.startTransaction();
-                                    try {
-                                        await user.save();
-                                        await acc.save();
-                                        await puchased.save()
-                                        await session.commitTransaction();
-                                        return true;
-                                    } catch (err) {
-                                        logger.error(`Error when saving buy: ${err}`);
-                                        await session.abortTransaction();
-                                        return false;
-                                    } finally {
-                                        session.endSession();
-                                    }
-                                }
-
-                            })
-                            .catch((err) => {
-                                logger.error(err);
-                                logger.error(err.message);
-
-                                sendMessage(_req, res, next, { error: true, message: "Có lỗi xảy ra khi mua hàng" });
-                                return res.redirect('/lien-minh/acc-lien-minh');
-                            });
-                    })
-                    .catch(next);
-
+            // Find the product by product id
+            lienMinhFound = await LienMinh.findOne({ product_id: _req.params.id });
+            // If not exists or product is SOLD
+            if (!lienMinhFound || lienMinhFound.status_id === 1006) {
                 // Send the error message to views
-                // sendMessage(_req, res, next, { success: true, message: 'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn.' });
-                // // renewUserSession(_req, next);
-                // res.redirect('/lien-minh/acc-lien-minh');
-            })
-            .catch(next);
+                sendMessage(_req, res, next, { error: true, message: 'Không tìm thấy tài khoản' });
+                return res.redirect('/lien-minh/acc-lien-minh');
+            }
+
+            userFound = await User.findById(_req.session.User._id);
+            if (!userFound) {
+                // Send the error message to views
+                sendMessage(_req, res, next, { error: true, message: 'Bạn phải đăng nhập trước khi mua' });
+                return res.redirect('/lien-minh/acc-lien-minh');
+            }
+
+            let isFoundPuchased;
+            puchasedFound = await UserPuchased.findOne({ user_id: userFound._id })
+            if (!puchasedFound) {
+                isFoundPuchased = false;
+                puchasedFound = new UserPuchased({
+                    user_id: userFound._id,
+                    product_puchased: [{
+                        product: lienMinhFound,
+                        created_at: Date.now(),
+                    }],
+                });
+            } else {
+                isFoundPuchased = true;
+                puchasedFound.product_puchased.push({
+                    product: lienMinhFound,
+                    created_at: Date.now()
+                });
+            }
+
+            Object.assign(userFound, {
+                // Subtraction money of user when buy product
+                money: userFound.money - lienMinhFound.price,
+                updatedAt: Date.now(),
+            });
+            Object.assign(lienMinhFound, {
+                // Change status of product
+                status_id: 1006,
+                status_name: 'Đã bán',
+            });
+
+            await lienMinhFound.save();
+            await userFound.save();
+            await puchasedFound.save();
+
+            // Send email to user
+            sendMailCallback(userFound.email, {
+                subject: 'Thông tin tài khoản đã mua tại giang.cf',
+                title: `Thông tin tài khoản đã mua #${lienMinhFound.product_id}`,
+                // context: `Tài khoản: ${acc.userName}<br>Mật khẩu: ${acc.password}`,
+                heading: `Xin chào, bạn đã mua thành công tài khoản ${lienMinhFound.game.name} mã số ${lienMinhFound.product_id}!`,
+                userName: lienMinhFound.userName.toString(),
+                password: lienMinhFound.password.toString(),
+            }, () => {
+                logger.info(`Mail sent successful to: ${userFound.email}`);
+            });
+            sendMessage(_req, res, next, { success: true, message: 'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn.' });
+            return res.redirect('/lien-minh/acc-lien-minh');
+
+        } catch (error) {
+            console.log(error);
+            logger.error(`Error when saving buy: ${error}`);
+            sendMessage(_req, res, next, { error: true, message: 'Có lỗi xảy ra vui lòng thử lại!' });
+            res.redirect('/lien-minh/acc-lien-minh');
+            next();
+        }
     }
 }
 

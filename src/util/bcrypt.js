@@ -10,8 +10,16 @@ function createHash(data) {
     return bcrypt.hashSync(data, bcrypt.genSaltSync(saltRounds), null)
 }
 
-function compare(a, b, callbackfn){
-    return bcrypt.compare(a, b, callbackfn, saltRounds);
+/***
+ * Compare the data not encrypted with the encrypted data
+ * 
+ * @param data — The data to be encrypted.
+ * @param encrypted — The data to be compared against.
+ * @return — A promise to be either resolved with the comparison result salt or rejected with an Error
+ * 
+ */
+function compare(data, encrypted, callbackfn){
+    return bcrypt.compare(data, encrypted, callbackfn, saltRounds);
 }
 
 module.exports = {

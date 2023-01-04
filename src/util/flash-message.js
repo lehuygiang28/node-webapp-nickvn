@@ -21,7 +21,7 @@ function sendMessage(_req, res, next, message) {
             success: message.success || undefined,
             message: message.message
         };
-        logger.color('magenta').log(`Message buy product: ${message.message}`);
+        logger.color('magenta').log(`sendMessage.message: ${message.message}`);
         return;
     } catch (err) {
         next();

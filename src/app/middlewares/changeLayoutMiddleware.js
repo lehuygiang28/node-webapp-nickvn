@@ -11,7 +11,6 @@
 function changeLayoutMiddleware(_req, res, next) {
 
     if (_req.originalUrl.length > 1 && _req.originalUrl) {
-        let layout = { layout: 'main' };
         let stringPath = _req.originalUrl.toString();
         let controller = stringPath.split('/')[1];
 
@@ -20,16 +19,11 @@ function changeLayoutMiddleware(_req, res, next) {
 
         switch (controller) {
             case 'admin':
-                layout.layout = 'admin';
+                res.locals.layout = {layout: 'admin'};
                 break;
             default:
-                layout.layout = 'main';
-                // layout = { layout: 'main' }
                 break;
         }
-        // Object.assign(res.locals.layout = {}, layout);
-        res.locals.layout = layout;
-        // console.log(res.locals.layout);
     }
     
     next();

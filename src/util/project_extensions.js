@@ -96,30 +96,33 @@ function resetProductAndUserPuchased(next) {
             if (!product) {
                 logger.info('Not found product');
                 return;
-            }
+            } 
             product.forEach(productItem => {
                 productItem.status_id = 1005;
                 productItem.status_name = 'Chưa bán';
                 productItem.save();
-                logger.info('Reset product successfully');
             });
-            UserPuchased.find({})
-                .then(userPuchased => {
-                    if (!userPuchased) {
-                        logger.info('Not found puchased');
-                        return;
-                    }
-                    userPuchased.forEach(userPuchasedItem => {
-                        if (userPuchasedItem.product_puchased.length === 0) {
-                            logger.info('Not found puchased');
-                            return;
-                        }
-                        userPuchasedItem.product_puchased = []
-                        userPuchasedItem.save();
-                        logger.info('Reset puchased successfully');
-                    });
-                })
+            logger.info('Reset product successfully');
+            UserPuchased.deleteMany({})
+                .then(() => logger.info('Reset puchased successfully'))
                 .catch(next);
+            // UserPuchased.find({})
+            //     .then(userPuchased => {
+            //         if (!userPuchased) {
+            //             logger.info('Not found puchased');
+            //             return;
+            //         }
+            //         userPuchased.forEach(userPuchasedItem => {
+            //             if (userPuchasedItem.product_puchased.length === 0) {
+            //                 logger.info('Not found puchased');
+            //                 return;
+            //             }
+            //             userPuchasedItem.product_puchased = []
+            //             userPuchasedItem.save();
+            //             logger.info('Reset puchased successfully');
+            //         });
+            //     })
+            //     .catch(next);
             logger.info('Reset Successfull');
         })
         .catch(next);
