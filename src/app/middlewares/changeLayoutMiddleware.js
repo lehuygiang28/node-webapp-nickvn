@@ -1,6 +1,8 @@
 /***
  * Change the layout of handlerbars templates
  * 
+ * Switches layout between default and admin
+ * 
  * If is admin controller @returns admin layout,
  * 
  * Otherwise @returns default layout
