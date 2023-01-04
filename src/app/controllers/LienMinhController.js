@@ -226,10 +226,8 @@ class LienMinhController {
                 return res.redirect('/lien-minh/acc-lien-minh');
             }
 
-            let isFoundPuchased;
             puchasedFound = await UserPuchased.findOne({ user_id: userFound._id })
             if (!puchasedFound) {
-                isFoundPuchased = false;
                 puchasedFound = new UserPuchased({
                     user_id: userFound._id,
                     product_puchased: [{
@@ -238,7 +236,6 @@ class LienMinhController {
                     }],
                 });
             } else {
-                isFoundPuchased = true;
                 puchasedFound.product_puchased.push({
                     product: lienMinhFound,
                     created_at: Date.now()
