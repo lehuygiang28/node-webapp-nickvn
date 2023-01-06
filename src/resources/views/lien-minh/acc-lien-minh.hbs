@@ -614,22 +614,6 @@
             }
         }
     }
-
-    /***
-    * Import the current href to pagination item to match with search feature
-    */
-    importCurrentHref();
-    function importCurrentHref() {
-        let elements = document.getElementsByClassName('paginate-link');
-        let currentHref = window.location.href;
-        currentHref = currentHref.split("?")[1];
-        let count = elements.length;
-        for (let i = 0; i < count; i++) {
-            let href = `${elements[i].href}&${currentHref}`;
-            elements[i].href = href;
-        }
-    }
-
 </script>
 
 <script>
@@ -645,6 +629,6 @@
         });
     });
 </script>
-
+<script src="/assets/frontend/js/searchAndPaginationQueryString.js"></script>
 
 <!-- END: PAGE CONTAINER -->
