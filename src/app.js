@@ -12,6 +12,7 @@ const { customSessionFlashMiddleware } = require('./app/middlewares/customSessio
 const { getSessionToViewsMiddleware } = require('./app/middlewares/getSessionToViewsMiddleware');
 const { paginationMiddleware } = require('./app/middlewares/paginationMiddleware');
 const { changeLayoutMiddleware } = require('./app/middlewares/changeLayoutMiddleware');
+const { formattedDate24h } = require('./util/formatDate');
 
 const app = express();
 const port = process.env.NODE_PORT || 8081;
@@ -51,7 +52,23 @@ app.use(session({
 app.use(getSessionToViewsMiddleware);
 
 // Http logger
-app.use(morgan('combined'));
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'development') {
+    // app.use(morgan('combined'));
+    // morgan(':date[clf] :method :url :status :res[content-length] - :response-time ms');
+    morgan.token('date', (req, res) => {
+        return formattedDate24h();
+    });
+    app.use(morgan(function(tokens, req, res) {
+        return [
+            tokens.date(req, res),
+            tokens.method(req, res),
+            tokens.url(req, res),
+            tokens.status(req, res),
+            tokens.res(req, res, 'content-length'), '-',
+            tokens['response-time'](req, res), 'ms'
+        ].join(' ');
+    }));
+}
 
 // Flash express to send msg
 app.use(flash());
@@ -93,6 +110,7 @@ app.use(changeLayoutMiddleware);
 route(app);
 
 app.listen(port, () => {
-    const nowDate = (new Date()).toLocaleString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
-    console.log('\x1b[32m', `[${nowDate}] Server listening on port ${port}`, '\x1b[0m');
+    console.log('\x1b[32m', `${formattedDate24h()} Server listening on port ${port}`, '\x1b[0m');
 });
+
+module.exports = app;

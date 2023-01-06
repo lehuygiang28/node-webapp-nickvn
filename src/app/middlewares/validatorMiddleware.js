@@ -5,7 +5,6 @@ function validIDnumber(req, res, next) {
     } else {
         res.locals.id = undefined;
     }
-    console.log(res.locals.id);
     next();
 }
 

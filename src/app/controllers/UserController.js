@@ -15,18 +15,21 @@ class UserController {
     // GET /user/thong-tin-tai-khoan
     index(_req, res, next) {
         if (!_req.session.User) {
-            sendMessage(_req, res, next, { error: true, message: 'Bạn chưa đăng nhập' });
-            return res.redirect('/dang-nhap');
+            // sendMessage(_req, res, next, { error: true, message: 'Bạn chưa đăng nhập' });
+            sendMessage(_req, res, next, { error: true, message: 'Not found session' });
+            return res.redirect(303, '/dang-nhap');
         }
 
         User.findOne({ _id: _req.session.User._id })
             .then(user => {
                 if (!user) {
-                    sendMessage(_req, res, next, { error: true, message: 'Bạn chưa đăng nhập' });
-                    return res.redirect('/dang-nhap');
+                    // sendMessage(_req, res, next, { error: true, message: 'Bạn chưa đăng nhập' });
+                    sendMessage(_req, res, next, { error: true, message: 'Not found user' });
+                    return res.redirect(303, '/dang-nhap');
                 }
                 // console.log(user);
                 res.render('user/thong-tin-tai-khoan', { user: mongooseToObject(user) });
+                console.log(_req.session);
             })
             .catch(next);
     }
@@ -35,7 +38,7 @@ class UserController {
     changePassword(_req, res, next) {
         if (!_req.session.User) {
             sendMessage(_req, res, next, { error: true, message: 'Bạn chưa đăng nhập!' });
-            return res.redirect('/dang-nhap');
+            return res.redirect(303, '/dang-nhap');
         }
         res.render('user/doi-mat-khau');
     }
@@ -80,7 +83,7 @@ class UserController {
     // GET /user/tai-khoan-da-mua
     puchased(_req, res, next) {
         if (!_req.session.User) {
-            return res.redirect('/dang-nhap');
+            return res.redirect(303, '/dang-nhap');
         }
 
         /***
@@ -116,14 +119,14 @@ class UserController {
     // GET /user/gui-lai-tai-khoan
     resendAccount(_req, res, next) {
         if (!_req.session.User) {
-            return res.redirect('/dang-nhap');
+            return res.redirect(303, '/dang-nhap');
         }
 
         UserPuchased.findOne({ _id: _req.query.puid }).populate('product_puchased.product')
             .then(puchased => {
                 if (!puchased) {
                     sendMessage(_req, res, next, { error: true, message: 'Không tìm thấy tài khoản' });
-                    return res.redirect('/user/tai-khoan-da-mua');
+                    return res.redirect(303, '/user/tai-khoan-da-mua');
                 }
                 let foundProduct = null;
                 puchased.product_puchased.forEach(productPuchased => {
@@ -133,7 +136,7 @@ class UserController {
                 User.findById(puchased.user_id).select('email')
                     .then(userEmail => {
                         if (!userEmail) {
-                            return res.redirect('/dang-nhap');
+                            return res.redirect(303, '/dang-nhap');
                         }
                         // Send email to user
                         sendMailCallback(userEmail, {
@@ -146,7 +149,7 @@ class UserController {
                     })
                     .then(() => {
                         sendMessage(_req, res, next, { success: true, message: 'Thông tin tài khoản đã được gửi về email của bạn!' });
-                        return res.redirect('/user/tai-khoan-da-mua');
+                        return res.redirect(302, '/user/tai-khoan-da-mua');
                     })
                     .catch(next);
             })

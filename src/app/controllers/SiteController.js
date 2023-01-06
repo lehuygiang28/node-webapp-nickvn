@@ -4,26 +4,22 @@ const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoo
 const { isEmailValid, isNullOrEmpty } = require('../../util/validators');
 const { createHash } = require('../../util/bcrypt');
 const bcrypt = require('bcrypt');
+const { logger } = require('../../util/logger');
 
 
 class SiteController {
 
     // GET homepage
-    async home(_req, res, next) {
-        console.log(res.locals.layout);
+    // GET /
+    home(_req, res, next) {
 
         Category.find({})
-            .then(categories => res.render('sites/home', {
-                categories: mutipleMongooseToObject(categories)
-            }))
+            .then(categories => {
+                res.render('sites/home', {
+                    categories: mutipleMongooseToObject(categories)
+                })
+            })
             .catch(next);
-        // Category.find({})
-        //     .then(categories => res.render('sites/home',
-        //         Object.assign(res.locals.layout, {
-        //             categories: mutipleMongooseToObject(categories)
-        //         })
-        //     ))
-        //     .catch(next);
     }
 
     // GET /dang-xuat
@@ -32,6 +28,7 @@ class SiteController {
         try {
             if (_req.session.User) {
                 _req.session.User = null;
+                _req.session.destroy();
                 console.log('Remove `user` session completed');
                 return res.redirect('/?sout=' + 'true');
             } else {
@@ -39,6 +36,7 @@ class SiteController {
             }
         } catch (error) {
             console.log('Destroy session error: ' + error);
+            res.redirect('/?sout=' + 'false');
             next();
         }
     }
@@ -46,6 +44,9 @@ class SiteController {
     // POST /dang-nhap
     // Xu li dang nhap form
     loginSolvers(_req, res, next) {
+        if (_req.session.User) {
+            return res.redirect(304, '/');
+        }
         // const passwordHash = createHash(_req.body.password);
         // console.log(_req.body.username + _req.body.password + passwordHash);
 
@@ -54,20 +55,17 @@ class SiteController {
             .then(user => {
                 if (!user) {
                     console.log('User not found');
-                    res.status(401);
-                    return res.render('sites/dang-nhap', { error: 'Tài khoản hoặc mật khẩu không chính xác !' });
+                    return res.status(401).render('sites/dang-nhap', { error: 'Tài khoản hoặc mật khẩu không chính xác !' });
                 }
                 // Check password with hash function
                 bcrypt.compare(_req.body.password, user.password, async function(err, result) {
                     if (err) {
                         throw new Error(err);
                     } else if (!result) {
-                        console.log('Dang nhap that bai: ' + result);
-                        res.status(401);
-                        return res.render('sites/dang-nhap', { error: 'Tài khoản hoặc mật khẩu không chính xác !' });
+                        logger.info('Dang nhap that bai: ');
+                        return res.status(401).render('sites/dang-nhap', { error: 'Tài khoản hoặc mật khẩu không chính xác !' });
                     }
-                    console.log('Dang nhap thanh cong: ' + result);
-
+                    logger.info('Dang nhap thanh cong: ');
                     // Set the session value
                     _req.session.User = {
                         _id: user._id,
@@ -80,8 +78,7 @@ class SiteController {
                     user.lastLogin = Date.now();
                     user = await user.save();
 
-                    console.log(_req.session.User);
-                    res.redirect('/');
+                    res.redirect(302, '/');
                 });
             })
             .catch(next);
@@ -89,16 +86,26 @@ class SiteController {
 
     // GET /dang-nhap
     login(_req, res) {
+        if (_req.session.User) {
+            return res.redirect(304, '/');
+        }
         res.render('sites/dang-nhap');
     }
 
     // GET /dang-ky
     signup(_req, res) {
+        if (_req.session.User) {
+            return res.redirect(304, '/');
+        }
         res.render('sites/dang-ky');
     }
 
     // POST /dang-ky
     signupSolvers(_req, res, next) {
+        if (_req.session.User) {
+            return res.redirect(304, '/');
+        }
+
         if (!isNullOrEmpty(_req.body.userName) || !isNullOrEmpty(_req.body.password) ||
             !isNullOrEmpty(_req.body.email) || !isNullOrEmpty(_req.body.password_confirmation) ||
             !isNullOrEmpty(_req.body.phone)) {

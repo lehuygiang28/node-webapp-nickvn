@@ -4,8 +4,12 @@
   "description": "A web application project reimplementation for a certain web.",
   "main": "app.js",
   "scripts": {
+    "start": "cross-env NODE_ENV=production node .\\src\\app.js",
     "dev": "cross-env NODE_ENV=development nodemon --inspect .\\src\\app.js",
-    "start": "cross-env NODE_ENV=production node .\\src\\app.js"
+    "devtest": "cross-env NODE_ENV=test nodemon --inspect .\\src\\app.js",
+    "test": "cross-env NODE_ENV=test mocha --recursive --exit .\\test\\index.test.js",
+    "testb": "cross-env NODE_ENV=test mocha --recursive --exit .\\test\\index.test.js node --trace-deprecation",
+    "testc": "cross-env NODE_ENV=test mocha .\\test\\index.test.js"
   },
   "repository": {
     "type": "git",
@@ -40,8 +44,12 @@
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
+    "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
     "cross-env": "^7.0.3",
+    "mock-session": "^0.0.5",
     "morgan": "^1.10.0",
+    "node-mocks-http": "^1.12.1",
     "nodemon": "^2.0.20"
   }
 }

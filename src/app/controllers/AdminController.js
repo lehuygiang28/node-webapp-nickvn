@@ -3,7 +3,6 @@ const { sendMessage } = require('../../util/flash-message');
 const { compare } = require('../../util/bcrypt');
 const { logger } = require('../../util/logger');
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose');
-const { request } = require('express');
 
 
 class AdminController {
@@ -101,6 +100,7 @@ class AdminController {
         try {
             if (req.session.adminUser) {
                 req.session.adminUser = null;
+                req.session.destroy();
                 logger.info('Removed admin session');
                 return res.redirect('/admin/login');
             } else {

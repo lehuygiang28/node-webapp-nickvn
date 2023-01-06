@@ -8,9 +8,6 @@ const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer'
 const { logger } = require('../../util/logger');
 const { resetProductAndUserPuchased, generateLienMinh } = require('../../util/project_extensions');
 const { chiaLayPhanNguyen, chiaLayPhanDu } = require('../../util/caculator');
-const mongoose = require('mongoose');
-const { response } = require('express');
-const assert = require('assert');
 
 class LienMinhController {
 
@@ -58,19 +55,6 @@ class LienMinhController {
                         pagination: pagination,
                     });
                 }
-
-                // await LienMinh.findOne({ product_id: _req.query.product_id })
-                //     .then(acc => {
-                //         if (acc) {
-                //             return res.redirect(`/lien-minh/acc-lien-minh/${acc.product_id}`);
-                //         } else {
-                //             sendMessage(_req, res, next, { error: true, message: `Không tìm thấy tài khoản số #${_req.query.product_id}` })
-                //             return res.render(`lien-minh/acc-lien-minh`, {
-                //                 pagination: pagination
-                //             });
-                //         }
-                //     })
-                //     .catch(next);
             }
 
             if (res.locals._sort.search_key) {
@@ -137,37 +121,11 @@ class LienMinhController {
             });
         }
 
-        // await LienMinh.countDocuments(filter).then(result => {
-        //         console.log(result);
-        //         totalDocuments = result;
-        //         totalPages = chiaLayPhanNguyen(totalDocuments, perPage) + (chiaLayPhanDu(totalDocuments, perPage) > 0 ? 1 : 0);
-
-        //         if (page > totalPages) {
-        //             page = totalPages;
-        //             return res.redirect(`/lien-minh/acc-lien-minh?page=${page}`);
-        //         }
-
-        //         logger.debug(`Page: ${page} - Per Page: ${perPage} - Skip: ${skip} - Total page: ${totalPages} - Total Docs: ${totalDocuments}`);
-
-        //         Object.assign(optionsQuery, {
-        //             skip: skip,
-        //             limit: perPage,
-        //         });
-
-        //         Object.assign(pagination, {
-        //             page: page,
-        //             pageCount: totalPages,
-        //         });
-        //         // logger.info(optionsQuery);
-        //     })
-        //     .catch(next);
-        // }
-
         // Get all accounts lien-minh in the database
         lienMinhQuery = LienMinh.find(filter, {}, optionsQuery);
         await lienMinhQuery
             .then(lienminhs => {
-                return res.render(`lien-minh/acc-lien-minh`, {
+                return res.render('lien-minh/acc-lien-minh', {
                     lienminhs: mutipleMongooseToObject(lienminhs),
                     pagination: pagination
                 });
@@ -181,28 +139,31 @@ class LienMinhController {
         // console.log('ID Slug: ' + _req.params.id);
         // logger.info('ID Slug: ' + _req.params.id);
 
+        if (!res.locals.id) {
+            return res.redirect(303, '/lien-minh/acc-lien-minh');
+        }
+
         // Find product by product_id, if exists return product to view, otherwise return error msg
-        LienMinh.findOne({ product_id: _req.params.id })
+        LienMinh.findOne({ product_id: res.locals.id, status_id: 1005 })
             .then(acc => {
                 if (!acc) {
-                    return res.render('lien-minh/acc-lien-minh', { err: 'Can not find acc' });
+                    // sendMessage(_req, res, next, { error: true, message: 'Can not find product!' });
+                    return res.redirect(303, '/lien-minh/acc-lien-minh');
+                } else {
+                    return res.render('lien-minh/chi-tiet-acc-lien-minh', {
+                        acc: mongooseToObject(acc)
+                    });
                 }
-                res.render('lien-minh/chi-tiet-acc-lien-minh', {
-                    acc: mongooseToObject(acc)
-                });
             })
             .catch(next);
     }
 
     // Get lien-minh/acc-lien-minh/:id/buy
     async buyNowSolvers(_req, res, next) {
-        // console.log('ID Slug: ' + _req.params.id);
-        // logger.info('ID Slug Buy: ' + _req.params.id);
-
         // Check session if not login, otherwise...
         if (!_req.session.User) {
             sendMessage(_req, res, next, { error: true, message: 'Bạn phải đăng nhập trước khi mua' });
-            return res.redirect('/lien-minh/acc-lien-minh');
+            return res.redirect(303, '/lien-minh/acc-lien-minh');
         }
 
         try {
@@ -216,14 +177,14 @@ class LienMinhController {
             if (!lienMinhFound || lienMinhFound.status_id === 1006) {
                 // Send the error message to views
                 sendMessage(_req, res, next, { error: true, message: 'Không tìm thấy tài khoản' });
-                return res.redirect('/lien-minh/acc-lien-minh');
+                return res.redirect(303, '/lien-minh/acc-lien-minh');
             }
 
             userFound = await User.findById(_req.session.User._id);
             if (!userFound) {
                 // Send the error message to views
                 sendMessage(_req, res, next, { error: true, message: 'Bạn phải đăng nhập trước khi mua' });
-                return res.redirect('/lien-minh/acc-lien-minh');
+                return res.redirect(303, '/lien-minh/acc-lien-minh');
             }
 
             puchasedFound = await UserPuchased.findOne({ user_id: userFound._id })
@@ -269,13 +230,13 @@ class LienMinhController {
                 logger.info(`Mail sent successful to: ${userFound.email}`);
             });
             sendMessage(_req, res, next, { success: true, message: 'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn.' });
-            return res.redirect('/lien-minh/acc-lien-minh');
+            return res.redirect(302, '/lien-minh/acc-lien-minh');
 
         } catch (error) {
             console.log(error);
             logger.error(`Error when saving buy: ${error}`);
             sendMessage(_req, res, next, { error: true, message: 'Có lỗi xảy ra vui lòng thử lại!' });
-            res.redirect('/lien-minh/acc-lien-minh');
+            res.redirect(303, '/lien-minh/acc-lien-minh');
             next();
         }
     }
