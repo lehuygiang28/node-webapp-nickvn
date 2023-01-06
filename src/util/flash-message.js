@@ -10,12 +10,11 @@ const { logger } = require('./logger');
  * 
  */
 function sendMessage(_req, res, next, message) {
-    if (!message) {
-        res.status(400).send('Message is required');
-        return;
-    }
-
     try {
+        if (!message) {
+            return;
+        }
+
         _req.session.sessionFlash = {
             error: message.error || undefined,
             success: message.success || undefined,
