@@ -32,12 +32,14 @@ async function connect() {
  */
 function getClientMongoStore() {
     return MongoStore.create({
-        client: mongoose.connection.getClient(),
+        // clientPromise,
+        mongoUrl: process.env.MONGOURL,
+        ttl: 60 * 60 * 24 * 3, // 3 days
     });
 }
 
-async function createConnection() {
-    return await mongoose.createConnection(process.env.MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true }).asPromise();
+function createConnection() {
+    return mongoose.createConnection(process.env.MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true });
 }
 
 module.exports = { connect, getClientMongoStore, createConnection };

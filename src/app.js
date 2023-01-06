@@ -19,6 +19,7 @@ const port = process.env.NODE_PORT || 8081;
 
 const route = require('./routes/index.route');
 const db = require('./config/db');
+const { default: mongoose } = require('mongoose');
 
 // Connect to mongodb
 db.connect();
@@ -109,8 +110,8 @@ app.use(changeLayoutMiddleware);
 // Routes init
 route(app);
 
-app.listen(port, () => {
-    console.log('\x1b[32m', `${formattedDate24h()} Server listening on port ${port}`, '\x1b[0m');
-});
+// app.listen(port, () => {
+//     console.log('\x1b[32m', `${formattedDate24h()} Server listening on port ${port}`, '\x1b[0m');
+// });
 
 module.exports = app;
