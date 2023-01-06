@@ -21,7 +21,10 @@ function sendMessage(_req, res, next, message) {
             success: message.success || undefined,
             message: message.message
         };
-        logger.color('magenta').log(`sendMessage.message: ${message.message}`);
+
+        if (process.env.NODE_ENV !== 'test')
+            logger.color('magenta').log(`sendMessage.message: ${message.message}`);
+
         return;
     } catch (err) {
         next();
