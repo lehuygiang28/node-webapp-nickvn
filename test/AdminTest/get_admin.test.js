@@ -54,7 +54,7 @@ describe('Admin GET without authen', () => {
 describe('Admin GET with authen', () => {
     let agent = chai.request(server);
 
-    it('should redirect to `/admin/login` (302) GET /admin', async () => {
+    it('should redirect to `/admin/dashboard` (302) GET /admin', async () => {
         await agent
             .post('/admin/login')
             .send({

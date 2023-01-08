@@ -146,7 +146,11 @@ class SiteController {
                     password: createHash(_req.body.password),
                     fullName: _req.body.userName + _req.body.phone,
                     money: 0,
-                    role: 'member',
+                    role: {
+                        role_id: 3,
+                        role_name_vi: 'Thành Viên',
+                        role_name_en: 'Member',
+                    },
                     status: 'active',
                     avatar: 'arr',
                     note: 'note',
