@@ -9,6 +9,7 @@
     width: 100%;
     height: auto;
     transition: 0.5s ease;
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
 
@@ -19,8 +20,8 @@
     position: absolute;
     top: 90%;
     left: 90%;
-    transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     text-align: center;
 }
 

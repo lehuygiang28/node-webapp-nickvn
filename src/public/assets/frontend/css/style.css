@@ -243,8 +243,8 @@ select.form-control {
 
 /*game-detail*/
 
-.content_post {
-}
+/* .content_post {
+} */
 .content_post img {
     display: block;
     margin: 15px auto;
@@ -344,6 +344,7 @@ select.form-control {
         margin: auto;
         overflow-x: auto;
         display: block;
+        width: -moz-fit-content;
         width: fit-content;
         max-width: 100%;
     }
@@ -402,8 +403,8 @@ select.form-control {
 
 /*inbox */
 
-.chat {
-}
+/* .chat {
+} */
 .chat ol,
 .chat ul {
     list-style: none;
@@ -590,8 +591,8 @@ select.form-control {
     display: block;
     padding: 3px;
 }
-.article-content {
-}
+/* .article-content {
+} */
 .article-content iframe {
     width: 560px;
     min-height: 315px;
