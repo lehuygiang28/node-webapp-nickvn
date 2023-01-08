@@ -14,5 +14,6 @@
 
 ## Description
 * **Name Project: _Shop Acc Game_**
+* **Test Documents: _[README.test.md](./test/README.test.md)_**
 * Contributor:
   * **_[Lê Huy Giang](https://github.com/lehuygiang28)_**
