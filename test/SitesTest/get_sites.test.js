@@ -6,8 +6,7 @@ const should = require('chai').should();
 chai.use(chaiHttp);
 
 // GET / without authentication login
-describe('Sites GET request', function() {
-
+describe('Sites GET request', function () {
     it('should return a home page (200) GET /', (done) => {
         chai.request(server)
             .get('/')
@@ -18,7 +17,7 @@ describe('Sites GET request', function() {
             });
     });
 
-    it('should return a login page (200) GET /dang-nhap', done => {
+    it('should return a login page (200) GET /dang-nhap', (done) => {
         chai.request(server)
             .get('/dang-nhap')
             .end((err, res) => {
@@ -28,7 +27,7 @@ describe('Sites GET request', function() {
             });
     });
 
-    it('should return a signup page (200) GET /dang-ky', done => {
+    it('should return a signup page (200) GET /dang-ky', (done) => {
         chai.request(server)
             .get('/dang-ky')
             .end((err, res) => {
@@ -38,7 +37,7 @@ describe('Sites GET request', function() {
             });
     });
 
-    it('should redirect / (home page) (302) GET /dang-xuat', done => {
+    it('should redirect / (home page) (302) GET /dang-xuat', (done) => {
         chai.request(server)
             .get('/dang-xuat')
             .redirects(0)
@@ -49,7 +48,7 @@ describe('Sites GET request', function() {
             });
     });
 
-    it('should redirect / (home page) (404) GET /this-not-exists-in-server', done => {
+    it('should redirect / (home page) (404) GET /this-not-exists-in-server', (done) => {
         chai.request(server)
             .get('/this-not-exists-in-server')
             .redirects(0)
@@ -58,7 +57,5 @@ describe('Sites GET request', function() {
                 res.text.toLowerCase().should.include('error 404');
                 done();
             });
-
     });
-
 });

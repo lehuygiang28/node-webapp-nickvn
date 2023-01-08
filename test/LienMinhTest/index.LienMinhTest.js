@@ -1,1 +1,1 @@
-require('./get_lien-minh.test')
+require('./get_lien-minh.test');

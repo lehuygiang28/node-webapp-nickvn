@@ -8,4 +8,4 @@ if (process.env.NODE_ENV === 'test') {
     logger.setLevel('disable');
 }
 
-module.exports = { logger: logger }
+module.exports = { logger: logger };

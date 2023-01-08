@@ -472,62 +472,60 @@
                     </div>
 
                     {{#if session.User}}
+                        {{#ifCondition session.User.money '<' acc.price}} <div class='form-group'>
+                            <label class='col-md-12 form-control-label text-danger'
+                                style='text-align: center;margin: 10px 0;'>
+                                Bạn không đủ số dư để mua tài khoản này. Bạn hãy click vào nút nạp thẻ để nạp thêm và mua
+                                tài khoản.
+                            </label>
+                            </div>
+                            <div style='clear: both'></div>
+                            <div class='modal-footer'>
+                                <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='/nap-the'>Nạp thẻ
+                                    cào</a>
+                                <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' href='/nap-the'>Nạp từ
+                                    atm - ví
+                                    điện tử</a>
 
-                    {{#ifCondition session.User.money '<' acc.price}} <div class='form-group'>
-                        <label class='col-md-12 form-control-label text-danger'
-                            style='text-align: center;margin: 10px 0;'>
-                            Bạn không đủ số dư để mua tài khoản này. Bạn hãy click vào nút nạp thẻ để nạp thêm và mua
-                            tài khoản.
-                        </label>
-            </div>
-            <div style='clear: both'></div>
-            <div class='modal-footer'>
-                <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='/nap-the'>Nạp thẻ
-                    cào</a>
-                <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' href='/nap-the'>Nạp từ
-                    atm - ví
-                    điện tử</a>
+                                <button type='button' class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+                                    data-dismiss='modal'>Đóng</button>
+                            </div>
+                        {{else}}
 
-                <button type='button' class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
-                    data-dismiss='modal'>Đóng</button>
-            </div>
-            {{else}}
+                            <div class='form-group '>
+                                <label class='col-md-12 form-control-label text-danger' style='text-align: center;margin: 10px 0; '>
 
-            <div class='form-group '>
-                <label class='col-md-12 form-control-label text-danger' style='text-align: center;margin: 10px 0; '>
+                                </label>
+                            </div>
+                            <div style='clear: both'></div>
+                            <div class='modal-footer'>
+                                <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' id="linkBuyNow"
+                                    href="">Xác nhận mua ngay</a>
+                                <button type='button' class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+                                    data-dismiss='modal'>Đóng</button>
+                                <script>
+                                    document.getElementById('linkBuyNow').href = '/lien-minh/acc-lien-minh/' + product_id + '/buy';
+                                </script>
+                            </div>
 
-                </label>
-            </div>
-            <div style='clear: both'></div>
-            <div class='modal-footer'>
-                <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' id="linkBuyNow"
-                    href="">Xác nhận mua ngay</a>
-                <button type='button' class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
-                    data-dismiss='modal'>Đóng</button>
-                <script>
-                    document.getElementById('linkBuyNow').href = '/lien-minh/acc-lien-minh/' + product_id + '/buy';
-                </script>
-            </div>
+                        {{/ifCondition}}
 
-            {{/ifCondition}}
+                    {{else}}
 
-            {{else}}
-
-            <div class='form-group '>
-                <label class='col-md-12 form-control-label text-danger' style='text-align: center;margin: 10px 0;'>
-                    Bạn phải đăng nhập mới có thể mua tài khoản tự động.
-                </label>
-            </div>
-            <div style='clear: both'></div>
-            <div class='modal-footer'>
-                <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='/dang-nhap'>Đăng
-                    nhập</a>
-                <button type='button' class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
-                    data-dismiss='modal'>Đóng</button>
-            </div>
-        </div>
-        {{/if}}
-
+                        <div class='form-group '>
+                            <label class='col-md-12 form-control-label text-danger' style='text-align: center;margin: 10px 0;'>
+                                Bạn phải đăng nhập mới có thể mua tài khoản tự động.
+                            </label>
+                        </div>
+                        <div style='clear: both'></div>
+                        <div class='modal-footer'>
+                            <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='/dang-nhap'>Đăng
+                                nhập</a>
+                            <button type='button' class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+                                data-dismiss='modal'>Đóng</button>
+                        </div>
+                    </div>
+                    {{/if}}
         </form>
     </div>
 </div>

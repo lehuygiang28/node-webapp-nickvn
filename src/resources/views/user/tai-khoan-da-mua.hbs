@@ -1,41 +1,41 @@
 <script> document.title = `Tài khoản đã mua - ${document.title}`; </script>
 
 <!-- BEGIN: PAGE CONTAINER -->
-<div class="c-layout-page">
+<div class='c-layout-page'>
     <!-- BEGIN: PAGE CONTENT -->
-    <div class="m-t-20 visible-sm visible-xs"></div>
+    <div class='m-t-20 visible-sm visible-xs'></div>
 
-    <div class="c-layout-page" style="margin-top: 20px;">
-        <div class="container">
-            <div class="c-layout-sidebar-menu c-theme ">
-                <div class="row">
-                    <div class="col-md-12 col-sm-6 col-xs-6 m-t-15 m-b-20">
+    <div class='c-layout-page' style='margin-top: 20px;'>
+        <div class='container'>
+            <div class='c-layout-sidebar-menu c-theme'>
+                <div class='row'>
+                    <div class='col-md-12 col-sm-6 col-xs-6 m-t-15 m-b-20'>
                         <!-- BEGIN: LAYOUT/SIDEBARS/SHOP-SIDEBAR-DASHBOARD -->
-                        <div class="c-content-title-3 c-title-md c-theme-border">
-                            <h3 class="c-left c-font-uppercase">Menu tài khoản</h3>
-                            <div class="c-line c-dot c-dot-left "></div>
+                        <div class='c-content-title-3 c-title-md c-theme-border'>
+                            <h3 class='c-left c-font-uppercase'>Menu tài khoản</h3>
+                            <div class='c-line c-dot c-dot-left'></div>
                         </div>
 
-                        <div class="c-content-ver-nav">
-                            <ul class="c-menu c-arrow-dot c-square c-theme">
-                                <li><a href="/user/thong-tin-tai-khoan">Thông tin tài khoản</a></li>
+                        <div class='c-content-ver-nav'>
+                            <ul class='c-menu c-arrow-dot c-square c-theme'>
+                                <li><a href='/user/thong-tin-tai-khoan'>Thông tin tài khoản</a></li>
 
                             </ul>
                         </div>
                     </div>
 
-                    <div class="col-md-12 col-sm-6 col-xs-6 m-t-15">
-                        <div class="c-content-title-3 c-title-md c-theme-border">
-                            <h3 class="c-left c-font-uppercase">Menu giao dịch</h3>
-                            <div class="c-line c-dot c-dot-left "></div>
+                    <div class='col-md-12 col-sm-6 col-xs-6 m-t-15'>
+                        <div class='c-content-title-3 c-title-md c-theme-border'>
+                            <h3 class='c-left c-font-uppercase'>Menu giao dịch</h3>
+                            <div class='c-line c-dot c-dot-left'></div>
                         </div>
-                        <div class="c-content-ver-nav m-b-20">
-                            <ul class="c-menu c-arrow-dot c-square c-theme">
-                                <li><a href="">Nạp thẻ tự động</a></li>
+                        <div class='c-content-ver-nav m-b-20'>
+                            <ul class='c-menu c-arrow-dot c-square c-theme'>
+                                <li><a href=''>Nạp thẻ tự động</a></li>
 
-                                <li><a href="">Lịch sử nạp thẻ</a></li>
+                                <li><a href=''>Lịch sử nạp thẻ</a></li>
 
-                                <li><a href="/user/tai-khoan-da-mua" class="active">Tài khoản đã mua</a>
+                                <li><a href='/user/tai-khoan-da-mua' class='active'>Tài khoản đã mua</a>
                                 </li>
 
                             </ul>
@@ -43,26 +43,31 @@
                     </div>
                 </div>
             </div>
-            <div class="c-layout-sidebar-content ">
+            <div class='c-layout-sidebar-content'>
                 <!-- BEGIN: PAGE CONTENT -->
                 <!-- BEGIN: CONTENT/SHOPS/SHOP-CUSTOMER-DASHBOARD-1 -->
 
-
-                <div class="c-content-title-1">
-                    <h3 class="c-font-uppercase c-font-bold">Tài khoản đã mua</h3>
-                    <div class="c-line-left"></div>
+                <div class='c-content-title-1'>
+                    <h3 class='c-font-uppercase c-font-bold'>Tài khoản đã mua</h3>
+                    <div class='c-line-left'></div>
                 </div>
-                <form class="form-horizontal form-find m-b-20" role="form" method="get">
+                <form class='form-horizontal form-find m-b-20' role='form' method='get'>
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="input-group m-b-10 c-square ">
-                                <span class="input-group-addon" id="basic-addon1">Mã tài khoản #</span>
-                                <input type="text" class="form-control c-square c-theme" name="id" value="" autofocus
-                                    placeholder="Mã tài khoản">
+                    <div class='row'>
+                        <div class='col-md-4'>
+                            <div class='input-group m-b-10 c-square'>
+                                <span class='input-group-addon' id='basic-addon1'>Mã tài khoản #</span>
+                                <input
+                                    type='text'
+                                    class='form-control c-square c-theme'
+                                    name='id'
+                                    value=''
+                                    autofocus
+                                    placeholder='Mã tài khoản'
+                                />
                             </div>
                         </div>
-                        {{!-- <div class="col-md-4">
+                        {{! <div class="col-md-4">
                             <div class="input-group m-b-10 c-square">
                                 <span class="input-group-addon" id="basic-addon1">Game</span>
                                 <select id="group_id" name="group_id" class="form-control c-square c-theme">
@@ -137,8 +142,8 @@
                                 </select>
 
                             </div>
-                        </div> --}}
-                        {{!-- <div class="col-md-4">
+                        </div> }}
+                        {{! <div class="col-md-4">
                             <div class="input-group m-b-10 c-square">
                                 <span class="input-group-addon" id="basic-addon1">Trạng thái</span>
                                 <select name="status" class="form-control c-square c-theme">.
@@ -151,61 +156,88 @@
                                     </option>
                                 </select>
                             </div>
-                        </div> --}}
+                        </div> }}
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="input-group m-b-10 c-square">
-                                <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
-                                    data-rtl="false">
-                                    <span class="input-group-btn">
-                                        <button class="btn default c-btn-square p-l-10 p-r-10" type="button"><i
-                                                class="fa fa-calendar"></i></button>
+                    <div class='row'>
+                        <div class='col-md-4'>
+                            <div class='input-group m-b-10 c-square'>
+                                <div
+                                    class='input-group date date-picker'
+                                    data-date-format='dd/mm/yyyy'
+                                    data-rtl='false'
+                                >
+                                    <span class='input-group-btn'>
+                                        <button
+                                            class='btn default c-btn-square p-l-10 p-r-10'
+                                            type='button'
+                                        ><i class='fa fa-calendar'></i></button>
                                     </span>
-                                    <input type="text" class="form-control c-square c-theme" name="started_at"
-                                        autocomplete="off" autofocus placeholder="Từ ngày" value="">
+                                    <input
+                                        type='text'
+                                        class='form-control c-square c-theme'
+                                        name='started_at'
+                                        autocomplete='off'
+                                        autofocus
+                                        placeholder='Từ ngày'
+                                        value=''
+                                    />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="input-group m-b-10 c-square">
-                                <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
-                                    data-rtl="false">
-                                    <span class="input-group-btn">
-                                        <button class="btn default c-btn-square p-l-10 p-r-10" type="button"><i
-                                                class="fa fa-calendar"></i></button>
+                        <div class='col-md-4'>
+                            <div class='input-group m-b-10 c-square'>
+                                <div
+                                    class='input-group date date-picker'
+                                    data-date-format='dd/mm/yyyy'
+                                    data-rtl='false'
+                                >
+                                    <span class='input-group-btn'>
+                                        <button
+                                            class='btn default c-btn-square p-l-10 p-r-10'
+                                            type='button'
+                                        ><i class='fa fa-calendar'></i></button>
                                     </span>
-                                    <input type="text" class="form-control c-square c-theme" name="ended_at"
-                                        autocomplete="off" placeholder="Đến ngày" value="">
+                                    <input
+                                        type='text'
+                                        class='form-control c-square c-theme'
+                                        name='ended_at'
+                                        autocomplete='off'
+                                        placeholder='Đến ngày'
+                                        value=''
+                                    />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="input-group m-b-10 c-square">
-                                <span class="input-group-addon" id="basic-addon1">Số tiền</span>
-                                <select name="game" class="form-control c-square c-theme">
-                                    <option value="">Chọn giá tiền</option>
-                                    <option value="duoi-50k">Dưới 50K</option>
-                                    <option value="tu-50k-200k">Từ 50K - 200K</option>
-                                    <option value="tu-200k-500k">Từ 200K - 500K</option>
-                                    <option value="tu-500k-1-trieu">Từ 500K - 1 Triệu</option>
-                                    <option value="tren-1-trieu">Trên 1 Triệu</option>
-                                    <option value="tren-5-trieu">Trên 5 Triệu</option>
-                                    <option value="tren-10-trieu">Trên 10 Triệu</option>
+                        <div class='col-md-4'>
+                            <div class='input-group m-b-10 c-square'>
+                                <span class='input-group-addon' id='basic-addon1'>Số tiền</span>
+                                <select name='game' class='form-control c-square c-theme'>
+                                    <option value=''>Chọn giá tiền</option>
+                                    <option value='duoi-50k'>Dưới 50K</option>
+                                    <option value='tu-50k-200k'>Từ 50K - 200K</option>
+                                    <option value='tu-200k-500k'>Từ 200K - 500K</option>
+                                    <option value='tu-500k-1-trieu'>Từ 500K - 1 Triệu</option>
+                                    <option value='tren-1-trieu'>Trên 1 Triệu</option>
+                                    <option value='tren-5-trieu'>Trên 5 Triệu</option>
+                                    <option value='tren-10-trieu'>Trên 10 Triệu</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <input type="submit" class="btn c-theme-btn c-btn-square m-b-10" value="Tìm kiếm">
-                            <a class="btn c-btn-square m-b-10 btn-danger" href="#">Tất cả</a>
+                    <div class='row'>
+                        <div class='col-md-4'>
+                            <input
+                                type='submit'
+                                class='btn c-theme-btn c-btn-square m-b-10'
+                                value='Tìm kiếm'
+                            />
+                            <a class='btn c-btn-square m-b-10 btn-danger' href='#'>Tất cả</a>
                         </div>
                     </div>
                 </form>
 
-                <table class="table table-hover table-custom-res">
+                <table class='table table-hover table-custom-res'>
                     <thead>
                         <tr>
                             <th>Thời gian</th>
@@ -219,35 +251,38 @@
                     </thead>
                     <tbody>
                         {{#if product_puchased}}
-                        {{#each product_puchased}}
-                        {{#with product as | product |}}
-                        {{#each product}}
-                        <tr>
-                            <td>{{dateFormat this.createAt "DD/MM/YYYY"}}</td>
-                            <td>{{this.product_id}}</td>
-                            <td>{{this.game.name}}</td>
-                            <td>{{this.userName}}</td>
-                            <td>
-                                ********
-                            </td>
-                            <td>{{vndCurrency this.price}}</td>
-                            <td>
-                                <a href="/user/gui-lai-tai-khoan?game={{this.game.id}}&prid={{this.product_id}}&puid={{@root.puchased_id}}"
-                                    class="btn btn-info text-info">
-                                    Gửi lại tài khoản</a>
-                            </td>
-                        </tr>
-                        {{/each}}
-                        {{/with}}
-                        {{/each}}
+                            {{#each product_puchased}}
+                                {{#with product as |product|}}
+                                    {{#each product}}
+                                        <tr>
+                                            <td>{{dateFormat this.createAt 'DD/MM/YYYY'}}</td>
+                                            <td>{{this.product_id}}</td>
+                                            <td>{{this.game.name}}</td>
+                                            <td>{{this.userName}}</td>
+                                            <td>
+                                                ********
+                                            </td>
+                                            <td>{{vndCurrency this.price}}</td>
+                                            <td>
+                                                <a
+                                                    href='/user/gui-lai-tai-khoan?game={{this.game.id}}&prid={{this.product_id}}&puid={{@root.puchased_id}}'
+                                                    class='btn btn-info text-info'
+                                                >
+                                                    Gửi lại tài khoản</a>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                {{/with}}
+                            {{/each}}
                         {{else}}
-                        <tr>
-                            <td colspan="6">Không có dữ liệu</td>
-                        </tr>
-                        <tr>
-                            <td colspan="6">Bạn chưa mua tài khoản nào, <a href="/" class="text-info">click mua ngay
-                                </a>!</td>
-                        </tr>
+                            <tr>
+                                <td colspan='6'>Không có dữ liệu</td>
+                            </tr>
+                            <tr>
+                                <td colspan='6'>Bạn chưa mua tài khoản nào,
+                                    <a href='/' class='text-info'>click mua ngay
+                                    </a>!</td>
+                            </tr>
                         {{/if}}
 
                     </tbody>
@@ -257,10 +292,7 @@
         </div>
     </div>
 
-
     <!-- END: PAGE CONTENT -->
-
-
 
     <!-- END: PAGE CONTENT -->
 </div>

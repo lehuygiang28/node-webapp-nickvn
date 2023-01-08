@@ -15,7 +15,7 @@ describe('Admin GET without authen', () => {
                 res.text.should.include('/admin/login');
                 done();
             });
-    })
+    });
 
     it('should return `/admin/login` (200) GET /admin/login', (done) => {
         chai.request(server)
@@ -26,7 +26,7 @@ describe('Admin GET without authen', () => {
                     'sign in start',
                     'admin panel',
                     'User Name',
-                    'Password'
+                    'Password',
                 ];
                 const textLowerCase = res.text.toLowerCase();
                 res.should.have.status(200);
@@ -35,7 +35,7 @@ describe('Admin GET without authen', () => {
                 });
                 done();
             });
-    })
+    });
 
     it('should redirect to /admin/login (302) GET /admin/signout', (done) => {
         chai.request(server)
@@ -47,9 +47,7 @@ describe('Admin GET without authen', () => {
                 done();
             });
     });
-
 });
-
 
 describe('Admin GET with authen', () => {
     let agent = chai.request(server);
@@ -58,9 +56,9 @@ describe('Admin GET with authen', () => {
         await agent
             .post('/admin/login')
             .send({
-                '_method': 'POST',
+                _method: 'POST',
                 user_name: 'tester',
-                password: '1'
+                password: '1',
             })
             .then(async (res) => {
                 res.status.should.be.equal(200);
@@ -71,11 +69,11 @@ describe('Admin GET with authen', () => {
                     'tester0981354822',
                     'Dashboard',
                     'Log Out',
-                    '/admin/signout'
-                ]
+                    '/admin/signout',
+                ];
                 expected.map(async (expect) => {
                     textLowerCase.should.include(expect.toLowerCase());
-                })
+                });
             });
     });
 });

@@ -1,8 +1,8 @@
 /********** Template CSS **********/
 :root {
-    --primary: #EB1616;
-    --secondary: #191C24;
-    --light: #6C7293;
+    --primary: #eb1616;
+    --secondary: #191c24;
+    --light: #6c7293;
     --dark: #000000;
 }
 
@@ -14,25 +14,23 @@
     z-index: 99;
 }
 
-
 /*** Spinner ***/
 #spinner {
     opacity: 0;
     visibility: hidden;
-    transition: opacity .5s ease-out, visibility 0s linear .5s;
+    transition: opacity 0.5s ease-out, visibility 0s linear 0.5s;
     z-index: 99999;
 }
 
 #spinner.show {
-    transition: opacity .5s ease-out, visibility 0s linear 0s;
+    transition: opacity 0.5s ease-out, visibility 0s linear 0s;
     visibility: visible;
     opacity: 1;
 }
 
-
 /*** Button ***/
 .btn {
-    transition: .5s;
+    transition: 0.5s;
 }
 
 .btn-square {
@@ -60,7 +58,6 @@
     font-weight: normal;
     border-radius: 50px;
 }
-
 
 /*** Layout ***/
 .sidebar {
@@ -117,7 +114,6 @@
     }
 }
 
-
 /*** Navbar ***/
 .sidebar .navbar .navbar-nav .nav-link {
     padding: 7px 20px;
@@ -155,13 +151,13 @@
     top: 15px;
     right: 15px;
     border: none;
-    content: "\f107";
-    font-family: "Font Awesome 5 Free";
+    content: '\f107';
+    font-family: 'Font Awesome 5 Free';
     font-weight: 900;
-    transition: .5s;
+    transition: 0.5s;
 }
 
-.sidebar .navbar .dropdown-toggle[aria-expanded=true]::after {
+.sidebar .navbar .dropdown-toggle[aria-expanded='true']::after {
     transform: rotate(-180deg);
 }
 
@@ -212,13 +208,13 @@
     margin-left: 6px;
     vertical-align: middle;
     border: none;
-    content: "\f107";
-    font-family: "Font Awesome 5 Free";
+    content: '\f107';
+    font-family: 'Font Awesome 5 Free';
     font-weight: 900;
-    transition: .5s;
+    transition: 0.5s;
 }
 
-.content .navbar .dropdown-toggle[aria-expanded=true]::after {
+.content .navbar .dropdown-toggle[aria-expanded='true']::after {
     transform: rotate(-180deg);
 }
 
@@ -227,7 +223,6 @@
         margin-left: 15px;
     }
 }
-
 
 /*** Date Picker ***/
 .bootstrap-datetimepicker-widget.bottom {
@@ -256,13 +251,11 @@
     border-bottom-color: var(--primary);
 }
 
-
 /*** Testimonial ***/
 .progress .progress-bar {
     width: 0px;
     transition: 2s;
 }
-
 
 /*** Testimonial ***/
 .testimonial-carousel .owl-dots {
@@ -280,7 +273,7 @@
     height: 15px;
     border: 5px solid var(--primary);
     border-radius: 15px;
-    transition: .5s;
+    transition: 0.5s;
 }
 
 .testimonial-carousel .owl-dot.active {

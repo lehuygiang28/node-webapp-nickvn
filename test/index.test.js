@@ -3,4 +3,4 @@
 require('./SitesTest/index.SitesTest');
 require('./UserTest/index.UserTest');
 require('./LienMinhTest/index.LienMinhTest');
-require('./AdminTest/index.AdminTest')
+require('./AdminTest/index.AdminTest');

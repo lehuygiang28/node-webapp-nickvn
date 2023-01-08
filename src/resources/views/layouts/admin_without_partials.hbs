@@ -7,8 +7,6 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <!-- Favicon -->
-  {{!--
-  <link href="~/AdminAssets/img/favicon.ico" rel="icon"> --}}
 
   <!-- Jquery -->
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -36,8 +34,6 @@
 
   <!-- Customized Bootstrap Stylesheet -->
   <link href="/adminAssets/custom/bootstrap-5/bootstrap.min.css" rel="stylesheet">
-  {{!--
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
 
   <!-- Template Stylesheet -->
   <link href="/adminAssets/css/style.css" rel="stylesheet">
@@ -77,8 +73,6 @@
   <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 
-  {{!--
-  <script type="text/javascript" src="~/AdminAssets/lib/waypoints/waypoints.min.js"></script> --}}
   <script src="https://cdn.jsdelivr.net/npm/waypoints@4.0.1/lib/jquery.waypoints.min.js"
     integrity="sha256-No2qtnsaWysoAu27rHmiqkupkqLr+cZ7mK14TYAEAYw=" crossorigin="anonymous"></script>
 
@@ -92,26 +86,6 @@
   <!-- LightBox Script -->
   <script src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.3/dist/js/lightbox.min.js"
     integrity="sha256-GLUoUntgMrNRD1CUHeOs2ZM/y5mWTWxHlmOA9CrCjyM=" crossorigin="anonymous"></script>
-
-  {{!-- @{
-  string currentActionName =
-  Convert.ToString(((Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor)ViewContext.ActionDescriptor).ActionName);
-  string[] navbarName = {"Index", "User", "Product", "Category", "Categories", "Order"};
-  if (currentActionName == navbarName[4])
-  {
-  currentActionName = navbarName[3];
-  }
-  string js2ActionNavBar = "";
-  for(int i = 0; i < navbarName.Length; i++) { if(currentActionName.Contains(navbarName[i]) ||
-    currentActionName.StartsWith(navbarName[i]) || currentActionName.EndsWith(navbarName[i])) {
-    js2ActionNavBar=@"<script>var a = document.getElementById('";
-    js2ActionNavBar += navbarName[i];
-    js2ActionNavBar += @"'); a.classList.add('active')</script>";
-    break;
-    }
-    }
-    @Html.Raw(js2ActionNavBar);
-    } --}}
 
 </body>
 

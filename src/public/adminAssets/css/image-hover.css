@@ -1,20 +1,20 @@
 .container_img {
     position: relative;
     width: 100%;
-  }
-  
-  .image {
+}
+
+.image {
     opacity: 1;
     display: block;
     width: 100%;
     height: auto;
-    transition: .5s ease;
+    transition: 0.5s ease;
     backface-visibility: hidden;
-  }
-  
-  .middle {
+}
+
+.middle {
     font-size: 150%;
-    transition: .5s ease;
+    transition: 0.5s ease;
     opacity: 0;
     position: absolute;
     top: 90%;
@@ -22,29 +22,29 @@
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     text-align: center;
-  }
-  
-  .container_img:hover .image {
+}
+
+.container_img:hover .image {
     opacity: 0.5;
-  }
-  
-  .container_img:hover .middle {
+}
+
+.container_img:hover .middle {
     opacity: 1;
-  }
-  .text_img {
+}
+.text_img {
     color: white;
     font-size: 16px;
     padding: 16px 32px;
-  }
-  
-  .container_img input {
+}
+
+.container_img input {
     display: none;
-  }
-  .container_img label{
+}
+.container_img label {
     color: #198754;
-  }
-  .container_img label:hover{
+}
+.container_img label:hover {
     color: red;
     cursor: pointer;
     border-radius: 10%;
-  }
+}

@@ -6,7 +6,7 @@ const { logger } = require('../../util/logger');
  * @param _req Request
  * @param res Response
  * @param next Next handler
- * 
+ *
  * Assign session to _req.session.User
  */
 function renewUserSessionMiddleware(_req, res, next) {
@@ -26,9 +26,11 @@ function renewUserSessionMiddleware(_req, res, next) {
                         _id: user._id,
                         userName: user.userName,
                         money: user.money,
-                        role: user.role
-                    })
-                    logger.info(`Renew User session completed userName: ${_req.session.User.userName}`);
+                        role: user.role,
+                    });
+                    logger.info(
+                        `Renew User session completed userName: ${_req.session.User.userName}`,
+                    );
                 }
             })
             .catch(next);

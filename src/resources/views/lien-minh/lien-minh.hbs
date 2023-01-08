@@ -1,99 +1,103 @@
 <script> document.title = `Liên minh huyền thoại - ${document.title}`; </script>
 
 <!-- BEGIN: PAGE CONTAINER -->
-<div class="c-layout-page">
+<div class='c-layout-page'>
     <!-- BEGIN: PAGE CONTENT -->
 
-    <link rel="stylesheet" href="/assets/frontend/css/lienminh-category-style.css">
+    <link rel='stylesheet' href='/assets/frontend/css/lienminh-category-style.css' />
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="alert alert-info" role="alert">
-                    <h1 class="alert-heading">Danh Mục Game Liên Minh</h1>
+    <div class='container'>
+        <div class='row'>
+            <div class='col-sm-12'>
+                <div class='alert alert-info' role='alert'>
+                    <h1 class='alert-heading'>Danh Mục Game Liên Minh</h1>
                 </div>
             </div>
         </div>
 
+        <div class='row row-flex row-flex-safari game-list item-list'>
 
-        <div class="row row-flex row-flex-safari game-list item-list">
+            {{#with category.categories as |cate|}}
+                {{#each cate}}
+                    <div class='col-sm-3 col-xs-6'>
+                        <div class='classWithPad'>
+                            <div class='image'>
+                                <a href='/lien-minh/{{slug}}'>
+                                    <img src='{{img}}' alt='{{img}}' />
+                                </a>
 
-            {{#with category.categories as | cate |}}
-            {{#each cate}}
-            <div class="col-sm-3 col-xs-6">
-                <div class="classWithPad">
-                    <div class="image">
-                        <a href='/lien-minh/{{slug}}'>
-                            <img src="{{img}}" alt="{{img}}">
-                        </a>
-
-                    </div>
-                    <div class="news_title">
-                        <a href='/lien-minh/{{slug}}'>{{categoryName}}</a>
-                    </div>
-
-                    <div class="news_description">
-                        <p>
-                            Số tài khoản: {{total}}
-                        </p>
-                    </div>
-                    <div class="a-more">
-                        <div class="row">
-
-                            <div class="col-xs-12">
-                                <div class="view">
-                                    <a href='/lien-minh/{{slug}}' title="{{categoryName}}">Xem tất
-                                        cả</a>
-                                </div>
+                            </div>
+                            <div class='news_title'>
+                                <a href='/lien-minh/{{slug}}'>{{categoryName}}</a>
                             </div>
 
+                            <div class='news_description'>
+                                <p>
+                                    Số tài khoản:
+                                    {{total}}
+                                </p>
+                            </div>
+                            <div class='a-more'>
+                                <div class='row'>
+
+                                    <div class='col-xs-12'>
+                                        <div class='view'>
+                                            <a
+                                                href='/lien-minh/{{slug}}'
+                                                title='{{categoryName}}'
+                                            >Xem tất cả</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            {{/each}}
+                {{/each}}
             {{/with}}
-
 
         </div>
 
         <!-- END: PAGE CONTENT -->
     </div>
 
-    <div class="modal fade" id="noticeModal" role="dialog" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="loader" style="text-align: center"><img src="/assets/frontend/images/loader.gif"
-                    style="width: 50px;height: 50px;display: none"></div>
-            <div class="modal-content">
+    <div
+        class='modal fade'
+        id='noticeModal'
+        role='dialog'
+        style='display: none;'
+        aria-hidden='true'
+    >
+        <div class='modal-dialog' role='document'>
+            <div class='loader' style='text-align: center'><img
+                    src='/assets/frontend/images/loader.gif'
+                    style='width: 50px;height: 50px;display: none'
+                /></div>
+            <div class='modal-content'>
 
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="LoadModal" role="dialog" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="loader" style="text-align: center"><img src="/assets/frontend/images/loader.gif"
-                style="width: 50px;height: 50px;display: none"></div>
-        <div class="modal-content">
+<div class='modal fade' id='LoadModal' role='dialog' style='display: none;' aria-hidden='true'>
+    <div class='modal-dialog' role='document'>
+        <div class='loader' style='text-align: center'><img
+                src='/assets/frontend/images/loader.gif'
+                style='width: 50px;height: 50px;display: none'
+            /></div>
+        <div class='modal-content'>
         </div>
     </div>
 </div>
 
-
 <script>
-    $(document).ready(function () {
-        $('.load-modal').each(function (index, elem) {
-            $(elem).unbind().click(function (e) {
-                e.preventDefault();
-                e.preventDefault();
-                var curModal = $('#LoadModal');
-                curModal.find('.modal-content').html("<div class=\"loader\" style=\"text-align: center\"><img src=\"/assets/frontend/images/loader.gif\" style=\"width: 50px;height: 50px;\"></div>");
-                curModal.modal('show').find('.modal-content').load($(elem).attr('rel'));
-            });
-        });
-    });
+    $(document).ready(function () { $('.load-modal').each(function (index, elem) {
+    $(elem).unbind().click(function (e) { e.preventDefault(); e.preventDefault(); var curModal =
+    $('#LoadModal'); curModal.find('.modal-content').html("<div class=\"loader\" style=\"text-align:
+    center\"><img src=\"/assets/frontend/images/loader.gif\" style=\"width: 50px;height:
+    50px;\"></div>"); curModal.modal('show').find('.modal-content').load($(elem).attr('rel')); });
+    }); });
 </script>
-
 
 <!-- END: PAGE CONTAINER -->

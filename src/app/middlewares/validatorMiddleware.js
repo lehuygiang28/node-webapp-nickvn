@@ -8,4 +8,4 @@ function validIDnumber(req, res, next) {
     next();
 }
 
-module.exports = { validIDnumber }
+module.exports = { validIDnumber };

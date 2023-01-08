@@ -4,7 +4,7 @@
  * @param _req Request
  * @param res Response
  * @param next Next handler
- * 
+ *
  * Set res.locals.sessionFlash to _req.session.sessionFlash then delete this request session
  */
 function customSessionFlashMiddleware(_req, res, next) {

@@ -1,13 +1,13 @@
 const { logger } = require('./logger');
 
-/*** 
+/***
  * Set message to request.session.sessionFlash
  * @param {object} message Object to send a message to views with session
- * 
- * Struct Object: 
- * 
+ *
+ * Struct Object:
+ *
  * {error: true || false, success: true || false, message: '{string message}'}
- * 
+ *
  */
 function sendMessage(_req, res, next, message) {
     try {
@@ -30,5 +30,5 @@ function sendMessage(_req, res, next, message) {
 }
 
 module.exports = {
-    sendMessage
+    sendMessage,
 };

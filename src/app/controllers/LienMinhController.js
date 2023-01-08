@@ -10,7 +10,6 @@ const { resetProductAndUserPuchased, generateLienMinh } = require('../../util/pr
 const { chiaLayPhanNguyen, chiaLayPhanDu } = require('../../util/caculator');
 
 class LienMinhController {
-
     // GET /lien-minh
     showLienMinhCategory(_req, res, next) {
         // generateLienMinh(30, next);
@@ -18,9 +17,11 @@ class LienMinhController {
 
         // Get all the categories with keywords 'lien-minh'
         Category.findOne({ slug: _req.originalUrl.split('/').slice(1).join('/') })
-            .then(category => res.render('lien-minh/lien-minh', {
-                category: mongooseToObject(category)
-            }))
+            .then((category) =>
+                res.render('lien-minh/lien-minh', {
+                    category: mongooseToObject(category),
+                }),
+            )
             .catch(next);
     }
 
@@ -35,9 +36,7 @@ class LienMinhController {
         // logger.debug(res.locals._sort);
 
         if (_req.query.hasOwnProperty('_sort')) {
-
             if (_req.query.product_id) {
-
                 let productFound;
                 try {
                     productFound = await LienMinh.findOne({ product_id: _req.query.product_id });
@@ -50,7 +49,9 @@ class LienMinhController {
                 if (productFound) {
                     return res.redirect(`/lien-minh/acc-lien-minh/${acc.product_id}`);
                 } else {
-                    sendMessage(_req, res, next, { error: `Không tìm thấy tài khoản số #${_req.query.product_id}` })
+                    sendMessage(_req, res, next, {
+                        error: `Không tìm thấy tài khoản số #${_req.query.product_id}`,
+                    });
                     return res.render(`lien-minh/acc-lien-minh`, {
                         pagination: pagination,
                     });
@@ -64,7 +65,7 @@ class LienMinhController {
                         { rank: { $regex: search_key, $options: 'i' } },
                         { status_account: { $regex: search_key, $options: 'i' } },
                         { note: { $regex: search_key, $options: 'i' } },
-                    ]
+                    ],
                 });
             }
 
@@ -72,7 +73,6 @@ class LienMinhController {
                 Object.assign(filter, {
                     price: { $gte: res.locals._sort.min, $lte: res.locals._sort.max },
                 });
-
             }
 
             if (res.locals._sort.sort_price) {
@@ -87,7 +87,9 @@ class LienMinhController {
 
         let page = res.locals._pagination.page; // page to get
         let perPage = res.locals._pagination.per_page; // page size
-        let skip = (res.locals._pagination.per_page * res.locals._pagination.page) - res.locals._pagination.per_page;
+        let skip =
+            res.locals._pagination.per_page * res.locals._pagination.page -
+            res.locals._pagination.per_page;
         let totalPages;
         let totalDocuments;
 
@@ -101,7 +103,9 @@ class LienMinhController {
         if (countDocuments) {
             // console.log(`Count docs: ${countDocuments}`);
             totalDocuments = countDocuments;
-            totalPages = chiaLayPhanNguyen(totalDocuments, perPage) + (chiaLayPhanDu(totalDocuments, perPage) > 0 ? 1 : 0);
+            totalPages =
+                chiaLayPhanNguyen(totalDocuments, perPage) +
+                (chiaLayPhanDu(totalDocuments, perPage) > 0 ? 1 : 0);
 
             if (page > totalPages) {
                 page = totalPages;
@@ -124,10 +128,10 @@ class LienMinhController {
         // Get all accounts lien-minh in the database
         lienMinhQuery = LienMinh.find(filter, {}, optionsQuery);
         await lienMinhQuery
-            .then(lienminhs => {
+            .then((lienminhs) => {
                 return res.render('lien-minh/acc-lien-minh', {
                     lienminhs: mutipleMongooseToObject(lienminhs),
-                    pagination: pagination
+                    pagination: pagination,
                 });
             })
             .catch(next);
@@ -135,7 +139,6 @@ class LienMinhController {
 
     // Get lien-minh/acc-lien-minh/:id
     showChiTietAccLienMinhCategory(_req, res, next) {
-
         // console.log('ID Slug: ' + _req.params.id);
         // logger.info('ID Slug: ' + _req.params.id);
 
@@ -145,13 +148,13 @@ class LienMinhController {
 
         // Find product by product_id, if exists return product to view, otherwise return error msg
         LienMinh.findOne({ product_id: res.locals.id, status_id: 1005 })
-            .then(acc => {
+            .then((acc) => {
                 if (!acc) {
                     // sendMessage(_req, res, next, { error: true, message: 'Can not find product!' });
                     return res.redirect(303, '/lien-minh/acc-lien-minh');
                 } else {
                     return res.render('lien-minh/chi-tiet-acc-lien-minh', {
-                        acc: mongooseToObject(acc)
+                        acc: mongooseToObject(acc),
                     });
                 }
             })
@@ -183,28 +186,30 @@ class LienMinhController {
             userFound = await User.findById(_req.session.User._id);
             if (!userFound) {
                 // Send the error message to views
-                sendMessage(_req, res, next, { error: 'Bạn phải đăng nhập trước khi mua'});
+                sendMessage(_req, res, next, { error: 'Bạn phải đăng nhập trước khi mua' });
                 return res.redirect(303, '/lien-minh/acc-lien-minh');
             }
 
-            if(lienMinhFound.price > userFound.money) {
-                sendMessage(_req, res, next, { error: 'Bạn không có đủ tiền'});
+            if (lienMinhFound.price > userFound.money) {
+                sendMessage(_req, res, next, { error: 'Bạn không có đủ tiền' });
                 return res.redirect(302, '/lien-minh/acc-lien-minh');
             }
 
-            puchasedFound = await UserPuchased.findOne({ user_id: userFound._id })
+            puchasedFound = await UserPuchased.findOne({ user_id: userFound._id });
             if (!puchasedFound) {
                 puchasedFound = new UserPuchased({
                     user_id: userFound._id,
-                    product_puchased: [{
-                        product: lienMinhFound,
-                        created_at: Date.now(),
-                    }],
+                    product_puchased: [
+                        {
+                            product: lienMinhFound,
+                            created_at: Date.now(),
+                        },
+                    ],
                 });
             } else {
                 puchasedFound.product_puchased.push({
                     product: lienMinhFound,
-                    created_at: Date.now()
+                    created_at: Date.now(),
                 });
             }
 
@@ -224,19 +229,25 @@ class LienMinhController {
             await puchasedFound.save();
 
             // Send email to user
-            sendMailCallback(userFound.email, {
-                subject: 'Thông tin tài khoản đã mua tại giang.cf',
-                title: `Thông tin tài khoản đã mua #${lienMinhFound.product_id}`,
-                // context: `Tài khoản: ${acc.userName}<br>Mật khẩu: ${acc.password}`,
-                heading: `Xin chào, bạn đã mua thành công tài khoản ${lienMinhFound.game.name} mã số ${lienMinhFound.product_id}!`,
-                userName: lienMinhFound.userName.toString(),
-                password: lienMinhFound.password.toString(),
-            }, () => {
-                logger.info(`Mail sent successful to: ${userFound.email}`);
+            sendMailCallback(
+                userFound.email,
+                {
+                    subject: 'Thông tin tài khoản đã mua tại giang.cf',
+                    title: `Thông tin tài khoản đã mua #${lienMinhFound.product_id}`,
+                    // context: `Tài khoản: ${acc.userName}<br>Mật khẩu: ${acc.password}`,
+                    heading: `Xin chào, bạn đã mua thành công tài khoản ${lienMinhFound.game.name} mã số ${lienMinhFound.product_id}!`,
+                    userName: lienMinhFound.userName.toString(),
+                    password: lienMinhFound.password.toString(),
+                },
+                () => {
+                    logger.info(`Mail sent successful to: ${userFound.email}`);
+                },
+            );
+            sendMessage(_req, res, next, {
+                success:
+                    'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn!',
             });
-            sendMessage(_req, res, next, { success: 'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn!' });
             return res.redirect(302, '/lien-minh/acc-lien-minh');
-
         } catch (error) {
             console.log(error);
             logger.error(`Error when saving buy: ${error}`);
@@ -248,4 +259,4 @@ class LienMinhController {
 }
 
 // export default new ;
-module.exports = new LienMinhController;
+module.exports = new LienMinhController();

@@ -3,7 +3,7 @@
  * @param _req Request
  * @param res Response
  * @param next Next handler
- * 
+ *
  * Set res.locals.session to _req.session then next()
  */
 function getSessionToViewsMiddleware(_req, res, next) {

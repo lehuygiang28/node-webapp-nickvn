@@ -7,14 +7,13 @@ chai.use(chaiHttp);
 let agent = chai.request(server);
 
 describe('POST to /admin/login', () => {
-
     it('should redirect to `/admin/login` (302) GET /admin', async () => {
         await agent
             .post('/admin/login')
             .send({
-                '_method': 'POST',
+                _method: 'POST',
                 user_name: 'tester',
-                password: ''
+                password: '',
             })
             .then(async (res) => {
                 res.status.should.be.equal(401);

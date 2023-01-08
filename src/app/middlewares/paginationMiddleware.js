@@ -3,11 +3,10 @@
  * @param _req Request
  * @param res Response
  * @param next Next handler
- * 
+ *
  * Assigned query string parameters to res.locals._sort
  */
 function paginationMiddleware(_req, res, next) {
-
     res.locals._pagination = {
         enabled: false,
     };
@@ -51,7 +50,6 @@ function paginationMiddleware(_req, res, next) {
         page: page,
     });
     // console.log(res.locals._pagination);
-
 
     next();
 }

@@ -3,11 +3,10 @@
  * @param _req Request
  * @param res Response
  * @param next Next handler
- * 
+ *
  * Assigned query string parameters to res.locals._sort
  */
 function sortMiddleware(_req, res, next) {
-
     res.locals._sort = {
         enabled: false,
         sort_price: 'asc',
@@ -54,9 +53,14 @@ function sortMiddleware(_req, res, next) {
 
         Object.assign(res.locals._sort, {
             enabled: true,
-            sort_price: ['asc', 'desc'].includes(_req.query.sort_price) ? _req.query.sort_price : 'asc',
+            sort_price: ['asc', 'desc'].includes(_req.query.sort_price)
+                ? _req.query.sort_price
+                : 'asc',
             search_key: _req.query.search_key ? String(_req.query.search_key) : undefined,
-            product_id: _req.query.product_id && !isNaN(_req.query.product_id) ? Number(_req.query.product_id) : undefined,
+            product_id:
+                _req.query.product_id && !isNaN(_req.query.product_id)
+                    ? Number(_req.query.product_id)
+                    : undefined,
             min: min,
             max: max,
         });

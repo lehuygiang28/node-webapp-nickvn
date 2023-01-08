@@ -20,40 +20,45 @@ async function sendMail(to, inputContent) {
         service: 'gmail',
         auth: {
             user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_APP_PASSWORD
-        }
+            pass: process.env.EMAIL_APP_PASSWORD,
+        },
     });
 
     let mailTemplateHtml = emailTemplate(inputContent);
 
     client.sendMail({
-        from: "Sender",
+        from: 'Sender',
         to: to,
         subject: inputContent.subject,
         // text: "",
         html: mailTemplateHtml,
-        attachments: [{
-            filename: 'image-1.png',
-            path: 'src/private/email-img/image-1.png',
-            cid: 'image-1'
-        }, {
-            filename: 'image-2.png',
-            path: 'src/private/email-img/image-2.png',
-            cid: 'image-2'
-        }, {
-            filename: 'image-3.png',
-            path: 'src/private/email-img/image-3.png',
-            cid: 'image-3'
-        }, {
-            filename: 'image-4.png',
-            path: 'src/private/email-img/image-4.png',
-            cid: 'image-4'
-        }]
+        attachments: [
+            {
+                filename: 'image-1.png',
+                path: 'src/private/email-img/image-1.png',
+                cid: 'image-1',
+            },
+            {
+                filename: 'image-2.png',
+                path: 'src/private/email-img/image-2.png',
+                cid: 'image-2',
+            },
+            {
+                filename: 'image-3.png',
+                path: 'src/private/email-img/image-3.png',
+                cid: 'image-3',
+            },
+            {
+                filename: 'image-4.png',
+                path: 'src/private/email-img/image-4.png',
+                cid: 'image-4',
+            },
+        ],
     });
     console.log(`Mail sent successful to: ${to}`);
 }
 
 module.exports = {
     sendMail,
-    sendMailCallback
-}
+    sendMailCallback,
+};

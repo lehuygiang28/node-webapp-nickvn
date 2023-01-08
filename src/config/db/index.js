@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
 const path = require('path');
 
-
 /***
  * Connect to MongoDB
  * @module connect
@@ -19,14 +18,19 @@ async function connect() {
     // }
 
     mongoose.set('strictQuery', false);
-    await mongoose.connect(process.env.MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true })
-        .then(() => { console.log('Connect mongodb successful!') })
-        .catch(err => { console.log('Connect mongodb error: ' + err) });
+    await mongoose
+        .connect(process.env.MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true })
+        .then(() => {
+            console.log('Connect mongodb successful!');
+        })
+        .catch((err) => {
+            console.log('Connect mongodb error: ' + err);
+        });
 }
 
 /***
  * Return a client MongoStore to store sessions in MongoDB
- * 
+ *
  * @module getClientMongoStore
  * @returns A client mongo store
  */
@@ -39,7 +43,10 @@ function getClientMongoStore() {
 }
 
 function createConnection() {
-    return mongoose.createConnection(process.env.MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true });
+    return mongoose.createConnection(process.env.MONGOURL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
 }
 
 module.exports = { connect, getClientMongoStore, createConnection };

@@ -4,7 +4,9 @@ const handlebars = require('express-handlebars');
 const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('express-flash');
-require('dotenv').config({ path: path.resolve(__dirname, `./config/env/${process.env.NODE_ENV}.env`) });
+require('dotenv').config({
+    path: path.resolve(__dirname, `./config/env/${process.env.NODE_ENV}.env`),
+});
 const favicon = require('serve-favicon');
 const { sortMiddleware } = require('./app/middlewares/sortMiddleware');
 const { renewUserSessionMiddleware } = require('./app/middlewares/renewUserSessionMiddleware');
@@ -29,26 +31,30 @@ app.use(favicon(path.resolve(__dirname, 'public', 'favicon.ico')));
 // Use static folder
 app.use(express.static(path.resolve(__dirname, 'public')));
 
-// Middleware 
-app.use(express.urlencoded({
-    extended: true
-}));
+// Middleware
+app.use(
+    express.urlencoded({
+        extended: true,
+    }),
+);
 app.use(express.json());
 
 // Express session
-app.use(session({
-    secret: process.env.SECRET_SESSION_KEY,
-    resave: true,
-    saveUninitialized: false,
-    store: db.getClientMongoStore(), // Store session to MongoDB collection/sessions
-    cookie: {
-        secure: false,
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 7, // One week
-    },
-}));
+app.use(
+    session({
+        secret: process.env.SECRET_SESSION_KEY,
+        resave: true,
+        saveUninitialized: false,
+        store: db.getClientMongoStore(), // Store session to MongoDB collection/sessions
+        cookie: {
+            secure: false,
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60 * 24 * 7, // One week
+        },
+    }),
+);
 
-// Midddleware Get session to handlebars 
+// Midddleware Get session to handlebars
 app.use(getSessionToViewsMiddleware);
 
 // Http logger
@@ -58,16 +64,20 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'developme
     morgan.token('date', (req, res) => {
         return formattedDate24h();
     });
-    app.use(morgan(function(tokens, req, res) {
-        return [
-            tokens.date(req, res),
-            tokens.method(req, res),
-            tokens.url(req, res),
-            tokens.status(req, res),
-            tokens.res(req, res, 'content-length'), '-',
-            tokens['response-time'](req, res), 'ms'
-        ].join(' ');
-    }));
+    app.use(
+        morgan(function (tokens, req, res) {
+            return [
+                tokens.date(req, res),
+                tokens.method(req, res),
+                tokens.url(req, res),
+                tokens.status(req, res),
+                tokens.res(req, res, 'content-length'),
+                '-',
+                tokens['response-time'](req, res),
+                'ms',
+            ].join(' ');
+        }),
+    );
 }
 
 // Flash express to send msg
@@ -75,18 +85,17 @@ app.use(flash());
 
 // Template engine
 app.engine(
-    "hbs",
+    'hbs',
     handlebars.engine({
-        extname: ".hbs",
+        extname: '.hbs',
         helpers: require('./helpers/handlebars'),
         defaultLayout: 'main',
-    })
+    }),
 );
 
 app.set('view engine', 'hbs');
 app.set('views', path.resolve(__dirname, 'resources', 'views'));
 app.set('view layouts', path.resolve(__dirname, 'views', 'layouts'));
-
 
 // --- CUSTOM MIDDLEWARES ---
 // Custom flash middleware

@@ -7,18 +7,15 @@ const bcrypt = require('bcrypt');
 const { logger } = require('../../util/logger');
 const mongoose = require('mongoose');
 
-
 class SiteController {
-
     // GET homepage
     // GET /
     home(_req, res, next) {
-
         Category.find({})
-            .then(categories => {
+            .then((categories) => {
                 res.render('sites/home', {
-                    categories: mutipleMongooseToObject(categories)
-                })
+                    categories: mutipleMongooseToObject(categories),
+                });
             })
             .catch(next);
     }
@@ -52,40 +49,54 @@ class SiteController {
         // console.log(_req.body.username + _req.body.password + passwordHash);
 
         if (!_req.body.username || !_req.body.password) {
-            return res.status(401).render('sites/dang-nhap', { error: 'Tài khoản hoặc mật khẩu không chính xác !' });
+            return res
+                .status(401)
+                .render('sites/dang-nhap', { error: 'Tài khoản hoặc mật khẩu không chính xác !' });
         }
 
         // Find by username
         User.findOne({ userName: _req.body.username })
-            .then(user => {
+            .then((user) => {
                 if (!user) {
                     logger.warn('User not found');
-                    return res.status(401).render('sites/dang-nhap', { error: 'Tài khoản hoặc mật khẩu không chính xác !' });
+                    return res
+                        .status(401)
+                        .render('sites/dang-nhap', {
+                            error: 'Tài khoản hoặc mật khẩu không chính xác !',
+                        });
                 }
                 // Check password with hash function
-                bcrypt.compare(_req.body.password.toString(), user.password, async function(err, result) {
-                    if (err) {
-                        throw new Error(err);
-                    } else if (!result) {
-                        logger.info('Dang nhap that bai: ');
-                        return res.status(401).render('sites/dang-nhap', { error: 'Tài khoản hoặc mật khẩu không chính xác !' });
-                    }
-                    logger.info('Dang nhap thanh cong: ');
-                    // Set the session value
-                    _req.session.User = {
-                        _id: user._id,
-                        userName: user.userName,
-                        money: user.money,
-                        role: user.role
-                    }
-                    _req.session.Authen = true;
+                bcrypt.compare(
+                    _req.body.password.toString(),
+                    user.password,
+                    async function (err, result) {
+                        if (err) {
+                            throw new Error(err);
+                        } else if (!result) {
+                            logger.info('Dang nhap that bai: ');
+                            return res
+                                .status(401)
+                                .render('sites/dang-nhap', {
+                                    error: 'Tài khoản hoặc mật khẩu không chính xác !',
+                                });
+                        }
+                        logger.info('Dang nhap thanh cong: ');
+                        // Set the session value
+                        _req.session.User = {
+                            _id: user._id,
+                            userName: user.userName,
+                            money: user.money,
+                            role: user.role,
+                        };
+                        _req.session.Authen = true;
 
-                    // Update last login time
-                    user.lastLogin = Date.now();
-                    user = await user.save();
+                        // Update last login time
+                        user.lastLogin = Date.now();
+                        user = await user.save();
 
-                    res.redirect(302, '/');
-                });
+                        res.redirect(302, '/');
+                    },
+                );
             })
             .catch(next);
     }
@@ -112,10 +123,16 @@ class SiteController {
             return res.redirect(304, '/');
         }
 
-        if (!isNullOrEmpty(_req.body.userName) || !isNullOrEmpty(_req.body.password) ||
-            !isNullOrEmpty(_req.body.email) || !isNullOrEmpty(_req.body.password_confirmation) ||
-            !isNullOrEmpty(_req.body.phone)) {
-            return res.status(401).render('sites/dang-ky', { error: 'Vui lòng điền đầy đủ các trường dữ liệu !' });
+        if (
+            !isNullOrEmpty(_req.body.userName) ||
+            !isNullOrEmpty(_req.body.password) ||
+            !isNullOrEmpty(_req.body.email) ||
+            !isNullOrEmpty(_req.body.password_confirmation) ||
+            !isNullOrEmpty(_req.body.phone)
+        ) {
+            return res
+                .status(401)
+                .render('sites/dang-ky', { error: 'Vui lòng điền đầy đủ các trường dữ liệu !' });
         }
 
         if (!isEmailValid(_req.body.email)) {
@@ -125,16 +142,27 @@ class SiteController {
             return res.status(401).render('sites/dang-ky', { error: 'Mật khẩu phải giống nhau' });
         }
 
-        User.findOne({ $or: [{ userName: _req.body.userName }, { email: _req.body.email }, { phone: _req.body.phone }] })
-            .then(async user => {
-
+        User.findOne({
+            $or: [
+                { userName: _req.body.userName },
+                { email: _req.body.email },
+                { phone: _req.body.phone },
+            ],
+        })
+            .then(async (user) => {
                 if (user) {
                     if (user.userName === _req.body.userName) {
-                        return res.status(401).render('sites/dang-ky', { error: 'Tài khoản đã được sử dụng' });
+                        return res
+                            .status(401)
+                            .render('sites/dang-ky', { error: 'Tài khoản đã được sử dụng' });
                     } else if (user.email === _req.body.email) {
-                        return res.status(401).render('sites/dang-ky', { error: 'Email đã được sử dụng' });
+                        return res
+                            .status(401)
+                            .render('sites/dang-ky', { error: 'Email đã được sử dụng' });
                     } else if (user.phone === _req.body.phone) {
-                        return res.status(401).render('sites/dang-ky', { error: 'Số điện thoại đã được sử dụng' });
+                        return res
+                            .status(401)
+                            .render('sites/dang-ky', { error: 'Số điện thoại đã được sử dụng' });
                     }
                 }
 
@@ -156,17 +184,15 @@ class SiteController {
                     note: 'note',
                     createAt: Date.now(),
                     updateAt: Date.now(),
-                    lastLogin: Date.now()
+                    lastLogin: Date.now(),
                 });
                 console.log(user);
                 user = await user.save();
                 return res.status(201).render('sites/dang-ky', { success: 'Đăng ký thành công' });
             })
             .catch(next);
-
     }
-
 }
 
 // export default new SiteController;
-module.exports = new SiteController;
+module.exports = new SiteController();

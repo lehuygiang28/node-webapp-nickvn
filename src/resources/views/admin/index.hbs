@@ -1,42 +1,41 @@
 <script> document.title = `Dashboard - ${document.title}`; </script>
 
-
 <!-- Sale & Revenue Start -->
-<div class="container-fluid pt-4 px-4">
-    <div class="row g-4">
-        <div class="col-sm-6 col-xl-3">
-            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                <i class="fa fa-chart-line fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Today Sale</p>
-                    <h6 class="mb-0">@vndFormat(ViewData["todaySale"])</h6>
+<div class='container-fluid pt-4 px-4'>
+    <div class='row g-4'>
+        <div class='col-sm-6 col-xl-3'>
+            <div class='bg-secondary rounded d-flex align-items-center justify-content-between p-4'>
+                <i class='fa fa-chart-line fa-3x text-primary'></i>
+                <div class='ms-3'>
+                    <p class='mb-2'>Today Sale</p>
+                    <h6 class='mb-0'>@vndFormat(ViewData["todaySale"])</h6>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Total Sale</p>
-                    <h6 class="mb-0">@vndFormat(ViewData["totalSale"])</h6>
+        <div class='col-sm-6 col-xl-3'>
+            <div class='bg-secondary rounded d-flex align-items-center justify-content-between p-4'>
+                <i class='fa fa-chart-bar fa-3x text-primary'></i>
+                <div class='ms-3'>
+                    <p class='mb-2'>Total Sale</p>
+                    <h6 class='mb-0'>@vndFormat(ViewData["totalSale"])</h6>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                <i class="fa fa-chart-area fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Today Charge Card</p>
-                    <h6 class="mb-0">@vndFormat(ViewData["todayCharge"])</h6>
+        <div class='col-sm-6 col-xl-3'>
+            <div class='bg-secondary rounded d-flex align-items-center justify-content-between p-4'>
+                <i class='fa fa-chart-area fa-3x text-primary'></i>
+                <div class='ms-3'>
+                    <p class='mb-2'>Today Charge Card</p>
+                    <h6 class='mb-0'>@vndFormat(ViewData["todayCharge"])</h6>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                <i class="fa fa-chart-pie fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Total Charge Card</p>
-                    <h6 class="mb-0">@vndFormat(ViewData["totalCharge"])</h6>
+        <div class='col-sm-6 col-xl-3'>
+            <div class='bg-secondary rounded d-flex align-items-center justify-content-between p-4'>
+                <i class='fa fa-chart-pie fa-3x text-primary'></i>
+                <div class='ms-3'>
+                    <p class='mb-2'>Total Charge Card</p>
+                    <h6 class='mb-0'>@vndFormat(ViewData["totalCharge"])</h6>
                 </div>
             </div>
         </div>
@@ -44,160 +43,127 @@
 </div>
 <!-- Sale & Revenue End -->
 
-
 <!-- Sales Chart Start -->
-<div class="container-fluid pt-4 px-4">
-    <div class="row g-4">
+<div class='container-fluid pt-4 px-4'>
+    <div class='row g-4'>
 
-        @* <!-- Sale & Revenue Start -->
-        <div class="col-sm-12 col-xl-3">
-            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4 mb-4">
-                <i class="fa fa-chart-line fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Today Sale</p>
-                    <h6 class="mb-0 float-end">@vndFormat(ViewData["todaySale"])</h6>
+        @*
+        <!-- Sale & Revenue Start -->
+        <div class='col-sm-12 col-xl-3'>
+            <div
+                class='bg-secondary rounded d-flex align-items-center justify-content-between p-4 mb-4'
+            >
+                <i class='fa fa-chart-line fa-3x text-primary'></i>
+                <div class='ms-3'>
+                    <p class='mb-2'>Today Sale</p>
+                    <h6 class='mb-0 float-end'>@vndFormat(ViewData["todaySale"])</h6>
                 </div>
             </div>
-            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4 mb-4">
-                <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Total Sale</p>
-                    <h6 class="mb-0 float-end">@vndFormat(ViewData["totalSale"])</h6>
+            <div
+                class='bg-secondary rounded d-flex align-items-center justify-content-between p-4 mb-4'
+            >
+                <i class='fa fa-chart-bar fa-3x text-primary'></i>
+                <div class='ms-3'>
+                    <p class='mb-2'>Total Sale</p>
+                    <h6 class='mb-0 float-end'>@vndFormat(ViewData["totalSale"])</h6>
                 </div>
             </div>
-            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4 mb-4">
-                <i class="fa fa-chart-area fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Today Revenue</p>
-                    <h6 class="mb-0 float-end">@vndFormat(ViewData["todayRevenue"])</h6>
+            <div
+                class='bg-secondary rounded d-flex align-items-center justify-content-between p-4 mb-4'
+            >
+                <i class='fa fa-chart-area fa-3x text-primary'></i>
+                <div class='ms-3'>
+                    <p class='mb-2'>Today Revenue</p>
+                    <h6 class='mb-0 float-end'>@vndFormat(ViewData["todayRevenue"])</h6>
                 </div>
             </div>
-            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                <i class="fa fa-chart-pie fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Total Revenue</p>
-                    <h6 class="mb-0 float-end">@vndFormat(ViewData["totalRevenue"])</h6>
+            <div class='bg-secondary rounded d-flex align-items-center justify-content-between p-4'>
+                <i class='fa fa-chart-pie fa-3x text-primary'></i>
+                <div class='ms-3'>
+                    <p class='mb-2'>Total Revenue</p>
+                    <h6 class='mb-0 float-end'>@vndFormat(ViewData["totalRevenue"])</h6>
                 </div>
             </div>
         </div>
-        <!-- Sale & Revenue End --> *@
+        <!-- Sale & Revenue End -->
+        *@
 
-        <div class="col-sm-12 col-xl-6">
-            <div class="bg-secondary text-center rounded p-4">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">Sales & Revenue</h6>
-                    @* <a href="">Show All</a> *@
+        <div class='col-sm-12 col-xl-6'>
+            <div class='bg-secondary text-center rounded p-4'>
+                <div class='d-flex align-items-center justify-content-between mb-4'>
+                    <h6 class='mb-0'>Sales & Revenue</h6>
+                    @*
+                    <a href=''>Show All</a>
+                    *@
                 </div>
-                <canvas id="sales-revenue"></canvas>
+                <canvas id='sales-revenue'></canvas>
             </div>
         </div>
 
-        <div class="col-sm-12 col-xl-6">
-            <div class="bg-secondary text-center rounded p-4">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">Sales & Revenue</h6>
-                    @* <a href="">Show All</a> *@
+        <div class='col-sm-12 col-xl-6'>
+            <div class='bg-secondary text-center rounded p-4'>
+                <div class='d-flex align-items-center justify-content-between mb-4'>
+                    <h6 class='mb-0'>Sales & Revenue</h6>
+                    @*
+                    <a href=''>Show All</a>
+                    *@
                 </div>
-                <canvas id="charge-chart"></canvas>
+                <canvas id='charge-chart'></canvas>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Chart Global Color
-    Chart.defaults.color = "#6C7293";
-    Chart.defaults.borderColor = "#000000";
-
-    var labels = @Html.Raw(labels);
-    var dataSale = @Html.Raw(dataSales);
-    var dataRevenue = @Html.Raw(dataRevenues);
-    var dataCharge = @Html.Raw(dataChargeChart);
-
-    // Salse & Revenue Chart
-    var ctx2 = $("#sales-revenue").get(0).getContext("2d");
-    var myChart2 = new Chart(ctx2, {
-        type: "line",
-        data: {
-            labels: labels,
-            datasets: [{
-                label: "Salse",
-                data: dataSale,
-                backgroundColor: "rgba(235, 22, 22, .7)",
-                fill: true
-            },
-            {
-                label: "Revenue",
-                data: dataRevenue,
-                backgroundColor: "rgba(235, 22, 22, .5)",
-                fill: true
-            }
-            ]
-        },
-        options: {
-            responsive: true
-        }
-    });
-
-    // Charge Chart
-    var ctx3 = $("#charge-chart").get(0).getContext("2d");
-    var myChart3 = new Chart(ctx3, {
-        type: "line",
-        data: {
-            labels: labels,
-            datasets: [{
-                label: "Charge",
-                data: dataCharge,
-                backgroundColor: "rgba(235, 22, 22, .7)",
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true
-        }
-    });
+    // Chart Global Color Chart.defaults.color = "#6C7293"; Chart.defaults.borderColor = "#000000";
+    var labels = @Html.Raw(labels); var dataSale = @Html.Raw(dataSales); var dataRevenue =
+    @Html.Raw(dataRevenues); var dataCharge = @Html.Raw(dataChargeChart); // Salse & Revenue Chart
+    var ctx2 = $("#sales-revenue").get(0).getContext("2d"); var myChart2 = new Chart(ctx2, { type:
+    "line", data: { labels: labels, datasets: [{ label: "Salse", data: dataSale, backgroundColor:
+    "rgba(235, 22, 22, .7)", fill: true }, { label: "Revenue", data: dataRevenue, backgroundColor:
+    "rgba(235, 22, 22, .5)", fill: true } ] }, options: { responsive: true } }); // Charge Chart var
+    ctx3 = $("#charge-chart").get(0).getContext("2d"); var myChart3 = new Chart(ctx3, { type:
+    "line", data: { labels: labels, datasets: [{ label: "Charge", data: dataCharge, backgroundColor:
+    "rgba(235, 22, 22, .7)", fill: true }] }, options: { responsive: true } });
 </script>
 <!-- Sales Chart End -->
 
-
 <!-- Recent Sales Start -->
-<div class="container-fluid pt-4 px-4">
-    <div class="bg-secondary text-center rounded p-4">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <h6 class="mb-0">Recent Salse</h6>
-            <a asp-action="Orders" asp-controller="Admin">Show All</a>
+<div class='container-fluid pt-4 px-4'>
+    <div class='bg-secondary text-center rounded p-4'>
+        <div class='d-flex align-items-center justify-content-between mb-4'>
+            <h6 class='mb-0'>Recent Salse</h6>
+            <a asp-action='Orders' asp-controller='Admin'>Show All</a>
         </div>
-        <div class="table-responsive">
-            <table class="table text-start align-middle table-bordered table-hover mb-0">
+        <div class='table-responsive'>
+            <table class='table text-start align-middle table-bordered table-hover mb-0'>
                 <thead>
-                    <tr class="text-white">
-                        <th scope="col"><input class="form-check-input" type="checkbox"></th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Invoice</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Status</th>
-                        @* <th scope="col">Action</th> *@
+                    <tr class='text-white'>
+                        <th scope='col'><input class='form-check-input' type='checkbox' /></th>
+                        <th scope='col'>Date</th>
+                        <th scope='col'>Invoice</th>
+                        <th scope='col'>Amount</th>
+                        <th scope='col'>Status</th>
+                        @*
+                        <th scope='col'>Action</th>
+                        *@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (recentSales != null)
-                    {
-                    @foreach (var item in recentSales)
-                    {
+                    @if (recentSales != null) { @foreach (var item in recentSales) {
                     <tr>
-                        <td><input class="form-check-input" type="checkbox"></td>
+                        <td><input class='form-check-input' type='checkbox' /></td>
                         <td>@item.CreateAt.ToString("dd MMMM, yyyy")</td>
                         <td>@item.OrderId</td>
                         <td>@vndFormat(item.Product.PriceAtm)</td>
                         <td>@item.Status</td>
-                        @* <td><a class="btn btn-sm btn-primary" href="">Detail</a></td> *@
+                        @*
+                        <td><a class='btn btn-sm btn-primary' href=''>Detail</a></td>
+                        *@
                     </tr>
-                    }
-                    }
-                    else
-                    {
+                    } } else {
                     <tr>
-                        <td colspan="6">No data....</td>
+                        <td colspan='6'>No data....</td>
                     </tr>
                     }
                 </tbody>
@@ -207,8 +173,7 @@
 </div>
 <!-- Recent Sales End -->
 
-
-{{!-- <!-- Widgets Start -->
+{{! <!-- Widgets Start -->
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
         <div class="col-sm-12 col-md-6 col-xl-4">
@@ -331,4 +296,4 @@
         </div>
     </div>
 </div>
-<!-- Widgets End --> --}}
+<!-- Widgets End --> }}

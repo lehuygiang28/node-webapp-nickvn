@@ -2,7 +2,6 @@ const LienMinh = require('../app/models/LienMinh');
 const UserPuchased = require('../app/models/UserPuchased');
 const { logger } = require('./logger');
 
-
 /**
  * Generates random product
  * @param {Number} counters The number of products to generate
@@ -10,22 +9,33 @@ const { logger } = require('./logger');
  */
 function generateLienMinh(counters, next) {
     const firstImg = [
-        "/img/default-thumb1.webp",
-        "/img/default-thumb2.webp",
-        "/img/default-thumb3.webp",
-        "/img/default-thumb4.webp",
-        "/img/default-thumb5.webp",
-        "/img/default-thumb6.webp",
-        "/img/0qBPw7AiOQ_1632531413.jpg"
+        '/img/default-thumb1.webp',
+        '/img/default-thumb2.webp',
+        '/img/default-thumb3.webp',
+        '/img/default-thumb4.webp',
+        '/img/default-thumb5.webp',
+        '/img/default-thumb6.webp',
+        '/img/0qBPw7AiOQ_1632531413.jpg',
     ];
     const afterImg = [
-        "/img/CM9q56zAnM_1632531413.jpg",
-        "/img/pTWDgoJQuz_1632531413.jpg",
-        "/img/zwRCsqMtyo_1632531413.jpg",
-        "/img/HLpEr7ojZm_1632531414.jpg",
-        "/img/xxuC88f0h9_1632531414.jpg"
+        '/img/CM9q56zAnM_1632531413.jpg',
+        '/img/pTWDgoJQuz_1632531413.jpg',
+        '/img/zwRCsqMtyo_1632531413.jpg',
+        '/img/HLpEr7ojZm_1632531414.jpg',
+        '/img/xxuC88f0h9_1632531414.jpg',
     ];
-    const rankRd = ["Chưa Rank", "Sắt", "Đồng", "Bạc", "Vàng", "Bạch Kim", "Kim Cương", "Cao Thủ", "Đại Cao Thủ", "Thách Đấu"];
+    const rankRd = [
+        'Chưa Rank',
+        'Sắt',
+        'Đồng',
+        'Bạc',
+        'Vàng',
+        'Bạch Kim',
+        'Kim Cương',
+        'Cao Thủ',
+        'Đại Cao Thủ',
+        'Thách Đấu',
+    ];
     const NOT_SOLD = 1005;
 
     function randomString(length) {
@@ -55,16 +65,15 @@ function generateLienMinh(counters, next) {
             note: 'note',
             status_id: NOT_SOLD,
             status_name: 'Chưa bán',
-            img: [
-                firstImg[randomNumber(0, firstImg.length - 1)]
-            ]
+            img: [firstImg[randomNumber(0, firstImg.length - 1)]],
         });
 
         // Concat() is better than '...' (spread syntax ES6)
         // product.img.push(...afterImg);
         product.img = product.img.concat(afterImg);
 
-        product.save()
+        product
+            .save()
             .then(() => {
                 logger.info(`Add product successfully!`);
                 logger.info(product);
@@ -78,26 +87,26 @@ function generateLienMinh(counters, next) {
 /**
  * Resets the state of the product and removes all references to it from the user
  * @param next Call next middleware
- * 
+ *
  * Step:
- * 
+ *
  *      1: Resets the state of the product to NOT_SOLD, id: 1005
- * 
+ *
  *      2: Remove all user puchase history
- * 
+ *
  *      3: Call next() middleware
- * 
+ *
  * User:
  *  abc: 100
  */
 function resetProductAndUserPuchased(next) {
     LienMinh.find({ status_id: 1006 })
-        .then(product => {
+        .then((product) => {
             if (!product) {
                 logger.info('Not found product');
                 return;
-            } 
-            product.forEach(productItem => {
+            }
+            product.forEach((productItem) => {
                 productItem.status_id = 1005;
                 productItem.status_name = 'Chưa bán';
                 productItem.save();
@@ -129,5 +138,5 @@ function resetProductAndUserPuchased(next) {
 }
 module.exports = {
     resetProductAndUserPuchased,
-    generateLienMinh
+    generateLienMinh,
 };

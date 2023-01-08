@@ -6,7 +6,7 @@ const should = require('chai').should();
 chai.use(chaiHttp);
 
 // GET /user without authentication login
-describe('User GET request', function() {
+describe('User GET request', function () {
     it('should redirect /dang-nhap when trying to access /user (303)', (done) => {
         chai.request(server)
             .get('/user')
@@ -61,5 +61,4 @@ describe('User GET request', function() {
                 done();
             });
     });
-
 });

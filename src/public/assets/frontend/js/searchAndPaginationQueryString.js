@@ -14,7 +14,7 @@ function importCurrentHref() {
     currentUrl = removeParam('page', currentUrl);
 
     // Get the current parameters of query string (parameters of search query)
-    let currentParams = currentUrl.split("?")[1];
+    let currentParams = currentUrl.split('?')[1];
 
     if (currentParams) {
         // loop to import the parameters of search into the current url
@@ -27,26 +27,25 @@ function importCurrentHref() {
     }
 }
 
-
 /**
  * @param {String} key A parameter to remove from url
  * @param {String} sourceURL A string of url
  * @returns A string of url what was removed a key parameter
  */
 function removeParam(key, sourceURL) {
-    var rtn = sourceURL.split("?")[0],
+    var rtn = sourceURL.split('?')[0],
         param,
         params_arr = [],
-        queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
-    if (queryString !== "") {
-        params_arr = queryString.split("&");
+        queryString = sourceURL.indexOf('?') !== -1 ? sourceURL.split('?')[1] : '';
+    if (queryString !== '') {
+        params_arr = queryString.split('&');
         for (var i = params_arr.length - 1; i >= 0; i -= 1) {
-            param = params_arr[i].split("=")[0];
+            param = params_arr[i].split('=')[0];
             if (param === key) {
                 params_arr.splice(i, 1);
             }
         }
-        if (params_arr.length) rtn = rtn + "?" + params_arr.join("&");
+        if (params_arr.length) rtn = rtn + '?' + params_arr.join('&');
     }
     return rtn;
 }
