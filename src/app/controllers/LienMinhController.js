@@ -50,7 +50,7 @@ class LienMinhController {
                 if (productFound) {
                     return res.redirect(`/lien-minh/acc-lien-minh/${acc.product_id}`);
                 } else {
-                    sendMessage(_req, res, next, { error: true, message: `Không tìm thấy tài khoản số #${_req.query.product_id}` })
+                    sendMessage(_req, res, next, { error: `Không tìm thấy tài khoản số #${_req.query.product_id}` })
                     return res.render(`lien-minh/acc-lien-minh`, {
                         pagination: pagination,
                     });
@@ -162,7 +162,7 @@ class LienMinhController {
     async buyNowSolvers(_req, res, next) {
         // Check session if not login, otherwise...
         if (!_req.session.User) {
-            sendMessage(_req, res, next, { error: true, message: 'Bạn phải đăng nhập trước khi mua' });
+            sendMessage(_req, res, next, { error: 'Bạn phải đăng nhập trước khi mua' });
             return res.redirect(303, '/lien-minh/acc-lien-minh');
         }
 
@@ -176,15 +176,20 @@ class LienMinhController {
             // If not exists or product is SOLD
             if (!lienMinhFound || lienMinhFound.status_id === 1006) {
                 // Send the error message to views
-                sendMessage(_req, res, next, { error: true, message: 'Không tìm thấy tài khoản' });
+                sendMessage(_req, res, next, { error: 'Không tìm thấy tài khoản' });
                 return res.redirect(303, '/lien-minh/acc-lien-minh');
             }
 
             userFound = await User.findById(_req.session.User._id);
             if (!userFound) {
                 // Send the error message to views
-                sendMessage(_req, res, next, { error: true, message: 'Bạn phải đăng nhập trước khi mua' });
+                sendMessage(_req, res, next, { error: 'Bạn phải đăng nhập trước khi mua'});
                 return res.redirect(303, '/lien-minh/acc-lien-minh');
+            }
+
+            if(lienMinhFound.price > userFound.money) {
+                sendMessage(_req, res, next, { error: 'Bạn không có đủ tiền'});
+                return res.redirect(302, '/lien-minh/acc-lien-minh');
             }
 
             puchasedFound = await UserPuchased.findOne({ user_id: userFound._id })
@@ -229,13 +234,13 @@ class LienMinhController {
             }, () => {
                 logger.info(`Mail sent successful to: ${userFound.email}`);
             });
-            sendMessage(_req, res, next, { success: true, message: 'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn.' });
+            sendMessage(_req, res, next, { success: 'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn!' });
             return res.redirect(302, '/lien-minh/acc-lien-minh');
 
         } catch (error) {
             console.log(error);
             logger.error(`Error when saving buy: ${error}`);
-            sendMessage(_req, res, next, { error: true, message: 'Có lỗi xảy ra vui lòng thử lại!' });
+            sendMessage(_req, res, next, { error: 'Có lỗi xảy ra vui lòng thử lại!' });
             res.redirect(303, '/lien-minh/acc-lien-minh');
             next();
         }

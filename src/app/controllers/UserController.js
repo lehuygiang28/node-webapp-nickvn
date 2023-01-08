@@ -16,7 +16,8 @@ class UserController {
     index(_req, res, next) {
         if (!_req.session.User) {
             // sendMessage(_req, res, next, { error: true, message: 'Bạn chưa đăng nhập' });
-            sendMessage(_req, res, next, { error: true, message: 'Not found session' });
+            // sendMessage(_req, res, next, { error: 'Not found session' });
+            logger.warn('Session not found');
             return res.redirect(303, '/dang-nhap');
         }
 
@@ -24,7 +25,8 @@ class UserController {
             .then(user => {
                 if (!user) {
                     // sendMessage(_req, res, next, { error: true, message: 'Bạn chưa đăng nhập' });
-                    sendMessage(_req, res, next, { error: true, message: 'Not found user' });
+                    // sendMessage(_req, res, next, { error: 'Not found user'});
+                    logger.warn('User not found');  
                     return res.redirect(303, '/dang-nhap');
                 }
                 // console.log(user);
@@ -37,7 +39,7 @@ class UserController {
     // GET /user/doi-mat-khau
     changePassword(_req, res, next) {
         if (!_req.session.User) {
-            sendMessage(_req, res, next, { error: true, message: 'Bạn chưa đăng nhập!' });
+            sendMessage(_req, res, next, { error: 'Bạn chưa đăng nhập!' });
             return res.redirect(303, '/dang-nhap');
         }
         res.render('user/doi-mat-khau');
@@ -46,7 +48,7 @@ class UserController {
     // POST /user/doi-mat-khau
     changePasswordSolvers(_req, res, next) {
         if (!_req.session.User) {
-            sendMessage(_req, res, next, { error: true, message: 'Bạn chưa đăng nhập' });
+            sendMessage(_req, res, next, { error: 'Bạn chưa đăng nhập' });
             return res.redirect('/dang-nhap');
         }
 
@@ -125,7 +127,7 @@ class UserController {
         UserPuchased.findOne({ _id: _req.query.puid }).populate('product_puchased.product')
             .then(puchased => {
                 if (!puchased) {
-                    sendMessage(_req, res, next, { error: true, message: 'Không tìm thấy tài khoản' });
+                    sendMessage(_req, res, next, { error:  'Không tìm thấy tài khoản' });
                     return res.redirect(303, '/user/tai-khoan-da-mua');
                 }
                 let foundProduct = null;
@@ -148,7 +150,7 @@ class UserController {
                         });
                     })
                     .then(() => {
-                        sendMessage(_req, res, next, { success: true, message: 'Thông tin tài khoản đã được gửi về email của bạn!' });
+                        sendMessage(_req, res, next, { success: 'Thông tin tài khoản đã được gửi về email của bạn!' });
                         return res.redirect(302, '/user/tai-khoan-da-mua');
                     })
                     .catch(next);

@@ -18,11 +18,10 @@ function sendMessage(_req, res, next, message) {
         _req.session.sessionFlash = {
             error: message.error || undefined,
             success: message.success || undefined,
-            message: message.message
         };
 
         if (process.env.NODE_ENV !== 'test')
-            logger.color('magenta').log(`sendMessage.message: ${message.message}`);
+            logger.color('magenta').log(`sendMessage.message: ${message.error ?? message.success}`);
 
         return;
     } catch (err) {

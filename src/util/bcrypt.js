@@ -22,7 +22,21 @@ function compare(data, encrypted, callbackfn){
     return bcrypt.compare(data, encrypted, callbackfn, saltRounds);
 }
 
+/***
+ * Compare the data not encrypted with the encrypted data
+ * 
+ * @param data — The data to be encrypted.
+ * @param encrypted — The data to be compared against.
+ * @return — True if the data is equal to the encrypted data, otherwise false.
+ * 
+ */
+function compareSync(data, encrypted){
+    return bcrypt.compareSync(data, encrypted, saltRounds);
+}
+
+
 module.exports = {
     createHash,
-    compare
+    compare,
+    compareSync
 }
