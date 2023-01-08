@@ -19,7 +19,6 @@ const port = process.env.NODE_PORT || 8081;
 
 const route = require('./routes/index.route');
 const db = require('./config/db');
-const { default: mongoose } = require('mongoose');
 
 // Connect to mongodb
 db.connect();

@@ -5,6 +5,7 @@ const { isEmailValid, isNullOrEmpty } = require('../../util/validators');
 const { createHash } = require('../../util/bcrypt');
 const bcrypt = require('bcrypt');
 const { logger } = require('../../util/logger');
+const mongoose = require('mongoose');
 
 
 class SiteController {
@@ -50,15 +51,19 @@ class SiteController {
         // const passwordHash = createHash(_req.body.password);
         // console.log(_req.body.username + _req.body.password + passwordHash);
 
+        if (!_req.body.username || !_req.body.password) {
+            return res.status(401).render('sites/dang-nhap', { error: 'Tài khoản hoặc mật khẩu không chính xác !' });
+        }
+
         // Find by username
         User.findOne({ userName: _req.body.username })
             .then(user => {
                 if (!user) {
-                    console.log('User not found');
+                    logger.warn('User not found');
                     return res.status(401).render('sites/dang-nhap', { error: 'Tài khoản hoặc mật khẩu không chính xác !' });
                 }
                 // Check password with hash function
-                bcrypt.compare(_req.body.password, user.password, async function(err, result) {
+                bcrypt.compare(_req.body.password.toString(), user.password, async function(err, result) {
                     if (err) {
                         throw new Error(err);
                     } else if (!result) {
@@ -73,6 +78,7 @@ class SiteController {
                         money: user.money,
                         role: user.role
                     }
+                    _req.session.Authen = true;
 
                     // Update last login time
                     user.lastLogin = Date.now();
@@ -133,11 +139,11 @@ class SiteController {
                 }
 
                 user = new User({
+                    _id: mongoose.Types.ObjectId(),
                     userName: _req.body.userName,
                     email: _req.body.email,
                     phone: _req.body.phone,
                     password: createHash(_req.body.password),
-                    accessToken: generateAccessToken(_req.body.userName),
                     fullName: _req.body.userName + _req.body.phone,
                     money: 0,
                     role: 'member',

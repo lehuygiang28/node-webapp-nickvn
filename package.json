@@ -7,7 +7,7 @@
     "start": "cross-env NODE_ENV=production node .\\bin\\www.js",
     "dev": "cross-env NODE_ENV=development nodemon --inspect .\\bin\\www.js",
     "devtest": "cross-env NODE_ENV=test nodemon --inspect .\\bin\\www.js",
-    "test": "cross-env NODE_ENV=test mocha --recursive --exit .\\test\\index.test.js",
+    "test": "cross-env NODE_ENV=test mocha --recursive --exit .\\test\\index.test.js --no-deprecation",
     "testb": "cross-env NODE_ENV=test mocha --recursive --exit .\\test\\index.test.js node --trace-deprecation",
     "testc": "cross-env NODE_ENV=test mocha .\\test\\index.test.js"
   },
@@ -49,7 +49,6 @@
     "cross-env": "^7.0.3",
     "mock-session": "^0.0.5",
     "morgan": "^1.10.0",
-    "node-mocks-http": "^1.12.1",
     "nodemon": "^2.0.20"
   }
 }

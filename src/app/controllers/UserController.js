@@ -29,7 +29,7 @@ class UserController {
                 }
                 // console.log(user);
                 res.render('user/thong-tin-tai-khoan', { user: mongooseToObject(user) });
-                console.log(_req.session);
+                // console.log(_req.session);
             })
             .catch(next);
     }

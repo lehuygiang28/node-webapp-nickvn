@@ -18,7 +18,7 @@ function renewUserSessionMiddleware(_req, res, next) {
             .then((user) => {
                 if (!user) {
                     logger.info('User in session not found, destroy wrong session!');
-                    _req.session.User.destroy();
+                    _req.session.destroy();
                     return next();
                 } else {
                     // logger.info(`Get session completed userName: ${_req.session.User.userName}`);
