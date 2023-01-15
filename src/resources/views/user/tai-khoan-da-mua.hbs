@@ -3,6 +3,82 @@
 <!-- BEGIN: PAGE CONTAINER -->
 <div class='c-layout-page'>
     <!-- BEGIN: PAGE CONTENT -->
+
+    {{#if sessionFlash.success}}
+        <div
+            class='modal fade'
+            id='successModal'
+            role='dialog'
+            style='display: block;'
+            tabindex='-1'
+        >
+            <div class='modal-dialog' role='document'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>×</span>
+                        </button>
+                        <h4 class='modal-title'>Thông báo</h4>
+                    </div>
+                    <div class='modal-body text-success'>{{sessionFlash.success}}</div>
+                    <div class='modal-footer'>
+                        <button
+                            type='button'
+                            class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4'
+                            data-dismiss='modal'
+                        >Xác nhận</button>
+                        <button
+                            type='button'
+                            class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+                            data-dismiss='modal'
+                        >Đóng</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <script>
+            var a = $('#successModal'); a.ready(function () { a.modal('show'); });
+        </script>
+
+    {{else if sessionFlash.error}}
+        <div
+            class='modal fade'
+            id='errorModal'
+            role='dialog'
+            style='display: none;'
+            aria-hidden='true'
+        >
+            <div class='modal-dialog' role='document'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>×</span>
+                        </button>
+                        <h4 class='modal-title'>Thông báo</h4>
+                    </div>
+
+                    <div class='modal-body text-danger'>{{sessionFlash.error}}</div>
+                    <div class='modal-footer'>
+                        <button
+                            type='button'
+                            class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-red-4'
+                            data-dismiss='modal'
+                        >Xác nhận</button>
+                        <button
+                            type='button'
+                            class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+                            data-dismiss='modal'
+                        >Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var a = $('#errorModal'); a.ready(function () { a.modal('show'); });
+        </script>
+    {{/if}}
+
     <div class='m-t-20 visible-sm visible-xs'></div>
 
     <div class='c-layout-page' style='margin-top: 20px;'>
@@ -265,7 +341,7 @@
                                             <td>{{vndCurrency this.price}}</td>
                                             <td>
                                                 <a
-                                                    href='/user/gui-lai-tai-khoan?game={{this.game.id}}&prid={{this.product_id}}&puid={{@root.puchased_id}}'
+                                                    href='/user/gui-lai-tai-khoan?game={{this.game.id}}&prid={{this._id}}&puid={{@root.puchased_id}}'
                                                     class='btn btn-info text-info'
                                                 >
                                                     Gửi lại tài khoản</a>

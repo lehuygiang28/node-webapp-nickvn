@@ -1,12 +1,11 @@
 const User = require('../models/User');
+const UserPuchased = require('../models/UserPuchased');
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose');
 const { sendMessage } = require('../../util/flash-message');
 const { logger } = require('../../util/logger');
 const { createHash, compare } = require('../../util/bcrypt');
-const UserPuchased = require('../models/UserPuchased');
 const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer');
-
-// const bcrypt = require('bcrypt');
+const sanitize = require('mongo-sanitize');
 
 class UserController {
     // GET /user
@@ -129,54 +128,66 @@ class UserController {
     }
 
     // GET /user/gui-lai-tai-khoan
-    resendAccount(_req, res, next) {
+    async resendAccount(_req, res, next) {
+        let userPuchased;
+        let productFound;
+        let userEmail;
+
         if (!_req.session.User) {
             return res.redirect(303, '/dang-nhap');
         }
 
-        UserPuchased.findOne({ _id: _req.query.puid })
-            .populate('product_puchased.product')
-            .then((puchased) => {
-                if (!puchased) {
-                    sendMessage(_req, res, next, { error: 'Không tìm thấy tài khoản' });
-                    return res.redirect(303, '/user/tai-khoan-da-mua');
-                }
-                let foundProduct = null;
-                puchased.product_puchased.forEach((productPuchased) => {
-                    return (foundProduct = productPuchased.product.find(
-                        (prod) => prod.product_id === Number(_req.query.prid),
-                    ));
-                });
+        if (!_req.query.puid || !_req.query.prid) {
+            sendMessage(_req, res, next, { error: 'Không tìm thấy tài khoản' });
+            return res.redirect(303, '/user/tai-khoan-da-mua');
+        }
 
-                User.findById(puchased.user_id)
-                    .select('email')
-                    .then((userEmail) => {
-                        if (!userEmail) {
-                            return res.redirect(303, '/dang-nhap');
-                        }
-                        // Send email to user
-                        sendMailCallback(
-                            userEmail,
-                            {
-                                subject: 'Thông tin tài khoản đã mua tại giang.cf',
-                                title: `Bạn đang yêu cầu gửi lại thông tin tài khoản #${foundProduct.product_id} trên website`,
-                                context: `Tài khoản: ${foundProduct.userName}<br>Mật khẩu: ${foundProduct.password}`,
-                            },
-                            () => {
-                                logger.info(`Mail sent successful to: ${userEmail}`);
-                            },
-                        );
-                    })
-                    .then(() => {
-                        sendMessage(_req, res, next, {
-                            success: 'Thông tin tài khoản đã được gửi về email của bạn!',
-                        });
-                        return res.redirect(302, '/user/tai-khoan-da-mua');
-                    })
-                    .catch(next);
-            })
-            .catch(next);
-        // res.json(_req.query)
+        let query = {
+            _id: sanitize(_req.query.puid),
+            'product_puchased.product': sanitize(_req.query.prid),
+        };
+        userPuchased = await UserPuchased.findOne(query).populate('product_puchased.product');
+        if (!userPuchased) {
+            sendMessage(_req, res, next, { error: 'Không tìm thấy tài khoản' });
+            return res.redirect(303, '/user/tai-khoan-da-mua');
+        }
+
+        userPuchased.product_puchased.forEach((prod_puchased) => {
+            prod_puchased.product.forEach((product) => {
+                if (product._id.toString() === sanitize(_req.query.prid).toString()) {
+                    productFound = product;
+                    return product;
+                }
+            });
+        });
+
+        if (!productFound) {
+            sendMessage(_req, res, next, { error: 'Không tìm thấy tài khoản' });
+            return res.redirect(303, '/user/tai-khoan-da-mua');
+        }
+
+        // Get user's email address
+        userEmail = await User.findById(userPuchased.user_id).select('email');
+
+        // Create the email context
+        let emailContext = {
+            subject: 'Thông tin tài khoản đã mua tại giang.cf',
+            title: `Thông tin tài khoản đã mua #${productFound.product_id}`,
+            heading: `Bạn đang yêu cầu gửi lại thông tin tài khoản ${productFound.game.name} mã số #${productFound.product_id}!`,
+            userName: productFound.userName.toString(),
+            password: productFound.password.toString()
+        };
+
+        let isSendMail = await sendMail(userEmail, emailContext);
+        if (!isSendMail) {
+            sendMessage(_req, res, next, { error: 'Có lỗi xảy ra vui lòng thử lại sau!' });
+            return res.redirect(303, '/user/tai-khoan-da-mua');
+        }
+
+        sendMessage(_req, res, next, {
+            success: 'Thông tin tài khoản đã được gửi về email của bạn!!',
+        });
+        return res.redirect(302, '/user/tai-khoan-da-mua');
     }
 }
 
