@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-var LienMinh = require('./LienMinh');
+const LienMinh = require('./LienMinh');
 
 const UserPuchasedSchema = new Schema({
     user_id: { type: mongoose.Types.ObjectId, required: true },

@@ -186,8 +186,7 @@ class SiteController {
                     updateAt: Date.now(),
                     lastLogin: Date.now(),
                 });
-                console.log(user);
-                user = await user.save();
+                await user.save();
                 return res.status(201).render('sites/dang-ky', { success: 'Đăng ký thành công' });
             })
             .catch(next);

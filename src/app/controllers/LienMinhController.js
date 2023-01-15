@@ -8,6 +8,7 @@ const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer'
 const { logger } = require('../../util/logger');
 const { resetProductAndUserPuchased, generateLienMinh } = require('../../util/project_extensions');
 const { chiaLayPhanNguyen, chiaLayPhanDu } = require('../../util/caculator');
+const sanitize = require('mongo-sanitize');
 
 class LienMinhController {
     // GET /lien-minh
@@ -35,51 +36,65 @@ class LienMinhController {
 
         // logger.debug(res.locals._sort);
 
-        try {
-            if (_req.query.hasOwnProperty('_sort')) {
-                if (_req.query.product_id) {
-                    let productFound = await LienMinh.findOne({
-                        product_id: _req.query.product_id,
-                    });
-                    // logger.warn(productFound);
+        await isSort(res);
+        await paginationFn(res);
 
-                    if (productFound) {
-                        return res.redirect(`/lien-minh/acc-lien-minh/${acc.product_id}`);
-                    }
-
-                    sendMessage(_req, res, next, {
-                        error: `Không tìm thấy tài khoản số #${_req.query.product_id}`,
-                    });
-                    return res.render(`lien-minh/acc-lien-minh`, {
-                        pagination: pagination,
-                    });
-                }
-
-                if (res.locals._sort.search_key) {
-                    let search_key = res.locals._sort.search_key.toString();
-                    Object.assign(filter, {
-                        $or: [
-                            { rank: { $regex: search_key, $options: 'i' } },
-                            { status_account: { $regex: search_key, $options: 'i' } },
-                            { note: { $regex: search_key, $options: 'i' } },
-                        ],
-                    });
-                }
-
-                if (res.locals._sort.min && res.locals._sort.max) {
-                    Object.assign(filter, {
-                        price: { $gte: res.locals._sort.min, $lte: res.locals._sort.max },
-                    });
-                }
-
-                if (res.locals._sort.sort_price) {
-                    // optionsQuery.sort = { price: res.locals._sort.sort_price };
-                    Object.assign(optionsQuery, {
-                        sort: { price: res.locals._sort.sort_price },
-                    });
-                }
+        async function isSort(res) {
+            if (!_req.query.hasOwnProperty('_sort')) {
+                return;
             }
 
+            // Search with product id
+            if (_req.query.product_id) {
+                let productFound = await LienMinh.findOne({
+                    product_id: sanitize(_req.query.product_id),
+                });
+
+                if (productFound) {
+                    return res.redirect(`/lien-minh/acc-lien-minh/${acc.product_id}`);
+                }
+
+                sendMessage(_req, res, next, {
+                    error: `Không tìm thấy tài khoản số #${_req.query.product_id}`,
+                });
+                return res.render(`lien-minh/acc-lien-minh`, {
+                    pagination: paginationFn,
+                });
+            }
+
+            // Search with keywords => add keywords to filter
+            if (res.locals._sort.search_key) {
+                let search_key = sanitize(res.locals._sort.search_key).toString();
+                Object.assign(filter, {
+                    $or: [
+                        { rank: { $regex: search_key, $options: 'i' } },
+                        { status_account: { $regex: search_key, $options: 'i' } },
+                        { note: { $regex: search_key, $options: 'i' } },
+                    ],
+                });
+            }
+
+            // Search with price => add min, max price to filter
+            if (res.locals._sort.min && res.locals._sort.max) {
+                Object.assign(filter, {
+                    price: {
+                        $gte: sanitize(res.locals._sort.min),
+                        $lte: sanitize(res.locals._sort.max),
+                    },
+                });
+            }
+
+            // Sort by price [ascc, desc] => add this to filter
+            if (res.locals._sort.sort_price) {
+                // optionsQuery.sort = { price: res.locals._sort.sort_price };
+                Object.assign(optionsQuery, {
+                    sort: { price: sanitize(res.locals._sort.sort_price) },
+                });
+            }
+        }
+
+        async function paginationFn(res) {
+            // Get data for pagination
             let page = res.locals._pagination.page; // page to get
             let perPage = res.locals._pagination.per_page; // page size
             let skip =
@@ -87,35 +102,33 @@ class LienMinhController {
                 res.locals._pagination.per_page;
             let totalPages;
             let totalDocuments;
-
             let countDocuments = await LienMinh.countDocuments(filter);
-            if (countDocuments) {
-                totalDocuments = countDocuments;
-                totalPages =
-                    chiaLayPhanNguyen(totalDocuments, perPage) +
-                    (chiaLayPhanDu(totalDocuments, perPage) > 0 ? 1 : 0);
 
-                if (page > totalPages) {
-                    page = totalPages;
-                    return res.redirect(`/lien-minh/acc-lien-minh?page=${page}`);
-                }
-
-                // logger.debug(`Page: ${page} - Per Page: ${perPage} - Skip: ${skip} - Total page: ${totalPages} - Total Docs: ${totalDocuments}`);
-
-                Object.assign(optionsQuery, {
-                    skip: skip,
-                    limit: perPage,
-                });
-
-                Object.assign(pagination, {
-                    page: page,
-                    pageCount: totalPages,
-                });
+            if (!countDocuments) {
+                return res.render('lien-minh/acc-lien-minh');
             }
-        } catch (error) {
-            logger.error(err);
-            next();
+
+            totalDocuments = countDocuments;
+            totalPages =
+                chiaLayPhanNguyen(totalDocuments, perPage) +
+                (chiaLayPhanDu(totalDocuments, perPage) > 0 ? 1 : 0);
+
+            if (page > totalPages) {
+                page = totalPages;
+                return res.redirect(`/lien-minh/acc-lien-minh?page=${page}`);
+            }
+
+            Object.assign(optionsQuery, {
+                skip: skip,
+                limit: perPage,
+            });
+
+            Object.assign(pagination, {
+                page: page,
+                pageCount: totalPages,
+            });
         }
+
         // Get all accounts lien-minh in the database
         lienMinhQuery = LienMinh.find(filter, {}, optionsQuery);
         await lienMinhQuery
