@@ -36,10 +36,10 @@ class LienMinhController {
 
         // logger.debug(res.locals._sort);
 
-        await isSort(res);
+        await sortAndSearch(res);
         await paginationFn(res);
 
-        async function isSort(res) {
+        async function sortAndSearch(res) {
             if (!_req.query.hasOwnProperty('_sort')) {
                 return;
             }
