@@ -59,11 +59,9 @@ class SiteController {
             .then((user) => {
                 if (!user) {
                     logger.warn('User not found');
-                    return res
-                        .status(401)
-                        .render('sites/dang-nhap', {
-                            error: 'Tài khoản hoặc mật khẩu không chính xác !',
-                        });
+                    return res.status(401).render('sites/dang-nhap', {
+                        error: 'Tài khoản hoặc mật khẩu không chính xác !',
+                    });
                 }
                 // Check password with hash function
                 bcrypt.compare(
@@ -74,11 +72,9 @@ class SiteController {
                             throw new Error(err);
                         } else if (!result) {
                             logger.info('Dang nhap that bai: ');
-                            return res
-                                .status(401)
-                                .render('sites/dang-nhap', {
-                                    error: 'Tài khoản hoặc mật khẩu không chính xác !',
-                                });
+                            return res.status(401).render('sites/dang-nhap', {
+                                error: 'Tài khoản hoặc mật khẩu không chính xác !',
+                            });
                         }
                         logger.info('Dang nhap thanh cong: ');
                         // Set the session value
@@ -167,24 +163,11 @@ class SiteController {
                 }
 
                 user = new User({
-                    _id: mongoose.Types.ObjectId(),
                     userName: _req.body.userName,
                     email: _req.body.email,
                     phone: _req.body.phone,
                     password: createHash(_req.body.password),
                     fullName: _req.body.userName + _req.body.phone,
-                    money: 0,
-                    role: {
-                        role_id: 3,
-                        role_name_vi: 'Thành Viên',
-                        role_name_en: 'Member',
-                    },
-                    status: 'active',
-                    avatar: 'arr',
-                    note: 'note',
-                    createAt: Date.now(),
-                    updateAt: Date.now(),
-                    lastLogin: Date.now(),
                 });
                 await user.save();
                 return res.status(201).render('sites/dang-ky', { success: 'Đăng ký thành công' });

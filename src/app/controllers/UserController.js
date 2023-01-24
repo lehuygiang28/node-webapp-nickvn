@@ -175,7 +175,7 @@ class UserController {
             title: `Thông tin tài khoản đã mua #${productFound.product_id}`,
             heading: `Bạn đang yêu cầu gửi lại thông tin tài khoản ${productFound.game.name} mã số #${productFound.product_id}!`,
             userName: productFound.userName.toString(),
-            password: productFound.password.toString()
+            password: productFound.password.toString(),
         };
 
         let isSendMail = await sendMail(userEmail, emailContext);

@@ -28,7 +28,7 @@
 
                             </div>
                             <div class='news_title'>
-                                <a href='/lien-minh/{{slug}}'>{{categoryName}}</a>
+                                <a href='/lien-minh/{{slug}}'>{{category_name}}</a>
                             </div>
 
                             <div class='news_description'>
@@ -44,7 +44,7 @@
                                         <div class='view'>
                                             <a
                                                 href='/lien-minh/{{slug}}'
-                                                title='{{categoryName}}'
+                                                title='{{category_name}}'
                                             >Xem tất cả</a>
                                         </div>
                                     </div>
@@ -94,10 +94,16 @@
 <script>
     $(document).ready(function () { $('.load-modal').each(function (index, elem) {
     $(elem).unbind().click(function (e) { e.preventDefault(); e.preventDefault(); var curModal =
-    $('#LoadModal'); curModal.find('.modal-content').html("<div class=\"loader\" style=\"text-align:
-    center\"><img src=\"/assets/frontend/images/loader.gif\" style=\"width: 50px;height:
-    50px;\"></div>"); curModal.modal('show').find('.modal-content').load($(elem).attr('rel')); });
-    }); });
+    $('#LoadModal');
+    curModal.find('.modal-content')
+    .html("<div class='loader' style='text-align:center'><img src='/assets/frontend/images/loader.gif' style='width: 50px;height:50px;'></div>");
+    
+    curModal.modal('show')
+    .find('.modal-content')
+    .load($(elem).attr('rel'));
+    });
+    });
+    });
 </script>
 
 <!-- END: PAGE CONTAINER -->

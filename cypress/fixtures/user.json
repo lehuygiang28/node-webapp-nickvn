@@ -1,0 +1,28 @@
+{
+    "user_without_money": {
+        "username": "tester",
+        "password": "$2b$05$Dn01n45.5nfOMg5PoMK68e06/.3onOq4yyxYCpqGOLTVglP/E.TA6",
+        "money": 0,
+        "email": "1hour.lehuygiang28@gmail.com",
+        "phone": "0123456789",
+        "fullName": "tester",
+        "role": {
+            "role_id": 3,
+            "role_name_vi": "Thành Viên",
+            "role_name_en": "Member"
+        }
+    },
+    "user_with_money": {
+        "username": "tester1",
+        "password": "$2b$05$Dn01n45.5nfOMg5PoMK68e06/.3onOq4yyxYCpqGOLTVglP/E.TA6",
+        "money": 100000000,
+        "email": "gianghuytv28@gmail.com",
+        "phone": "0123456780",
+        "fullName": "tester1",
+        "role": {
+            "role_id": 3,
+            "role_name_vi": "Thành Viên",
+            "role_name_en": "Member"
+        }
+    }
+}

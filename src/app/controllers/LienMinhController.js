@@ -13,7 +13,7 @@ const sanitize = require('mongo-sanitize');
 class LienMinhController {
     // GET /lien-minh
     showLienMinhCategory(_req, res, next) {
-        // generateLienMinh(30, next);
+        generateLienMinh(30, next);
         // resetProductAndUserPuchased();
 
         // Get all the categories with keywords 'lien-minh'
@@ -108,10 +108,15 @@ class LienMinhController {
                 return res.render('lien-minh/acc-lien-minh');
             }
 
-            totalDocuments = countDocuments;
+            totalDocuments = !countDocuments ? 0 : countDocuments;
+
             totalPages =
                 chiaLayPhanNguyen(totalDocuments, perPage) +
                 (chiaLayPhanDu(totalDocuments, perPage) > 0 ? 1 : 0);
+
+            if (totalDocuments === 0) {
+                totalPages = 0;
+            }
 
             if (page > totalPages) {
                 page = totalPages;

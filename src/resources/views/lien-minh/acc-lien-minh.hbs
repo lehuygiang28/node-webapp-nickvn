@@ -423,6 +423,8 @@
 
         </div>
 
+        {{!-- Paginate if have result --}}
+        {{#if lienminhs}}
         {{!-- Pagination section: START --}}
         <nav aria-label="Page navigation" class="text-right">
             <ul class="pagination">
@@ -442,6 +444,7 @@
             </ul>
         </nav>
         {{!-- Pagination section: END --}}
+        {{/if}}
 
         <div class="tab-vertical tutorial_area">
             <div class="panel-group" id="accordion">

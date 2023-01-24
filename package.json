@@ -9,7 +9,9 @@
     "devtest": "cross-env NODE_ENV=test nodemon --inspect .\\bin\\www.js",
     "test": "cross-env NODE_ENV=test mocha --recursive --exit .\\test\\index.test.js --no-deprecation",
     "testb": "cross-env NODE_ENV=test mocha --recursive --exit .\\test\\index.test.js node --trace-deprecation",
-    "testc": "cross-env NODE_ENV=test mocha .\\test\\index.test.js"
+    "testc": "cross-env NODE_ENV=test mocha .\\test\\index.test.js",
+    "testsv": "cross-env NODE_ENV=test nodemon --inspect .\\bin\\www.js",
+    "cypress": "cypress open"
   },
   "repository": {
     "type": "git",
@@ -48,7 +50,7 @@
     "chai": "^4.3.7",
     "chai-http": "^4.3.0",
     "cross-env": "^7.0.3",
-    "mock-session": "^0.0.5",
+    "cypress": "^12.3.0",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.20"
   }
