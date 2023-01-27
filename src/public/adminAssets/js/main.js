@@ -2,7 +2,7 @@
     'use strict';
 
     // Spinner
-    var spinner = function () {
+    let spinner = function () {
         setTimeout(function () {
             if ($('#spinner').length > 0) {
                 $('#spinner').removeClass('show');
@@ -11,31 +11,45 @@
     };
     spinner();
 
-    $('.navbar-nav a.nav-item').click(function () {
-        $(this).find('.active').removeClass('active');
-        $(this).addClass('active');
-    });
+    // $('.navbar-nav a.nav-item').on('click', function () {
+    //     $(this).find('.active').removeClass('active');
+    //     $(this).addClass('active');
+    // });
 
-    // var clas = document.getElementsByClassName(".navbar-nav a.nav-item");
-    // clas.find('.active')
-    // var acti = document.getElementById("Products");
-    // acti.innerHTML.addClass('active');
+    let addActiveStatus = function () {
+        // Get current url
+        let currentUrl = window.location.href;
+        currentUrl = currentUrl.split('/')[4];
+
+        // Get a elements
+        let itemNavbar = document.querySelectorAll(
+            '.navbar.bg-secondary.navbar-dark > div.navbar-nav.w-100 > a.nav-item.nav-link',
+        );
+        itemNavbar.forEach((item) => {
+            let itemHref = item.href.split('/')[4];
+            // If current selected equals element, add class 'active'
+            if (currentUrl === itemHref) {
+                item.classList.add('active');
+            }
+        });
+    };
+    addActiveStatus();
 
     // Back to top button
-    $(window).scroll(function () {
+    $(window).on('scroll', function () {
         if ($(this).scrollTop() > 300) {
             $('.back-to-top').fadeIn('slow');
         } else {
             $('.back-to-top').fadeOut('slow');
         }
     });
-    $('.back-to-top').click(function () {
+    $('.back-to-top').on('click', function () {
         $('html, body').animate({ scrollTop: 0 }, 1500, 'easeInOutExpo');
         return false;
     });
 
     // Sidebar Toggler
-    $('.sidebar-toggler').click(function () {
+    $('.sidebar-toggler').on('click', function () {
         $('.sidebar, .content').toggleClass('open');
         return false;
     });
@@ -124,8 +138,8 @@
     //   });
 
     // Single Line Chart
-    var ctx3 = $('#line-chart').get(0).getContext('2d');
-    var myChart3 = new Chart(ctx3, {
+    let ctx3 = $('#line-chart').get(0).getContext('2d');
+    let myChart3 = new Chart(ctx3, {
         type: 'line',
         data: {
             labels: [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
@@ -144,8 +158,8 @@
     });
 
     // Single Bar Chart
-    var ctx4 = $('#bar-chart').get(0).getContext('2d');
-    var myChart4 = new Chart(ctx4, {
+    let ctx4 = $('#bar-chart').get(0).getContext('2d');
+    let myChart4 = new Chart(ctx4, {
         type: 'bar',
         data: {
             labels: ['Italy', 'France', 'Spain', 'USA', 'Argentina'],
@@ -168,8 +182,8 @@
     });
 
     // Pie Chart
-    var ctx5 = $('#pie-chart').get(0).getContext('2d');
-    var myChart5 = new Chart(ctx5, {
+    let ctx5 = $('#pie-chart').get(0).getContext('2d');
+    let myChart5 = new Chart(ctx5, {
         type: 'pie',
         data: {
             labels: ['Italy', 'France', 'Spain', 'USA', 'Argentina'],
@@ -192,8 +206,8 @@
     });
 
     // Doughnut Chart
-    var ctx6 = $('#doughnut-chart').get(0).getContext('2d');
-    var myChart6 = new Chart(ctx6, {
+    let ctx6 = $('#doughnut-chart').get(0).getContext('2d');
+    let myChart6 = new Chart(ctx6, {
         type: 'doughnut',
         data: {
             labels: ['Italy', 'France', 'Spain', 'USA', 'Argentina'],
