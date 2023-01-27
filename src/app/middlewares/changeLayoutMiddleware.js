@@ -20,6 +20,10 @@ function changeLayoutMiddleware(_req, res, next) {
             case 'admin':
                 res.locals.layout = { layout: 'admin' };
                 break;
+            case 'user_test':
+                break;
+            case 'example_test':
+                break;
             default:
                 break;
         }
