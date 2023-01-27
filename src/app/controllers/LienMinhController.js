@@ -13,7 +13,7 @@ const sanitize = require('mongo-sanitize');
 class LienMinhController {
     // GET /lien-minh
     showLienMinhCategory(_req, res, next) {
-        generateLienMinh(30, next);
+        // generateLienMinh(30, next);
         // resetProductAndUserPuchased();
 
         // Get all the categories with keywords 'lien-minh'
@@ -148,9 +148,6 @@ class LienMinhController {
 
     // Get lien-minh/acc-lien-minh/:id
     showChiTietAccLienMinhCategory(_req, res, next) {
-        // console.log('ID Slug: ' + _req.params.id);
-        // logger.info('ID Slug: ' + _req.params.id);
-
         if (!res.locals.id) {
             return res.redirect(303, '/lien-minh/acc-lien-minh');
         }
@@ -162,9 +159,19 @@ class LienMinhController {
                     // sendMessage(_req, res, next, { error: true, message: 'Can not find product!' });
                     return res.redirect(303, '/lien-minh/acc-lien-minh');
                 } else {
-                    return res.render('lien-minh/chi-tiet-acc-lien-minh', {
-                        acc: mongooseToObject(acc),
-                    });
+                    // Find 4 products related to product
+                    LienMinh.find({
+                        status_id: acc.status_id,
+                        rank: acc.rank,
+                        note: { $regex: '.*' + acc.note + '.*' },
+                    })
+                        .limit(4)
+                        .then((accRelated) => {
+                            return res.render('lien-minh/chi-tiet-acc-lien-minh', {
+                                acc: mongooseToObject(acc),
+                                accRelated: mutipleMongooseToObject(accRelated),
+                            });
+                        });
                 }
             })
             .catch(next);
