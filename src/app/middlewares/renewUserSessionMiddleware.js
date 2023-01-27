@@ -28,9 +28,9 @@ function renewUserSessionMiddleware(_req, res, next) {
                         money: user.money,
                         role: user.role,
                     });
-                    logger.info(
-                        `Renew User session completed userName: ${_req.session.User.userName}`,
-                    );
+                    // logger.info(
+                    //     `Renew User session completed userName: ${_req.session.User.userName}`,
+                    // );
                 }
             })
             .catch(next);
