@@ -1,5 +1,3 @@
-const { resetDatabase } = require('../util/reset_database');
-
 /**
  * Load from home page to buy product without login
  */
@@ -71,17 +69,58 @@ const { resetDatabase } = require('../util/reset_database');
  */
 describe('Home page load to buy with login', function () {
     before(() => {
-        resetDatabase();
-        cy.fixture('user').then((user) => {
-            this.user = user;
+        cy.fixture('user')
+            .then((user) => {
+                this.user = user;
+            })
+            .then((user) => {
+                let userMoney = {};
+                let userNoMoney = {};
+
+                Object.assign(userMoney, user.user_with_money);
+                userMoney.password_type = undefined;
+
+                Object.assign(userNoMoney, user.user_without_money);
+                userNoMoney.password_type = undefined;
+
+                const userInserts = [userMoney, userNoMoney];
+                cy.dropCollection('userpuchaseds').then((res) => {
+                    cy.log(res);
+                });
+                cy.dropCollection('users').then((res) => {
+                    cy.log(res);
+                });
+                cy.dropCollection('lienminhs').then((res) => {
+                    cy.log(res);
+                });
+                cy.createCollection('users');
+                cy.insertMany(userInserts, { collection: 'users' }).then((res) => {
+                    console.log(res);
+                });
+            });
+
+        cy.fixture('lienminhs').then(async (product) => {
+            await cy.dropCollection('lienminhs', { failSilently: true }).then((res) => {
+                cy.log(res);
+            });
+            await cy.dropCollection('counters', { failSilently: true }).then((res) => {
+                cy.log(res);
+            });
+            await cy.createCollection('counters');
+            await cy.createCollection('lienminhs');
+            let counter = {
+                id: 'product_id',
+                reference_value: null,
+                seq: 1,
+            };
+            await cy.insertOne(counter, { collection: 'counters' });
+            await cy.insertOne(product, { collection: 'lienminhs' });
         });
     });
 
     it('passes home page', () => {
         cy.visit('/');
     });
-
-    //username: test
 
     it('pass login page', () => {
         cy.visit('/');
@@ -110,10 +149,10 @@ describe('Home page load to buy with login', function () {
         cy.contains('.nav.navbar-nav.c-theme-nav>li>a', 'Đăng nhập').click();
 
         cy.get('.login-box-body.box-custom>form>div>input[name="username"]').type(
-            this.user.user_without_money.username,
+            this.user.user_without_money.userName,
         );
         cy.get('.login-box-body.box-custom>form>div>input[name="password"]').type(
-            this.user.user_without_money.password,
+            this.user.user_without_money.password_type,
         );
         cy.get('.login-box-body.box-custom>form>div>div>button[type="submit"]').click();
         cy.contains('.classWithPad>div>h2>a', 'Liên Minh Huyền Thoại').click();
@@ -133,12 +172,12 @@ describe('Home page load to buy with login', function () {
         cy.contains('.modal-content>form>.modal-footer>button', 'Đóng').click();
 
         cy.contains('Mua ngay').click();
-        cy.contains('Thông tin tài khoản #1');
+        cy.contains('Chi tiết tài khoản #1');
         cy.contains(
             'Bạn không đủ số dư để mua tài khoản này. Bạn hãy click vào nút nạp thẻ để nạp thêm và mua tài khoản.',
         );
-        cy.contains('.nav.nav-justified > li > a', 'Tài khoản').click();
-        cy.contains('Chi tiết tài khoản #1');
+        cy.contains('.nav.nav-justified > li > a', 'Thanh toán').click();
+        cy.contains('Thông tin tài khoản #1');
 
         cy.contains('.modal-content>form>.modal-footer>a', 'Nạp thẻ cào').click();
         cy.url().should('include', 'nap-the');
@@ -150,33 +189,36 @@ describe('Home page load to buy with login', function () {
         cy.contains('.nav.navbar-nav.c-theme-nav>li>a', 'Đăng nhập').click();
 
         cy.get('.login-box-body.box-custom>form>div>input[name="username"]').type(
-            this.user.user_with_money.username,
+            this.user.user_with_money.userName,
         );
         cy.get('.login-box-body.box-custom>form>div>input[name="password"]').type(
-            this.user.user_with_money.password,
+            this.user.user_with_money.password_type,
         );
         cy.get('.login-box-body.box-custom>form>div>div>button[type="submit"]').click();
-        cy.contains('div.classWithPad>div>h2>a', 'Liên Minh Huyền Thoại').click({ force: true });
+        cy.contains('.classWithPad>div>h2>a', 'Liên Minh Huyền Thoại').click({force: true});
 
-        cy.contains('div.classWithPad > .news_title > a', 'Liên Minh').click({ force: true });
+        cy.contains('div.classWithPad > .news_title > a', 'Liên Minh').click({force: true});
 
         cy.contains('div.classWithPad > .image > a', 'MS: 1').click();
 
-        cy.contains('Mua ngay').click({ force: true });
-        cy.contains('Thông tin tài khoản #1');
-        cy.contains('Xác nhận mua ngay');
-        cy.contains('.nav.nav-justified > li > a', 'Tài khoản').click();
-        cy.contains('Chi tiết tài khoản #1');
-
-        cy.contains('.modal-content>form>.modal-footer>button', 'Đóng').click();
-
-        cy.contains('Mua ngay').click();
+        cy.contains('.c-product-header>.c-content-title-1>button','Mua ngay').click({force: true});
         cy.contains('Xác nhận mua ngay');
         cy.contains('Chi tiết tài khoản #1');
         cy.contains('.nav.nav-justified > li > a', 'Thanh toán').click();
         cy.contains('Thông tin tài khoản #1');
 
-        // cy.contains('.modal-content>form>.modal-footer>a', 'Xác nhận mua ngay').click();
-        // cy.contains('Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn!');
+        cy.contains('.modal-content>form>.modal-footer>button', 'Đóng').click();
+
+        cy.contains('Mua ngay').click();
+        cy.contains('Thông tin tài khoản #1');
+        cy.contains('Xác nhận mua ngay');
+        cy.contains('.nav.nav-justified > li > a', 'Tài khoản').click();
+        cy.contains('Chi tiết tài khoản #1');
+
+
+        cy.contains('.modal-content>form>.modal-footer>a', 'Xác nhận mua ngay').click();
+        cy.contains('Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn!');
+
+        cy.contains('div.modal-dialog>div.modal-footer>button', 'Xác nhận').click();
     });
 });

@@ -1,28 +1,36 @@
 {
     "user_without_money": {
-        "username": "tester",
-        "password": "$2b$05$Dn01n45.5nfOMg5PoMK68e06/.3onOq4yyxYCpqGOLTVglP/E.TA6",
+        "userName": "tester",
+        "password": "$2b$05$CQ/nsEj2Fp/7/6tkBnog0.l1PWv2NRM/t5bp2aoOfibOrdHGgtOhe",
+        "password_type": "1",
+        "email": "gianghuytv28@gmail.com",
+        "phone": "0981354821",
+        "fullName": "tester_no_money",
         "money": 0,
-        "email": "1hour.lehuygiang28@gmail.com",
-        "phone": "0123456789",
-        "fullName": "tester",
         "role": {
             "role_id": 3,
             "role_name_vi": "Thành Viên",
             "role_name_en": "Member"
-        }
+        },
+        "status": "active",
+        "avatar": "https://i.imgur.com/uZR1t5V.jpg",
+        "note": "No comment!"
     },
     "user_with_money": {
-        "username": "tester1",
-        "password": "$2b$05$Dn01n45.5nfOMg5PoMK68e06/.3onOq4yyxYCpqGOLTVglP/E.TA6",
+        "userName": "tester1",
+        "password": "$2b$05$sznyEKaeU//MDFSEjYKlxufbwq7civGgSD.DfhnC6SLIbB57iAoTi",
+        "password_type": "1",
+        "email": "1hour.lehuygiang28@gmail.com",
+        "phone": "0981354835",
+        "fullName": "tester_money",
         "money": 100000000,
-        "email": "gianghuytv28@gmail.com",
-        "phone": "0123456780",
-        "fullName": "tester1",
         "role": {
             "role_id": 3,
             "role_name_vi": "Thành Viên",
             "role_name_en": "Member"
-        }
+        },
+        "status": "active",
+        "avatar": "https://i.imgur.com/uZR1t5V.jpg",
+        "note": "No comment!"
     }
 }

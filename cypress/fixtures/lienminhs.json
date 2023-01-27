@@ -1,0 +1,24 @@
+{
+    "userName": "acc_TEST",
+    "password": "pass_acc_test",
+    "game": {
+        "name": "Liên Minh"
+    },
+    "price": 500000,
+    "champ": 101,
+    "skin": 102,
+    "rank": "Thách Đấu",
+    "status_account": "Trắng thông tin",
+    "note": "note",
+    "status_id": 1005,
+    "status_name": "Chưa bán",
+    "img": [
+        "/img/default-thumb2.webp",
+        "/img/CM9q56zAnM_1632531413.jpg",
+        "/img/pTWDgoJQuz_1632531413.jpg",
+        "/img/zwRCsqMtyo_1632531413.jpg",
+        "/img/HLpEr7ojZm_1632531414.jpg",
+        "/img/xxuC88f0h9_1632531414.jpg"
+    ],
+    "product_id": 1
+}

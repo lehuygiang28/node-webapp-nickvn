@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('express-flash');
 require('dotenv').config({
-    path: path.resolve(__dirname, `./config/env/${process.env.NODE_ENV}.env`),
+    path: path.resolve(__dirname, `./config/env/.env.${process.env.NODE_ENV}`),
 });
 const favicon = require('serve-favicon');
 const { sortMiddleware } = require('./app/middlewares/sortMiddleware');
