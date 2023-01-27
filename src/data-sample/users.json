@@ -1,0 +1,105 @@
+[
+    {
+        "_id": {
+            "$oid": "63cfc9ba0c5b1ebd871c1120"
+        },
+        "userName": "tester1",
+        "password": "$2b$05$sznyEKaeU//MDFSEjYKlxufbwq7civGgSD.DfhnC6SLIbB57iAoTi",
+        "email": "1hour.lehuygiang28@gmail.com",
+        "phone": "0981354835",
+        "fullName": "tester_money",
+        "money": 99500000,
+        "role": {
+            "role_id": 3,
+            "role_name_vi": "Thành Viên",
+            "role_name_en": "Member"
+        },
+        "status": "active",
+        "avatar": "https://i.imgur.com/uZR1t5V.jpg",
+        "note": "No comment!",
+        "createdAt": {
+            "$date": {
+                "$numberLong": "1674561963325"
+            }
+        },
+        "lastLogin": {
+            "$date": {
+                "$numberLong": "1674562160349"
+            }
+        },
+        "updatedAt": {
+            "$date": {
+                "$numberLong": "1674562171317"
+            }
+        }
+    },
+    {
+        "_id": {
+            "$oid": "63cfc9ba0c5b1ebd871c1121"
+        },
+        "userName": "tester",
+        "password": "$2b$05$CQ/nsEj2Fp/7/6tkBnog0.l1PWv2NRM/t5bp2aoOfibOrdHGgtOhe",
+        "email": "gianghuytv28@gmail.com",
+        "phone": "0981354821",
+        "fullName": "tester_no_money",
+        "money": 0,
+        "role": {
+            "role_id": 3,
+            "role_name_vi": "Thành Viên",
+            "role_name_en": "Member"
+        },
+        "status": "active",
+        "avatar": "https://i.imgur.com/uZR1t5V.jpg",
+        "note": "No comment!",
+        "createdAt": {
+            "$date": {
+                "$numberLong": "1674561963325"
+            }
+        },
+        "lastLogin": {
+            "$date": {
+                "$numberLong": "1674562093616"
+            }
+        },
+        "updatedAt": {
+            "$date": {
+                "$numberLong": "1674561963325"
+            }
+        }
+    },
+    {
+        "_id": {
+            "$oid": "63c50ada756ef15dce531e93"
+        },
+        "userName": "admin",
+        "password": "$2b$05$boLG.OKla1TUt7HM25FBieNy3tB4gXt8OToUR7RGzYgAh.u3gXOZu",
+        "email": "admin@giang.cf",
+        "phone": "0981354832",
+        "fullName": "admin",
+        "money": 80252125,
+        "role": {
+            "role_id": 1,
+            "role_name_vi": "Quản trị viên",
+            "role_name_en": "Admin"
+        },
+        "status": "active",
+        "avatar": "https://i.imgur.com/uZR1t5V.jpg",
+        "note": "No comment!",
+        "createdAt": {
+            "$date": {
+                "$numberLong": "1673857433272"
+            }
+        },
+        "updatedAt": {
+            "$date": {
+                "$numberLong": "1674561384583"
+            }
+        },
+        "lastLogin": {
+            "$date": {
+                "$numberLong": "1674560928079"
+            }
+        },
+        "__v": 0
+    }
+]

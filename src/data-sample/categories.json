@@ -1,0 +1,53 @@
+[{
+    "_id": {
+      "$oid": "63cfc56fd9c7858c935fe6ee"
+    },
+    "category_name": "Liên Minh Huyền Thoại",
+    "total": 10023,
+    "img": "/img/lien-minh.gif",
+    "slug": "lien-minh",
+    "categories": [
+      {
+        "category_name": "Liên Minh",
+        "img": "/img/lien-minh.gif",
+        "slug": "acc-lien-minh",
+        "total": 5012,
+        "visible": "show"
+      },
+      {
+        "category_name": "Thử Vận May Liên Minh",
+        "img": "/img/thu-van-may.gif",
+        "slug": "thu-van-may",
+        "total": 512,
+        "visible": "show"
+      }
+    ],
+    "visible": "show"
+  },{
+    "_id": {
+      "$oid": "63cfc57bd9c7858c935fe6f1"
+    },
+    "category_name": "Liên Quân Mobile",
+    "total": 1023,
+    "img": "/img/lien-quan.gif",
+    "slug": "lien-quan",
+    "visible": "show"
+  },{
+    "_id": {
+      "$oid": "63cfc582d9c7858c935fe6f4"
+    },
+    "category_name": "Ninja School Online",
+    "total": 1023,
+    "img": "/img/ninja.gif",
+    "slug": "ninja",
+    "visible": "show"
+  },{
+    "_id": {
+      "$oid": "63cfc58cd9c7858c935fe6f7"
+    },
+    "category_name": "Fifa Online 4",
+    "total": 1023,
+    "img": "/img/fo4.gif",
+    "slug": "fo4",
+    "visible": "show"
+  }]
