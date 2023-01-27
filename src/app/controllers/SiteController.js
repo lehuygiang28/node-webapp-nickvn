@@ -11,7 +11,7 @@ class SiteController {
     // GET homepage
     // GET /
     home(_req, res, next) {
-        Category.find({})
+        Category.find({visible: 'show'})
             .then((categories) => {
                 res.render('sites/home', {
                     categories: mutipleMongooseToObject(categories),

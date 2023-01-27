@@ -17,19 +17,20 @@ class LienMinhController {
         // resetProductAndUserPuchased();
 
         // Get all the categories with keywords 'lien-minh'
-        Category.findOne({ slug: _req.originalUrl.split('/').slice(1).join('/') })
-            .then((category) =>
+        Category.findOne({ slug: _req.originalUrl.split('/').slice(1).join('/'), visible: 'show' })
+            .then((category) => {
+                let categoryArr = category.categories.filter((c) => c.visible === 'show');
                 res.render('lien-minh/lien-minh', {
-                    category: mongooseToObject(category),
-                }),
-            )
+                    category: mutipleMongooseToObject(categoryArr),
+                });
+            })
             .catch(next);
     }
 
     // GET /lien-minh/acc-lien-minh
     // GET /lien-minh/acc-lien-minh?_paginate&page=:page
     async showAccLienMinh(_req, res, next) {
-        let filter = { status_id: 1005 };
+        let filter = { status_id: 1005, visible: 'show' };
         let optionsQuery = {};
         let pagination = { page: 1, pageCount: 1 };
         let lienMinhQuery;
@@ -152,8 +153,9 @@ class LienMinhController {
             return res.redirect(303, '/lien-minh/acc-lien-minh');
         }
 
+        let filter = { product_id: res.locals.id, status_id: 1005, visible: 'show' };
         // Find product by product_id, if exists return product to view, otherwise return error msg
-        LienMinh.findOne({ product_id: res.locals.id, status_id: 1005 })
+        LienMinh.findOne(filter)
             .then((acc) => {
                 if (!acc) {
                     // sendMessage(_req, res, next, { error: true, message: 'Can not find product!' });
@@ -191,7 +193,7 @@ class LienMinhController {
             let puchasedFound;
 
             // Find the product by product id
-            lienMinhFound = await LienMinh.findOne({ product_id: _req.params.id });
+            lienMinhFound = await LienMinh.findOne({ product_id: _req.params.id, visible: 'show' });
             // If not exists or product is SOLD
             if (!lienMinhFound || lienMinhFound.status_id === 1006) {
                 // Send the error message to views

@@ -21,6 +21,7 @@ const LienMinhSchema = new Schema(
         status_id: { type: Number, minLength: 1 },
         status_name: { type: String, minLength: 1 },
         img: { type: Array, minLength: 1 },
+        visible: { type: String, enum: ['show', 'hide'], default: 'show' },
     },
     {
         product_id: false,

@@ -17,13 +17,12 @@
 
         <div class='row row-flex row-flex-safari game-list item-list'>
 
-            {{#with category.categories as |cate|}}
-                {{#each cate}}
+                {{#each category}}
                     <div class='col-sm-3 col-xs-6'>
                         <div class='classWithPad'>
                             <div class='image'>
-                                <a href='/lien-minh/{{slug}}'>
-                                    <img src='{{img}}' alt='{{img}}' />
+                                <a href='/lien-minh/{{this.slug}}'>
+                                    <img src='{{this.img}}' alt='{{img}}' />
                                 </a>
 
                             </div>
@@ -54,7 +53,6 @@
                         </div>
                     </div>
                 {{/each}}
-            {{/with}}
 
         </div>
 
