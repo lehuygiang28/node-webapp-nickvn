@@ -3,19 +3,22 @@ const { sendMessage } = require('../../util/flash-message');
 const { createHash, compare, compareSync } = require('../../util/bcrypt');
 const { logger } = require('../../util/logger');
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose');
+const DISABLE_LAYOUT_PARTIALS = { layout: 'admin_without_partials' };
 
 class AdminController {
+    // Get /admin/
     index(req, res, next) {
+        const ENABLE_LAYOUT_PARTIALS = res.locals.layout;
         if (!req.session.adminUser) {
             return res.redirect('/admin/login');
         }
 
-        res.render('admin', res.locals.layout);
+        res.render('admin', ENABLE_LAYOUT_PARTIALS);
     }
 
+    // GET /admin/login
     async login(req, res, next) {
         let adminUser;
-        let layoutWithoutPartials = { layout: 'admin_without_partials' };
         if (req.session.adminUser) {
             adminUser = await User.findById(req.session.adminUser._id).catch(next);
             if (adminUser) {
@@ -32,21 +35,21 @@ class AdminController {
                         sendMessage(req, res, next, {
                             error: 'Tài khoản hoặc mật khẩu không chính xác!',
                         });
-                        return res.render('admin/login', layoutWithoutPartials);
+                        return res.render('admin/login', DISABLE_LAYOUT_PARTIALS);
                 }
             }
 
             sendMessage(req, res, next, {
                 error: 'Tài khoản hoặc mật khẩu không chính xác!',
             });
-            res.render('admin/login', layoutWithoutPartials);
+            res.render('admin/login', DISABLE_LAYOUT_PARTIALS);
         }
 
-        res.render('admin/login', layoutWithoutPartials);
+        res.render('admin/login', DISABLE_LAYOUT_PARTIALS);
     }
 
+    // POST /admin/login
     async loginSolvers(req, res, next) {
-        let layoutWithoutPartials = { layout: 'admin_without_partials' };
         let userInput = {
             userName: req.body.user_name.toString() || undefined,
             password: req.body.password.toString() || undefined,
@@ -57,7 +60,7 @@ class AdminController {
             sendMessage(req, res, next, {
                 error: 'Tài khoản hoặc mật khẩu không chính xác!',
             });
-            return res.status(401).render('admin/login', layoutWithoutPartials);
+            return res.status(401).render('admin/login', DISABLE_LAYOUT_PARTIALS);
         }
 
         // Find the user in database with username
@@ -66,7 +69,7 @@ class AdminController {
             sendMessage(req, res, next, {
                 error: 'Tài khoản hoặc mật khẩu không chính xác!',
             });
-            return res.status(401).render('admin/login', layoutWithoutPartials);
+            return res.status(401).render('admin/login', DISABLE_LAYOUT_PARTIALS);
         }
 
         // Compare the input password with the user's password
@@ -74,7 +77,7 @@ class AdminController {
             sendMessage(req, res, next, {
                 error: 'Tài khoản hoặc mật khẩu không chính xác!',
             });
-            return res.status(401).render('admin/login', layoutWithoutPartials);
+            return res.status(401).render('admin/login', DISABLE_LAYOUT_PARTIALS);
         }
 
         /***
@@ -98,9 +101,10 @@ class AdminController {
         sendMessage(req, res, next, {
             error: 'Tài khoản hoặc mật khẩu không chính xác!',
         });
-        return res.status(401).render('admin/login', layoutWithoutPartials);
+        return res.status(401).render('admin/login', DISABLE_LAYOUT_PARTIALS);
     }
 
+    // GET /admin/signout
     signout(req, res, next) {
         try {
             if (req.session.adminUser) {
@@ -116,6 +120,12 @@ class AdminController {
             res.redirect(302, '/admin');
             next();
         }
+    }
+
+    //GET /admin/categories
+    categories(req, res, next) {
+        const ENABLE_LAYOUT_PARTIALS = res.locals.layout;
+        res.render('admin/categories/categories', ENABLE_LAYOUT_PARTIALS);
     }
 }
 
