@@ -149,34 +149,35 @@ class LienMinhController {
 
     // Get lien-minh/acc-lien-minh/:id
     showChiTietAccLienMinhCategory(_req, res, next) {
+        // res.locals.id is valid on middleware
         if (!res.locals.id) {
             return res.redirect(303, '/lien-minh/acc-lien-minh');
-        }
-
-        let filter = { product_id: res.locals.id, status_id: 1005, visible: 'show' };
-        // Find product by product_id, if exists return product to view, otherwise return error msg
-        LienMinh.findOne(filter)
-            .then((acc) => {
-                if (!acc) {
-                    // sendMessage(_req, res, next, { error: true, message: 'Can not find product!' });
-                    return res.redirect(303, '/lien-minh/acc-lien-minh');
-                } else {
-                    // Find 4 products related to product
-                    LienMinh.find({
-                        status_id: acc.status_id,
-                        rank: acc.rank,
-                        note: { $regex: '.*' + acc.note + '.*' },
-                    })
-                        .limit(4)
-                        .then((accRelated) => {
-                            return res.render('lien-minh/chi-tiet-acc-lien-minh', {
-                                acc: mongooseToObject(acc),
-                                accRelated: mutipleMongooseToObject(accRelated),
+        } else {
+            let filter = { product_id: res.locals.id, status_id: 1005, visible: 'show' };
+            // Find product by product_id, if exists return product to view, otherwise return error msg
+            LienMinh.findOne(filter)
+                .then((acc) => {
+                    if (!acc) {
+                        sendMessage(_req, res, next, { error: true, message: 'Can not find product!' });
+                        return res.redirect(303, '/lien-minh/acc-lien-minh');
+                    } else {
+                        // Find 4 products related to product
+                        return LienMinh.find({
+                            status_id: acc.status_id,
+                            rank: acc.rank,
+                            note: { $regex: '.*' + acc.note + '.*' },
+                        })
+                            .limit(4)
+                            .then((accRelated) => {
+                                return res.render('lien-minh/chi-tiet-acc-lien-minh', {
+                                    acc: mongooseToObject(acc),
+                                    accRelated: mutipleMongooseToObject(accRelated),
+                                });
                             });
-                        });
-                }
-            })
-            .catch(next);
+                    }
+                })
+                .catch(next);
+        }
     }
 
     // Get lien-minh/acc-lien-minh/:id/buy

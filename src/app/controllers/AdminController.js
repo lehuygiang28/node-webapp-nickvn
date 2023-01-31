@@ -12,8 +12,7 @@ class AdminController {
         if (!req.session.adminUser) {
             return res.redirect('/admin/login');
         }
-
-        res.render('admin', ENABLE_LAYOUT_PARTIALS);
+        return res.render('admin', { ENABLE_LAYOUT_PARTIALS });
     }
 
     // GET /admin/login
