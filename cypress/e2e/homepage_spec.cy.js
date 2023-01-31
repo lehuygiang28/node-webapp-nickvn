@@ -85,7 +85,7 @@ describe('Home page load to buy with login', function () {
             const userInserts = [userMoney, userNoMoney];
 
             cy.dropCollection('users').then((res) => {
-                cy.log(res);
+                // cy.log(res);
                 cy.createCollection('users');
                 cy.insertMany(userInserts, { collection: 'users' }).then((res) => {
                     console.log(res);
@@ -96,11 +96,11 @@ describe('Home page load to buy with login', function () {
         cy.fixture('lienminhs').then(async (product) => {
             await Promise.all([
                 cy.dropCollection('lienminhs', { failSilently: true }),
-                cy.dropCollection('counters', { failSilently: true }),
+                cy.dropCollection('counters'),
             ]).then(async ([res1, res2]) => {
                 //Destructuring the array of responses from the promises into two variables res1 and res2  respectively
-                cy.log(res1); //Logging the response of the first promise i-e dropCollection('lienminhs')
-                cy.log(res2); //Logging the response of the second promise i-e dropCollection('counters')
+                // cy.log(res1); //Logging the response of the first promise i-e dropCollection('lienminhs')
+                // cy.log(res2); //Logging the response of the second promise i-e dropCollection('counters')
 
                 await Promise.all([
                     cy.createCollection('counters'),
@@ -222,9 +222,11 @@ describe('Home page load to buy with login', function () {
         cy.contains('.nav.nav-justified > li > a', 'Tài khoản').click();
         cy.contains('Chi tiết tài khoản #1');
 
+        cy.wait(5000);
         cy.contains('.modal-content>form>.modal-footer>a', 'Xác nhận mua ngay').click();
         cy.contains('Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn!');
 
-        cy.contains('div.modal-dialog>div.modal-footer>button', 'Xác nhận').click();
+        cy.contains('div.modal-dialog>div.modal-content>div.modal-footer>button', 'Xác nhận').click();
+        cy.contains('.nav.navbar-nav.c-theme-nav>li>a[href="/user/thong-tin-tai-khoan"]', 'tester1 - 99.500.000 VND')
     });
 });
