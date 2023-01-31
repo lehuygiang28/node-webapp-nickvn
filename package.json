@@ -11,8 +11,7 @@
     "testb": "cross-env NODE_ENV=test mocha --recursive --exit .\\test\\index.test.js node --trace-deprecation",
     "testc": "cross-env NODE_ENV=test mocha .\\test\\index.test.js",
     "testsv": "cross-env NODE_ENV=test nodemon --inspect .\\bin\\www.js",
-    "cypress": "cross-env NODE_ENV=test cypress open",
-    "a": "npm run testsv && npm run cypress"
+    "cypress": "cross-env NODE_ENV=test cypress open"
   },
   "repository": {
     "type": "git",
