@@ -4,13 +4,13 @@
   "description": "A web application project reimplementation for a certain web.",
   "main": "app.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node .\\bin\\www.js",
-    "dev": "cross-env NODE_ENV=development nodemon --inspect .\\bin\\www.js",
-    "devtest": "cross-env NODE_ENV=test nodemon --inspect .\\bin\\www.js",
-    "test": "cross-env NODE_ENV=test mocha --recursive --exit .\\test\\index.test.js --no-deprecation",
-    "testb": "cross-env NODE_ENV=test mocha --recursive --exit .\\test\\index.test.js node --trace-deprecation",
-    "testc": "cross-env NODE_ENV=test mocha .\\test\\index.test.js",
-    "testsv": "cross-env NODE_ENV=test nodemon --inspect .\\bin\\www.js",
+    "start": "cross-env NODE_ENV=production node ./bin/www",
+    "dev": "cross-env NODE_ENV=development nodemon --inspect ./bin/www",
+    "devtest": "cross-env NODE_ENV=test nodemon --inspect ./bin/www",
+    "test": "cross-env NODE_ENV=test mocha --recursive --exit ./test/index.test.js --no-deprecation",
+    "testb": "cross-env NODE_ENV=test mocha --recursive --exit ./test/index.test.js node --trace-deprecation",
+    "testc": "cross-env NODE_ENV=test mocha ./test/index.test.js",
+    "testsv": "cross-env NODE_ENV=test nodemon --inspect ./bin/www",
     "cypress": "cross-env NODE_ENV=test cypress open"
   },
   "repository": {
