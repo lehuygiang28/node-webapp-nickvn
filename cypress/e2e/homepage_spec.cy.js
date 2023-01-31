@@ -125,14 +125,14 @@ describe('Home page load to buy with login', function () {
     it('pass login page', () => {
         cy.visit('/');
 
-        cy.contains('.nav.navbar-nav.c-theme-nav>li>a', 'Đăng nhập').click();
+        cy.contains('.nav.navbar-nav.c-theme-nav>li>a[href="/login"]', 'Đăng nhập').click();
         cy.url().should('include', 'dang-nhap');
     });
 
     it('pass login form', () => {
         cy.visit('/');
 
-        cy.contains('.nav.navbar-nav.c-theme-nav>li>a', 'Đăng nhập').click();
+        cy.contains('.nav.navbar-nav.c-theme-nav>li>a[href="/login"]', 'Đăng nhập').click();
 
         cy.get('.login-box-body.box-custom>form>div>input[name="username"]').type('tester');
         cy.get('.login-box-body.box-custom>form>div>input[name="password"]').type('1');
@@ -146,7 +146,7 @@ describe('Home page load to buy with login', function () {
     it('pass to product details page and click buy without money', () => {
         cy.visit('/');
 
-        cy.contains('.nav.navbar-nav.c-theme-nav>li>a', 'Đăng nhập').click();
+        cy.contains('.nav.navbar-nav.c-theme-nav>li>a[href="/login"]', 'Đăng nhập').click();
 
         cy.get('.login-box-body.box-custom>form>div>input[name="username"]').type(
             this.user.user_without_money.userName,
@@ -186,7 +186,7 @@ describe('Home page load to buy with login', function () {
     it('pass to product details page and click buy with money', () => {
         cy.visit('/');
 
-        cy.contains('.nav.navbar-nav.c-theme-nav>li>a', 'Đăng nhập').click();
+        cy.contains('.nav.navbar-nav.c-theme-nav>li>a[href="/login"]', 'Đăng nhập').click();
 
         cy.get('.login-box-body.box-custom>form>div>input[name="username"]').type(
             this.user.user_with_money.userName,
