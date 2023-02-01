@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Category = require('../models/Category');
 const { sendMessage } = require('../../util/flash-message');
 const { createHash, compare, compareSync } = require('../../util/bcrypt');
 const { logger } = require('../../util/logger');
@@ -12,7 +13,7 @@ class AdminController {
         if (!req.session.adminUser) {
             return res.redirect('/admin/login');
         }
-        return res.render('admin', { ENABLE_LAYOUT_PARTIALS });
+        return res.render('admin', ENABLE_LAYOUT_PARTIALS);
     }
 
     // GET /admin/login
@@ -122,9 +123,20 @@ class AdminController {
     }
 
     //GET /admin/categories
-    categories(req, res, next) {
+    async categories(req, res, next) {
         const ENABLE_LAYOUT_PARTIALS = res.locals.layout;
-        res.render('admin/categories/categories', ENABLE_LAYOUT_PARTIALS);
+        let allCategories = await Category.find({ visible: 'show' });
+
+        if (!allCategories) {
+            return res.render('admin/categories/cate_menu', ENABLE_LAYOUT_PARTIALS);
+        }
+
+        return res.render(
+            'admin/categories/cate_menu',
+            Object.assign(ENABLE_LAYOUT_PARTIALS, {
+                allCategories: mutipleMongooseToObject(allCategories),
+            }),
+        );
     }
 }
 

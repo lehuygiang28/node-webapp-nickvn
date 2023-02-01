@@ -1,0 +1,55 @@
+<script> document.title = `Category Managaments - ${document.title}`; </script>
+
+<div class='container-fluid pt-4 px-4'>
+<div id="visible"></div>
+    <div class='col-sm-12 col-xl-12'>
+        <div class='bg-secondary rounded h-100 p-4'>
+            <div class='d-flex align-items-center justify-content-between mb-4'>
+
+                <h6 class='mb-4'>Categories Table</h6>
+            </div>
+            <div class='table-responsive'>
+                <table class='table table-striped' id='table'>
+                    <thead>
+                        <tr>
+                            <th scope='col'>Category Title</th>
+                            <th scope='col'>Total</th>
+                            <th scope='col'>Image</th>
+                            <th scope='col'>&nbsp;</th>
+                            <th scope='col'>&nbsp;</th>
+                            <th scope='col'>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each allCategories}}
+                            <tr>
+                                <td>{{this.category_name}}</td>
+                                <td>{{this.total}}</td>
+                                <td><img
+                                        src='{{this.img}}'
+                                        alt='{{this.category_name}}'
+                                        srcset='{{this.img}}'
+                                        style='max-width: 150px;max-height:150px'
+                                    /></td>
+                                <td>
+                                    <a href='' class='btn btn-outline-info'>Details</a>
+                                </td>
+                                <td>
+                                    <a href='' class='btn btn-outline-light'>Edit</a>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn" id="{{this._id}}" style="font-size: x-large;" onclick="showOrHide('{{this._id}}');">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+</script>
