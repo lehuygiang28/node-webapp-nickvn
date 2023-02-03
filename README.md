@@ -6,11 +6,15 @@
 * Logout
 * Register
 * Show product
+* Sort and search product
+* Buy product
+* Send product to email
 
 ### Admin
 
 ### Guest
 * Show product
+* Sort and search product
 
 ## Description
 * **Name Project: _Shop Acc Game_**
