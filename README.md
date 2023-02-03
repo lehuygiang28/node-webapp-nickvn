@@ -1,7 +1,7 @@
 # Node-webapp-nickvn
 ## Current features
 
-### Member
+### Features
 * Login
 * Logout
 * Register
@@ -9,12 +9,6 @@
 * Sort and search product
 * Buy product
 * Send product to email
-
-### Admin
-
-### Guest
-* Show product
-* Sort and search product
 
 ## Description
 * **Name Project: _Shop Acc Game_**
