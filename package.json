@@ -50,7 +50,7 @@
     "chai": "^4.3.7",
     "chai-http": "^4.3.0",
     "cross-env": "^7.0.3",
-    "cypress": "^12.3.0",
+    "cypress": "^12.5.1",
     "cypress-mongodb": "^5.1.4",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.20"
