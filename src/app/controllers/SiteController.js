@@ -6,12 +6,20 @@ const { createHash } = require('../../util/bcrypt');
 const bcrypt = require('bcrypt');
 const { logger } = require('../../util/logger');
 const mongoose = require('mongoose');
+const {
+    resetProductAndUserPuchased,
+    generateLienMinh,
+    generateCategories,
+} = require('../../util/project_extensions');
 
 class SiteController {
     // GET homepage
     // GET /
     home(_req, res, next) {
-        Category.find({visible: 'show'})
+        // generateCategories();
+        // generateLienMinh(30, next);
+        // resetProductAndUserPuchased();
+        Category.find({ visible: 'show' })
             .then((categories) => {
                 res.render('sites/home', {
                     categories: mutipleMongooseToObject(categories),

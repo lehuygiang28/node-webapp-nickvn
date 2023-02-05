@@ -1,5 +1,6 @@
 const LienMinh = require('../app/models/LienMinh');
 const UserPuchased = require('../app/models/UserPuchased');
+const Category = require('../app/models/Category');
 const { logger } = require('./logger');
 
 /**
@@ -136,7 +137,35 @@ function resetProductAndUserPuchased(next) {
         })
         .catch(next);
 }
+
+/**
+ * Generates first of 4 categories if category is null or empty 
+ * @param next Call next middleware
+ */
+async function generateCategories() {
+    const isNotNull = await Category.countDocuments();
+
+    if (isNotNull) {
+        return;
+    }
+
+    const fs = require('fs');
+    const path = require('path');
+
+    let data = fs.readFileSync(path.resolve(__dirname, `data.json`), 'utf8');
+    let objectVar = JSON.parse(data);
+
+    for(const element of objectVar.category) {
+        let category = new Category();
+        Object.assign(category, element);
+        category.total = Number(element.total);
+        await Category.insertMany(category);
+    }
+
+}
+
 module.exports = {
     resetProductAndUserPuchased,
     generateLienMinh,
+    generateCategories,
 };

@@ -6,16 +6,12 @@ const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoo
 const { sendMessage } = require('../../util/flash-message');
 const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer');
 const { logger } = require('../../util/logger');
-const { resetProductAndUserPuchased, generateLienMinh } = require('../../util/project_extensions');
 const { chiaLayPhanNguyen, chiaLayPhanDu } = require('../../util/caculator');
 const sanitize = require('mongo-sanitize');
 
 class LienMinhController {
     // GET /lien-minh
     showLienMinhCategory(_req, res, next) {
-        // generateLienMinh(30, next);
-        // resetProductAndUserPuchased();
-
         // Get all the categories with keywords 'lien-minh'
         Category.findOne({ slug: _req.originalUrl.split('/').slice(1).join('/'), visible: 'show' })
             .then((category) => {
@@ -35,7 +31,6 @@ class LienMinhController {
         let pagination = { page: 1, pageCount: 1 };
         let lienMinhQuery;
 
-        // logger.debug(res.locals._sort);
 
         await sortAndSearch(res);
         await paginationFn(res);
@@ -106,7 +101,7 @@ class LienMinhController {
             let countDocuments = await LienMinh.countDocuments(filter);
 
             if (!countDocuments) {
-                return res.render('lien-minh/acc-lien-minh');
+                return;
             }
 
             totalDocuments = !countDocuments ? 0 : countDocuments;
@@ -139,7 +134,7 @@ class LienMinhController {
         lienMinhQuery = LienMinh.find(filter, {}, optionsQuery);
         await lienMinhQuery
             .then((lienminhs) => {
-                return res.render('lien-minh/acc-lien-minh', {
+                res.render('lien-minh/acc-lien-minh', {
                     lienminhs: mutipleMongooseToObject(lienminhs),
                     pagination: pagination,
                 });

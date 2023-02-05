@@ -17,7 +17,6 @@ const { changeLayoutMiddleware } = require('./app/middlewares/changeLayoutMiddle
 const { formattedDate24h } = require('./util/formatDate');
 
 const app = express();
-// const port = process.env.NODE_PORT || 8081;
 
 const route = require('./routes/index.route');
 const db = require('./config/db');
@@ -31,7 +30,7 @@ app.use(favicon(path.resolve(__dirname, 'public', 'favicon.ico')));
 // Use static folder
 app.use(express.static(path.resolve(__dirname, 'public')));
 
-// Middleware
+// Middleware to get data from client to request.body
 app.use(
     express.urlencoded({
         extended: true,
