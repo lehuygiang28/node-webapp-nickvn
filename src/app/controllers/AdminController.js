@@ -4,47 +4,18 @@ const { sendMessage } = require('../../util/flash-message');
 const { createHash, compare, compareSync } = require('../../util/bcrypt');
 const { logger } = require('../../util/logger');
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose');
+const { chiaLayPhanNguyen, chiaLayPhanDu } = require('../../util/caculator');
 const DISABLE_LAYOUT_PARTIALS = { layout: 'admin_without_partials' };
 
 class AdminController {
     // Get /admin/
     index(req, res, next) {
         const ENABLE_LAYOUT_PARTIALS = res.locals.layout;
-        if (!req.session.adminUser) {
-            return res.redirect('/admin/login');
-        }
         return res.render('admin', ENABLE_LAYOUT_PARTIALS);
     }
 
     // GET /admin/login
-    async login(req, res, next) {
-        let adminUser;
-        if (req.session.adminUser) {
-            adminUser = await User.findById(req.session.adminUser._id).catch(next);
-            if (adminUser) {
-                switch (adminUser.role.role_name_en.toLowerCase()) {
-                    case 'admin':
-                    case 'moderator':
-                        Object.assign(req.session.adminUser, {
-                            _id: adminUser._id,
-                            userName: adminUser.userName,
-                            role: adminUser.role.role_name_en,
-                        });
-                        return res.redirect('/admin');
-                    case 'member':
-                        sendMessage(req, res, next, {
-                            error: 'Tài khoản hoặc mật khẩu không chính xác!',
-                        });
-                        return res.render('admin/login', DISABLE_LAYOUT_PARTIALS);
-                }
-            }
-
-            sendMessage(req, res, next, {
-                error: 'Tài khoản hoặc mật khẩu không chính xác!',
-            });
-            res.render('admin/login', DISABLE_LAYOUT_PARTIALS);
-        }
-
+    login(req, res, next) {
         res.render('admin/login', DISABLE_LAYOUT_PARTIALS);
     }
 
@@ -125,19 +96,75 @@ class AdminController {
     //GET /admin/categories
     async categories(req, res, next) {
         const ENABLE_LAYOUT_PARTIALS = res.locals.layout;
-        let allCategories = await Category.find({ visible: 'show' });
+        let filter = {};
+        let optionsQuery = {};
+        let pagination = { page: 1, pageCount: 1 };
 
-        if (!allCategories) {
-            return res.render('admin/categories/cate_menu', ENABLE_LAYOUT_PARTIALS);
+        await paginationFn(res);
+
+        async function paginationFn(res, perPage = 20) {
+            // Get data for pagination
+            let page = res.locals._pagination.page; // page to get
+            // let perPage = 6; // page size
+            let skip = perPage * res.locals._pagination.page - perPage;
+            let totalPages;
+            let totalDocuments;
+            let countDocuments = await Category.countDocuments(filter);
+
+            if (!countDocuments) {
+                return;
+            }
+
+            totalDocuments = !countDocuments ? 0 : countDocuments;
+
+            totalPages =
+                chiaLayPhanNguyen(totalDocuments, perPage) +
+                (chiaLayPhanDu(totalDocuments, perPage) > 0 ? 1 : 0);
+
+            if (totalDocuments === 0) {
+                totalPages = 0;
+            }
+
+            if (page > totalPages) {
+                page = totalPages;
+                return res.redirect(`/admin/categories?page=${page}`);
+            }
+
+            Object.assign(optionsQuery, {
+                skip: skip,
+                limit: perPage,
+            });
+
+            Object.assign(pagination, {
+                page: page,
+                pageCount: totalPages,
+            });
         }
+        console.log(pagination);
 
-        return res.render(
-            'admin/categories/cate_menu',
-            Object.assign(ENABLE_LAYOUT_PARTIALS, {
-                allCategories: mutipleMongooseToObject(allCategories),
-            }),
-        );
+        Category.find(filter, {}, optionsQuery).then((data) => {
+            res.render(
+                'admin/categories/cate_menu',
+                Object.assign(ENABLE_LAYOUT_PARTIALS, {
+                    allCategories: mutipleMongooseToObject(data),
+                    pagination: pagination,
+                }),
+            );
+        });
     }
+
+    addCategory(req, res, next) {
+        res.render('admin/categories/add_cate', res.locals.layout);
+    }
+
+    detailCategory(req, res, next) {
+        res.render('admin/categories/details_cate', res.locals.layout);
+    }
+
+    editCategory(req, res, next) {
+        res.render('admin/categories/edit_cate', res.locals.layout);
+    }
+
 }
 
 module.exports = new AdminController();
