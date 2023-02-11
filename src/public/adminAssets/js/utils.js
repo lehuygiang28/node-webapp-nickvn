@@ -73,7 +73,7 @@ function createModal({ title = '', caseVisible, _id = '' }) {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeClick('${_id}');">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="acceptModal();">Save changes</button>
+                            <button type="button" class="btn btn-primary" onclick="acceptModal('show', '${_id}');">Save changes</button>
                         </div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@ function createModal({ title = '', caseVisible, _id = '' }) {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeClick('${_id}')">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="acceptModal();">Save changes</button>
+                            <button type="button" class="btn btn-primary" onclick="acceptModal('hide', '${_id}');">Save changes</button>
                         </div>
                         </div>
                     </div>
@@ -103,6 +103,25 @@ function createModal({ title = '', caseVisible, _id = '' }) {
         main.appendChild(modal);
     }
 }
+
+function acceptModal(data, _id) {
+    $.ajax({
+        type: 'POST',
+        url: `/admin/categories/${_id}/change-visible`,
+        data: { visible: data },
+        success: function (response) {
+            if (response.success) console.log(response.success);
+            document.getElementById('visibleButton').remove();
+            document.querySelector('.modal-backdrop.fade.show').remove();
+        },
+        error: function (response) {
+            if (response.error) console.log(response.error);
+            document.getElementById('visibleButton').remove();
+            document.querySelector('.modal-backdrop.fade.show').remove();
+        },
+    });
+}
+
 /**
  * Categories utilities END
  */

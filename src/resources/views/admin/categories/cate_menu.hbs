@@ -3,10 +3,9 @@
 <div class='container-fluid pt-4 px-4'>
 <div id="visible"></div>
     <div class='col-sm-12 col-xl-12'>
-        <div class='bg-secondary rounded h-100 p-4'>
-            <div class='d-flex align-items-center justify-content-between mb-4'>
-
-                <h6 class='mb-4'>Categories Table</h6>
+        <div class='bg-secondary rounded p-4'>
+            <div class='d-flex align-items-center justify-content-between mb-2'>
+                <h6>Categories Table</h6>
             </div>
             <div class='table-responsive'>
                 <table class='table table-striped' id='table'>
@@ -14,10 +13,9 @@
                         <tr>
                             <th scope='col'>Category Title</th>
                             <th scope='col'>Total</th>
-                            <th scope='col'>Image</th>
                             <th scope='col'>&nbsp;</th>
                             <th scope='col'>&nbsp;</th>
-                            <th scope='col'>&nbsp;</th>
+                            <th scope='col'><a href="/admin/categories/add" class="btn btn-outline-info ">Add</a></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -25,31 +23,48 @@
                             <tr>
                                 <td>{{this.category_name}}</td>
                                 <td>{{this.total}}</td>
-                                <td><img
-                                        src='{{this.img}}'
-                                        alt='{{this.category_name}}'
-                                        srcset='{{this.img}}'
-                                        style='max-width: 150px;max-height:150px'
-                                    /></td>
                                 <td>
-                                    <a href='' class='btn btn-outline-info'>Details</a>
+                                    <a href='/admin/categories/{{this._id}}/view' class='btn btn-outline-info btn-sm'>Details</a>
                                 </td>
                                 <td>
-                                    <a href='' class='btn btn-outline-light'>Edit</a>
+                                    <a href='/admin/categories/{{this._id}}/edit' class='btn btn-outline-light btn-sm'>Edit</a>
                                 </td>
                                 <td>
                                     <button type="button" class="btn" id="{{this._id}}" style="font-size: x-large;" onclick="showOrHide('{{this._id}}');">
+                                        {{#ifCondition this.visible "===" 'show'}}
                                         <i class="fas fa-eye"></i>
+                                        {{else}}
+                                        <i class="fas fa-eye-slash"></i>
+                                        {{/ifCondition}}
                                     </button>
                             </tr>
                         {{/each}}
                     </tbody>
                 </table>
             </div>
+            
+        {{!-- Paginate if have result --}}
+        {{#if allCategories}}
+        {{!-- Pagination section: START --}}
+        <nav aria-label="Page navigation">
+            <ul class="pagination pagination-sm justify-content-center">
+
+                {{#paginate pagination type="previous"}}
+                    <li {{#if disabled}}class="page-item disabled" {{else}} class="page-item" {{/if}}><a class="page-link" href="?page={{n}}">&lsaquo;</a>
+                    </li>
+                {{/paginate}}
+                {{#paginate pagination type="middle" limit="7"}}
+                    <li {{#if active}}class="page-item active" {{else}} class="page-item" {{/if}}><a class="page-link" href="?page={{n}}">{{n}}</a></li>
+                {{/paginate}}
+                {{#paginate pagination type="next"}}
+                    <li {{#if disabled}}class="page-item disabled" {{else}} class="page-item" {{/if}}><a class="page-link" href="?page={{n}}">&rsaquo;</a>
+                    </li>
+                {{/paginate}}
+
+            </ul>
+        </nav>
+        {{!-- Pagination section: END --}}
+        {{/if}}
         </div>
     </div>
 </div>
-
-<script>
-
-</script>

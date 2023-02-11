@@ -140,7 +140,6 @@ class AdminController {
                 pageCount: totalPages,
             });
         }
-        console.log(pagination);
 
         Category.find(filter, {}, optionsQuery).then((data) => {
             res.render(
@@ -153,18 +152,41 @@ class AdminController {
         });
     }
 
+    // GET /admin/categories/add
     addCategory(req, res, next) {
         res.render('admin/categories/add_cate', res.locals.layout);
     }
 
+    // GET /admin/categories/:id/view
     detailCategory(req, res, next) {
         res.render('admin/categories/details_cate', res.locals.layout);
     }
 
+    // GET /admin/categories/:id/edit
     editCategory(req, res, next) {
         res.render('admin/categories/edit_cate', res.locals.layout);
     }
 
+    // GET /admin/categories/:id/change-visible
+    async changeCateVisible(req, res, next) {
+        let _id = req.params.id;
+        let visible = req.body.visible;
+        let visibleCase = ['show', 'hide'];
+
+        if (!_id) {
+            return res.json({ error: 'Not Found Id' });
+        }
+
+        if(!visibleCase.includes(visible)) {
+            return res.json({ error: 'Invalid visible value' });
+        }
+
+        let cateFound = await Category.findByIdAndUpdate(_id, {visible: visible});
+        console.log(cateFound);
+        console.log(`Visible choose: ${visible}`);
+
+        return res.json({ success: 'Visible has been changed' });
+    }
 }
 
 module.exports = new AdminController();
