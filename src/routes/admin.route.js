@@ -3,6 +3,7 @@ const router = express.Router();
 
 const AdminControllers = require('../app/controllers/AdminController');
 
+router.post('/categories/:id/change-visible', AdminControllers.changeCateVisible);
 router.get('/categories/:id/edit', AdminControllers.editCategory);
 router.get('/categories/:id/view', AdminControllers.detailCategory);
 router.get('/categories/add', AdminControllers.addCategory);
