@@ -167,7 +167,7 @@ class AdminController {
         res.render('admin/categories/edit_cate', res.locals.layout);
     }
 
-    // GET /admin/categories/:id/change-visible
+    // POST /admin/categories/:id/change-visible
     async changeCateVisible(req, res, next) {
         let _id = req.params.id;
         let visible = req.body.visible;
