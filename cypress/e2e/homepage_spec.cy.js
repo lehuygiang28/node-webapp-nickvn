@@ -1,68 +1,68 @@
 /**
  * Load from home page to buy product without login
  */
-// describe('Home page load to buy without login', () => {
-//     it('passes home page', () => {
-//         cy.visit('/');
-//         cy.contains('Dịch vụ nổi bật');
-//         cy.contains('Liên Minh Huyền Thoại');
-//     });
+describe('Home page load to buy without login', () => {
+    it('passes home page', () => {
+        cy.visit('/');
+        cy.contains('Dịch vụ nổi bật');
+        cy.contains('Liên Minh Huyền Thoại');
+    });
 
-//     it('pass to category page', () => {
-//         cy.visit('/');
+    it('pass to category page', () => {
+        cy.visit('/');
 
-//         cy.contains('Liên Minh Huyền Thoại').click();
-//         cy.url().should('include', 'lien-minh');
-//     });
+        cy.contains('Liên Minh Huyền Thoại').click();
+        cy.url().should('include', 'lien-minh');
+    });
 
-//     it('pass to product page', () => {
-//         cy.visit('/');
+    it('pass to product page', () => {
+        cy.visit('/');
 
-//         cy.contains('Liên Minh Huyền Thoại').click();
+        cy.contains('Liên Minh Huyền Thoại').click();
 
-//         cy.contains('.classWithPad > .news_title > a', 'Liên Minh').click();
-//         cy.url().should('include', 'lien-minh/acc-lien-minh');
-//     });
+        cy.contains('.classWithPad > .news_title > a', 'Liên Minh').click();
+        cy.url().should('include', 'lien-minh/acc-lien-minh');
+    });
 
-//     it('pass to product details page', () => {
-//         cy.visit('/');
+    it('pass to product details page', () => {
+        cy.visit('/');
 
-//         cy.contains('Liên Minh Huyền Thoại').click();
+        cy.contains('Liên Minh Huyền Thoại').click();
 
-//         cy.contains('.classWithPad > .news_title > a', 'Liên Minh').click();
+        cy.contains('.classWithPad > .news_title > a', 'Liên Minh').click();
 
-//         cy.contains('.classWithPad > .image > a', 'MS: 1').click();
-//         cy.url().should('include', 'lien-minh/acc-lien-minh/1');
-//         cy.contains('Tài khoản liên minh số #1');
-//     });
+        cy.contains('.classWithPad > .image > a', 'MS: 1').click();
+        cy.url().should('include', 'lien-minh/acc-lien-minh/1');
+        cy.contains('Tài khoản liên minh số #1');
+    });
 
-//     it('pass to product details page click buy', () => {
-//         cy.visit('/');
+    it('pass to product details page click buy', () => {
+        cy.visit('/');
 
-//         cy.contains('Liên Minh Huyền Thoại').click();
+        cy.contains('Liên Minh Huyền Thoại').click();
 
-//         cy.contains('.classWithPad > .news_title > a', 'Liên Minh').click();
+        cy.contains('.classWithPad > .news_title > a', 'Liên Minh').click();
 
-//         cy.contains('.classWithPad > .image > a', 'MS: 1').click();
+        cy.contains('.classWithPad > .image > a', 'MS: 1').click();
 
-//         cy.contains('Mua ngay').click();
-//         cy.contains('Thông tin tài khoản #1');
-//         cy.contains('Bạn phải đăng nhập mới có thể mua tài khoản tự động.');
-//         cy.contains('.nav.nav-justified > li > a', 'Tài khoản').click();
-//         cy.contains('Chi tiết tài khoản #1');
+        cy.contains('Mua ngay').click();
+        cy.contains('Thông tin tài khoản #1');
+        cy.contains('Bạn phải đăng nhập mới có thể mua tài khoản tự động.');
+        cy.contains('.nav.nav-justified > li > a', 'Tài khoản').click();
+        cy.contains('Chi tiết tài khoản #1');
 
-//         cy.contains('.modal-content>form>.modal-footer>button', 'Đóng').click();
+        cy.contains('.modal-content>form>.modal-footer>button', 'Đóng').click();
 
-//         cy.contains('Mua ngay').click();
-//         cy.contains('Thông tin tài khoản #1');
-//         cy.contains('Bạn phải đăng nhập mới có thể mua tài khoản tự động.');
-//         cy.contains('.nav.nav-justified > li > a', 'Tài khoản').click();
-//         cy.contains('Chi tiết tài khoản #1');
+        cy.contains('Mua ngay').click();
+        cy.contains('Thông tin tài khoản #1');
+        cy.contains('Bạn phải đăng nhập mới có thể mua tài khoản tự động.');
+        cy.contains('.nav.nav-justified > li > a', 'Tài khoản').click();
+        cy.contains('Chi tiết tài khoản #1');
 
-//         cy.contains('.modal-content>form>.modal-footer>a', 'Đăng nhập').click();
-//         cy.url().should('include', 'dang-nhap');
-//     });
-// });
+        cy.contains('.modal-content>form>.modal-footer>a', 'Đăng nhập').click();
+        cy.url().should('include', 'dang-nhap');
+    });
+});
 
 /**
  * Load from home page to buy product with login
