@@ -256,8 +256,47 @@ class AdminController {
     }
 
     // GET /admin/categories/:id/edit
-    editCategory(req, res, next) {
-        res.render('admin/categories/edit_cate', res.locals.layout);
+    // editCategory(req, res, next) {
+    //     return res.redirect(`/admin/categories/${req.params.id}/edit`);
+    // }
+
+    // POST /admin/categories/:id/edit
+    editCategorySolvers(req, res, next) {
+        if (!req.body._id || !req.body.category_name || !req.body.slug || !req.body.total) {
+            sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
+            return res.redirect('/admin/categories');
+        }
+
+        if (isNaN(req.body.total)) {
+            sendMessage(req, res, next, { error: 'Total must be number, try again.' });
+            return res.redirect(`/admin/categories/${req.body._id}/view`);
+        }
+
+        let _id = req.body._id;
+        let category_name = req.body.category_name;
+        let slug = req.body.slug;
+        let total = req.body.total;
+
+        let categoryEdited = {};
+        Object.assign(categoryEdited, {
+            category_name: category_name,
+            slug: slug,
+            total: total,
+        });
+
+        Category.findByIdAndUpdate(_id, categoryEdited)
+        .then(data => {
+            if (!data) {
+                sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
+                return res.redirect(`/admin/categories/${req.body._id}/view`);
+            }
+            sendMessage(req, res, next, { success: 'Edit successfuly!' });
+            return res.redirect(`/admin/categories/${req.body._id}/view`);
+        })
+        .catch(() => {
+            sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
+            return res.redirect(`/admin/categories`);
+        })
     }
 
     // POST /admin/categories/:id/change-visible
