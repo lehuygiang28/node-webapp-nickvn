@@ -1,0 +1,92 @@
+<div class='container-fluid pt-4 px-4'>
+    <form method='POST' action='/admin/categories/add' enctype='multipart/form-data'>
+        <div class='row g-4'>
+
+            {{! <div class='col-sm-12 col-xl-6'> }}
+            <div class='col-sm-12 col-xl-5'>
+                <div class='bg-secondary rounded h-100 p-4'>
+                    <h6 class='mb-4'>Add Category</h6>
+                    {{#if sessionFlash}}
+                        <div class='mb-2'>
+                            <text {{#if sessionFlash.success}}class='text-success'{{else}}class='text-danger'{{/if}}>{{sessionFlash.success}}{{sessionFlash.error}}</text>
+                        </div>
+
+                    {{else}}
+                        {{#if success}}
+                            <div class='mb-2'>
+                                <text class='text-success'>{{success}}</text>
+                            </div>
+                        {{/if}}
+
+                        {{#if error}}
+                            <div class='mb-2'>
+                                <text class='text-danger'>{{error}}</text>
+                            </div>
+                        {{/if}}
+                    {{/if}}
+
+                    {{! <div class="btn btn-outline-info mb-3"><i class="fas fa-plus"></i> New Category</div> }}
+
+                    <div class='form-floating mb-3'>
+                        <input
+                            type='text'
+                            class='form-control'
+                            id='cate-name'
+                            name='category_name'
+                            required
+                        />
+                        <label for='cate-name'>Name</label>
+                    </div>
+                    <div class='form-floating mb-3'>
+                        <input
+                            type='text'
+                            class='form-control'
+                            id='cate-slug'
+                            name='slug'
+                            required
+                        />
+                        <label for='cate-slug'>Slug</label>
+                    </div>
+
+                    <div class='form-floating mb-3'>
+                        <select
+                            class='form-select text-capitalize'
+                            id='floatingSelectStatus'
+                            aria-label='Floating label select example'
+                            name='visible'
+                            required
+                        >
+                            <option selected>Select visible</option>
+                            {{#each visibleCase}}
+                                <option value='{{this}}'>{{this}}</option>
+                            {{/each}}
+
+                        </select>
+                        <label for='floatingSelectStatus'>Select visible</label>
+                    </div>
+
+                    <div class='mb-3'>
+                        <label for='gallery-photo-add' class='form-label'>Multiple image input</label>
+                        <input
+                            class='form-control bg-dark'
+                            type='file'
+                            accept='image/*'
+                            name='img'
+                            id='gallery-photo-add'
+                            required
+                        />
+                        <div class='gallery row pt-2'></div>
+                    </div>
+
+                </div>
+            </div>
+
+            {{! <div class='col-sm-12 col-xl-8'>
+                <div class='bg-secondary rounded h-100 p-4'>
+                </div>
+            </div> }}
+
+            <button type='submit' class='btn btn-success'>Save</button>
+        </div>
+    </form>
+</div>

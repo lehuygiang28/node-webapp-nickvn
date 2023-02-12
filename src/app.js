@@ -15,6 +15,7 @@ const { getSessionToViewsMiddleware } = require('./app/middlewares/getSessionToV
 const { paginationMiddleware } = require('./app/middlewares/paginationMiddleware');
 const { changeLayoutMiddleware } = require('./app/middlewares/changeLayoutMiddleware');
 const { formattedDate24h } = require('./util/formatDate');
+const fileUpload = require('express-fileupload');
 
 const app = express();
 
@@ -37,6 +38,9 @@ app.use(
     }),
 );
 app.use(express.json());
+
+// Middleware to get data from client to request.files
+app.use(fileUpload());
 
 // Express session
 app.use(

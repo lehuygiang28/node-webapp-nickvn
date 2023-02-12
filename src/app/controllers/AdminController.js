@@ -6,6 +6,14 @@ const { logger } = require('../../util/logger');
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose');
 const { chiaLayPhanNguyen, chiaLayPhanDu } = require('../../util/caculator');
 const DISABLE_LAYOUT_PARTIALS = { layout: 'admin_without_partials' };
+const path = require('path');
+const {
+    createUUID,
+    createUUIDWithFileExtension,
+    createUUIDFile,
+} = require('../../util/generateUUID');
+const { removeFile } = require('../../util/files');
+const sanitize = require('mongo-sanitize');
 
 class AdminController {
     // Get /admin/
@@ -141,25 +149,110 @@ class AdminController {
             });
         }
 
-        Category.find(filter, {}, optionsQuery).then((data) => {
-            res.render(
-                'admin/categories/cate_menu',
-                Object.assign(ENABLE_LAYOUT_PARTIALS, {
-                    allCategories: mutipleMongooseToObject(data),
-                    pagination: pagination,
-                }),
-            );
-        });
+        Category.find(filter, {}, optionsQuery)
+            .then((data) => {
+                res.render(
+                    'admin/categories/cate_menu',
+                    Object.assign(ENABLE_LAYOUT_PARTIALS, {
+                        allCategories: mutipleMongooseToObject(data),
+                        pagination: pagination,
+                    }),
+                );
+            })
+            .catch(() => {
+                sendMessage(req, res, next, { error: 'Has error, try again' });
+                next();
+            });
     }
 
     // GET /admin/categories/add
     addCategory(req, res, next) {
-        res.render('admin/categories/add_cate', res.locals.layout);
+        let visibleCase = ['show', 'hide'];
+        res.render(
+            'admin/categories/add_cate',
+            Object.assign({ visibleCase: visibleCase }, res.locals.layout),
+        );
+    }
+
+    // POST /admin/categories/add
+    addCategorySolvers(req, res, next) {
+        let category_name = req.body.category_name;
+        let slug = req.body.slug;
+        let visible = req.body.visible;
+        let fileName;
+
+        if (!category_name || !visible || !slug) {
+            sendMessage(req, res, next, { error: 'Image upload failed, try again later.' });
+            return res.redirect('/admin/categories/add');
+        }
+
+        try {
+            // Get file img
+            let { img } = req.files;
+
+            // Create a new file name with UUID
+            fileName = createUUIDFile(img.name);
+
+            // Move the img to public location image
+            img.mv(path.resolve('./src/public/img') + '/' + fileName);
+
+            // Add prefix to file name
+            fileName = `/img/${fileName}`;
+        } catch (error) {
+            removeFile(fileName);
+            sendMessage(req, res, next, { error: 'Image upload failed, try again later.' });
+            return res.redirect('/admin/categories/add');
+        }
+
+        // Create a new category
+        let category = new Category({
+            category_name: category_name,
+            slug: slug.charAt(0) === '/' || slug.charAt(0) === '\\' ? slug : `/${slug}`, // Add a slash to the begin of string slug if not have
+            visible: visible,
+            img: fileName,
+        });
+
+        // Save the category to database
+        Category.insertMany(category)
+            .then(() => {
+                return res.render(
+                    'admin/categories/add_cate',
+                    Object.assign(res.locals.layout, {
+                        success: 'Add new category successfully',
+                    }),
+                );
+            })
+            .catch(() => {
+                removeFile(fileName);
+                next();
+            });
     }
 
     // GET /admin/categories/:id/view
     detailCategory(req, res, next) {
-        res.render('admin/categories/details_cate', res.locals.layout);
+        let _id = req.params.id;
+        if (!_id) {
+            sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
+            return res.redirect('/admin/categories');
+        }
+
+        Category.findById(sanitize(_id))
+            .then((data) => {
+                if (!data) {
+                    sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
+                    return res.redirect('/admin/categories');
+                }
+                return res.render(
+                    'admin/categories/details_cate',
+                    Object.assign(res.locals.layout, {
+                        category: mongooseToObject(data),
+                    }),
+                );
+            })
+            .catch(() => {
+                sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
+                return res.redirect('/admin/categories');
+            });
     }
 
     // GET /admin/categories/:id/edit
@@ -177,15 +270,18 @@ class AdminController {
             return res.json({ error: 'Not Found Id' });
         }
 
-        if(!visibleCase.includes(visible)) {
+        if (!visibleCase.includes(visible)) {
             return res.json({ error: 'Invalid visible value' });
         }
 
-        let cateFound = await Category.findByIdAndUpdate(_id, {visible: visible});
-        console.log(cateFound);
-        console.log(`Visible choose: ${visible}`);
-
-        return res.json({ success: 'Visible has been changed' });
+        Category.findByIdAndUpdate(_id, { visible: visible })
+            .then(() => {
+                return res.json({ success: 'Visible has been changed' });
+            })
+            .catch((error) => {
+                res.json({ error: error.message });
+                next();
+            });
     }
 }
 

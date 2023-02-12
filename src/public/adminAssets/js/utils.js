@@ -60,7 +60,6 @@ function createModal({ title = '', caseVisible, _id = '' }) {
 
         switch (caseVisible) {
             case 'show':
-                console.log('Show selected category');
                 modal.innerHTML = `
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -80,7 +79,6 @@ function createModal({ title = '', caseVisible, _id = '' }) {
                 `;
                 break;
             case 'hide':
-                console.log('Hide selected category');
                 modal.innerHTML = `
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -110,12 +108,12 @@ function acceptModal(data, _id) {
         url: `/admin/categories/${_id}/change-visible`,
         data: { visible: data },
         success: function (response) {
-            if (response.success) console.log(response.success);
+            // if (response.success) console.log(response.success);
             document.getElementById('visibleButton').remove();
             document.querySelector('.modal-backdrop.fade.show').remove();
         },
         error: function (response) {
-            if (response.error) console.log(response.error);
+            // if (response.error) console.log(response.error);
             document.getElementById('visibleButton').remove();
             document.querySelector('.modal-backdrop.fade.show').remove();
         },

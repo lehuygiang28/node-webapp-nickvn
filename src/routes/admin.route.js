@@ -6,6 +6,7 @@ const AdminControllers = require('../app/controllers/AdminController');
 router.post('/categories/:id/change-visible', AdminControllers.changeCateVisible);
 router.get('/categories/:id/edit', AdminControllers.editCategory);
 router.get('/categories/:id/view', AdminControllers.detailCategory);
+router.post('/categories/add', AdminControllers.addCategorySolvers);
 router.get('/categories/add', AdminControllers.addCategory);
 router.get('/categories', AdminControllers.categories)
 
