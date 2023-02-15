@@ -4,6 +4,20 @@ const UserPuchased = require('../app/models/UserPuchased');
 const Category = require('../app/models/Category');
 const { logger } = require('./logger');
 
+function randomString(length) {
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
+function randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 /**
  * Generates random product
  * @param {Number} counters The number of products to generate
@@ -39,20 +53,6 @@ function generateLienMinh(counters, next) {
         'Thách Đấu',
     ];
     const NOT_SOLD = 1005;
-
-    function randomString(length) {
-        let result = '';
-        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let charactersLength = characters.length;
-        for (let i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
-    }
-
-    function randomNumber(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
 
     for (let i = 0; i < counters; i++) {
         let product = new LienMinh({
@@ -126,20 +126,6 @@ async function generateLienMinhAtFirstTime(counters, next) {
     ];
     const NOT_SOLD = 1005;
 
-    function randomString(length) {
-        let result = '';
-        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let charactersLength = characters.length;
-        for (let i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
-    }
-
-    function randomNumber(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
     for (let i = 0; i < counters; i++) {
         let product = new LienMinh({
             userName: 'shop' + randomString(6),
@@ -197,24 +183,6 @@ function resetProductAndUserPuchased(next) {
             UserPuchased.deleteMany({})
                 .then(() => logger.info('Reset puchased successfully'))
                 .catch(next);
-            // UserPuchased.find({})
-            //     .then(userPuchased => {
-            //         if (!userPuchased) {
-            //             logger.info('Not found puchased');
-            //             return;
-            //         }
-            //         userPuchased.forEach(userPuchasedItem => {
-            //             if (userPuchasedItem.product_puchased.length === 0) {
-            //                 logger.info('Not found puchased');
-            //                 return;
-            //             }
-            //             userPuchasedItem.product_puchased = []
-            //             userPuchasedItem.save();
-            //             logger.info('Reset puchased successfully');
-            //         });
-            //     })
-            //     .catch(next);
-            logger.info('Reset Successfull');
         })
         .catch(next);
 }
@@ -236,7 +204,6 @@ async function generateCategoriesAtFirstTime() {
     let objectVar = JSON.parse(data);
 
     for (const element of objectVar.category) {
-        let count = 0;
         let category = new Category();
         Object.assign(category, element);
         category.total = Number(element.total);
@@ -257,7 +224,6 @@ async function generateUsersAtFirstTime(next) {
     let objectVar = JSON.parse(data);
 
     for (const element of objectVar.user) {
-        let count = 0;
         let user = new User({});
         Object.assign(user, element);
         user.total = Number(element.total);
