@@ -1,4 +1,5 @@
 const LienMinh = require('../app/models/LienMinh');
+const User = require('../app/models/User');
 const UserPuchased = require('../app/models/UserPuchased');
 const Category = require('../app/models/Category');
 const { logger } = require('./logger');
@@ -272,4 +273,5 @@ module.exports = {
     generateLienMinh,
     generateLienMinhAtFirstTime,
     generateCategoriesAtFirstTime,
+    generateUsersAtFirstTime
 };
