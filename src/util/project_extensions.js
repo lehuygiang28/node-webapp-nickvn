@@ -93,7 +93,7 @@ function generateLienMinh(counters, next) {
  */
 async function generateLienMinhAtFirstTime(counters, next) {
     let isExistData = await LienMinh.countDocuments();
-    if(isExistData){
+    if (isExistData) {
         return;
     }
     const firstImg = [
@@ -162,10 +162,6 @@ async function generateLienMinhAtFirstTime(counters, next) {
 
         product
             .save()
-            .then(() => {
-                logger.info(`Add product successfully!`);
-                logger.info(product);
-            })
             .catch(next);
     }
     // })
@@ -183,7 +179,7 @@ async function generateLienMinhAtFirstTime(counters, next) {
  *      2: Remove all user puchase history
  *
  *      3: Call next() middleware
- * 
+ *
  */
 function resetProductAndUserPuchased(next) {
     LienMinh.find({ status_id: 1006 })
@@ -239,16 +235,16 @@ async function generateCategoriesAtFirstTime() {
     let data = fs.readFileSync(path.resolve(__dirname, `data.json`), 'utf8');
     let objectVar = JSON.parse(data);
 
-    for(const element of objectVar.category) {
+    for (const element of objectVar.category) {
+        let count = 0;
         let category = new Category();
         Object.assign(category, element);
         category.total = Number(element.total);
-        await Category.insertMany(category);
+        Category.insertMany(category);
     }
-
 }
 
-async function generateUsersAtFirstTime() {
+async function generateUsersAtFirstTime(next) {
     const isNotNull = await User.countDocuments();
     if (isNotNull) {
         return;
@@ -260,11 +256,12 @@ async function generateUsersAtFirstTime() {
     let data = fs.readFileSync(path.resolve(__dirname, `data.json`), 'utf8');
     let objectVar = JSON.parse(data);
 
-    for(const element of objectVar.user) {
-        let user = new User();
+    for (const element of objectVar.user) {
+        let count = 0;
+        let user = new User({});
         Object.assign(user, element);
         user.total = Number(element.total);
-        await user.insertMany(user);
+        User.insertMany(user);
     }
 }
 
@@ -273,5 +270,5 @@ module.exports = {
     generateLienMinh,
     generateLienMinhAtFirstTime,
     generateCategoriesAtFirstTime,
-    generateUsersAtFirstTime
+    generateUsersAtFirstTime,
 };
