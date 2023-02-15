@@ -19,8 +19,11 @@ const fileUpload = require('express-fileupload');
 
 const app = express();
 
+const port = process.env.NODE_PORT || 3000;
 const route = require('./routes/index.route');
 const db = require('./config/db');
+
+app.set('port', port);
 
 // Connect to mongodb
 db.connect();

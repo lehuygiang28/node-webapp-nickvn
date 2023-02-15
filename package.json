@@ -12,7 +12,8 @@
     "testc": "cross-env NODE_ENV=test mocha ./test/index.test.js",
     "testsv": "cross-env NODE_ENV=test nodemon --inspect ./bin/www",
     "cypress": "cross-env NODE_ENV=test cypress open",
-    "deploytest": "cross-env NODE_ENV=deploytest nodemon --inspect ./bin/www"
+    "deploytest": "cross-env NODE_ENV=deploytest nodemon --inspect ./bin/www",
+    "giang": "cross-env NODE_ENV=test node ./src/app.js"
   },
   "repository": {
     "type": "git",
