@@ -11,6 +11,7 @@ const {
     generateLienMinh,
     generateCategoriesAtFirstTime,
     generateLienMinhAtFirstTime,
+    generateUsersAtFirstTime
 } = require('../../util/project_extensions');
 
 class SiteController {
