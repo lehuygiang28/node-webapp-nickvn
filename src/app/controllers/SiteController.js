@@ -9,16 +9,17 @@ const mongoose = require('mongoose');
 const {
     resetProductAndUserPuchased,
     generateLienMinh,
-    generateCategories,
+    generateCategoriesAtFirstTime,
+    generateLienMinhAtFirstTime,
 } = require('../../util/project_extensions');
 
 class SiteController {
     // GET homepage
     // GET /
     home(_req, res, next) {
-        // generateCategories();
-        // generateLienMinh(30, next);
-        // resetProductAndUserPuchased();
+        generateCategoriesAtFirstTime();
+        generateLienMinhAtFirstTime(30, next);
+        generateUsersAtFirstTime();
         Category.find({ visible: 'show' })
             .then((categories) => {
                 res.render('sites/home', {
