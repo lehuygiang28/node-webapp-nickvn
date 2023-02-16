@@ -14,6 +14,7 @@ const {
 } = require('../../util/generateUUID');
 const { removeFile } = require('../../util/files');
 const sanitize = require('mongo-sanitize');
+const { UploadImage } = require('../../util/imgur');
 
 class AdminController {
     // Get /admin/
@@ -273,10 +274,10 @@ class AdminController {
             return res.redirect('/admin/categories');
         }
 
-        // if (isNaN(req.body.total)) {
-        //     sendMessage(req, res, next, { error: 'Total must be number, try again.' });
-        //     return res.redirect(`/admin/categories/${req.body._id}/view`);
-        // }
+        if (isNaN(req.body.total)) {
+            sendMessage(req, res, next, { error: 'Total must be number, try again.' });
+            return res.redirect(`/admin/categories/${req.body._id}/view`);
+        }
 
         let category_name = req.body.category_name || categoryFound.category_name;
         let slug = req.body.slug || categoryFound.slug;
@@ -286,19 +287,11 @@ class AdminController {
 
         if (req.files) {
             try {
-                // Get file img
                 let { img } = req.files;
-
-                // Create a new file name with UUID
-                fileName = createUUIDFile(img.name);
-
-                // Move the img to public location image
-                img.mv(path.resolve('./src/public/img') + '/' + fileName);
-
-                // Add prefix to file name
-                fileName = `/img/${fileName}`;
+                fileName = await UploadImage(img);
             } catch (error) {
-                removeFile(fileName);
+                console.log(error);
+                // removeFile(fileName);
                 sendMessage(req, res, next, { error: 'Image upload failed, try again later.' });
                 return res.redirect(`/admin/categories/${req.body._id}/view`);
             }
@@ -315,18 +308,12 @@ class AdminController {
         Category.findByIdAndUpdate(_id, categoryEdited)
             .then((data) => {
                 if (!data) {
-                    // sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
                     return res.json({ error: 'Invalid category id, try again' });
-                    // return res.redirect(`/admin/categories/${req.body._id}/view`);
                 }
-                // sendMessage(req, res, next, { success: 'Edit successfuly!' });
                 return res.json({ success: 'Edit successfuly! Reload page to see change' });
-                // return res.redirect(`/admin/categories/${req.body._id}/view`);
             })
             .catch(() => {
-                // sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
                 return res.json({ error: 'Invalid category id, try again' });
-                // return res.redirect(`/admin/categories`);
             });
     }
 
