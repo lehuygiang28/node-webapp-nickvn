@@ -75,6 +75,98 @@ window.onload = function () {
                 dd_element.style.display = '';
             };
         }
+
+        // If clicked on a select option ICON edit
+        if (dd_element && dd_element.tagName.toUpperCase() === 'DO') {
+            let visibleCase = ['show', 'hide'];
+
+            // Hide it
+            dd_element.style.display = 'none';
+
+            // Get its text
+            text = dd_element.textContent;
+
+            // Create an select
+            input = document.createElement('select');
+            input.classList.add('form-select', 'text-capitalize', 'w-50');
+            input.setAttribute('aria-label', 'Select visibility status');
+            input.setAttribute('name', 'visible');
+            input.size = visibleCase.length;
+            
+            for (const element of visibleCase) {
+                let option = document.createElement('option');
+                if(text === element){
+                    option.setAttribute('selected', '');
+                }
+                option.value = element;
+                option.textContent = element;
+                input.appendChild(option);
+            }
+            dd_element.parentNode.insertBefore(input, dd_element);
+            console.log(input);
+
+            input.focus();
+            input.onblur = function () {
+                // Remove the input
+                dd_element.parentNode.removeChild(input);
+
+                // Update the span
+                dd_element.innerHTML = input.value == '' ? '&nbsp;' : input.value;
+                dd_element.innerHTML += '<i class="fas fa-edit float-end"></i>';
+
+                // Show the span again
+                dd_element.style.display = '';
+            };
+
+        }
+
+        // If clicked on a select option ICON edit
+        if (dd_element && dd_element.parentNode.tagName.toUpperCase() === 'DO') {
+            let visibleCase = ['show', 'hide'];
+
+            // Change clicked on child to parent
+            dd_element = dd_element.parentNode;
+
+            // Hide it
+            dd_element.style.display = 'none';
+
+            // Get its text
+            text = dd_element.textContent;
+
+            // Create an select
+            input = document.createElement('select');
+            input.classList.add('form-select', 'text-capitalize', 'w-50');
+            input.setAttribute('aria-label', 'Select visibility status');
+            input.setAttribute('name', 'visible');
+            input.size = visibleCase.length;
+            
+            for (const element of visibleCase) {
+                let option = document.createElement('option');
+                if(text === element){
+                    option.setAttribute('selected', '');
+                }
+                option.value = element;
+                option.textContent = element;
+                input.appendChild(option);
+            }
+            dd_element.parentNode.insertBefore(input, dd_element);
+            console.log(input);
+
+            input.focus();
+            input.onblur = function () {
+                // Remove the input
+                dd_element.parentNode.removeChild(input);
+
+                // Update the span
+                dd_element.innerHTML = input.value == '' ? '&nbsp;' : input.value;
+                dd_element.innerHTML += '<i class="fas fa-edit float-end"></i>';
+
+                // Show the span again
+                dd_element.style.display = '';
+            };
+
+        }
+
     };
 };
 
