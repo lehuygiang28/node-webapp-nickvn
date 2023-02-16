@@ -207,7 +207,7 @@ async function generateCategoriesAtFirstTime() {
         let category = new Category();
         Object.assign(category, element);
         category.total = Number(element.total);
-        Category.insertMany(category);
+        await Category.insertMany(category);
     }
 }
 
