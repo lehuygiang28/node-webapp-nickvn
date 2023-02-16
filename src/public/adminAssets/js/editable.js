@@ -42,7 +42,7 @@ window.onload = function () {
             };
         }
 
-        // If clicked on a icon edit
+        // If clicked on a dd icon edit
         if (dd_element && dd_element.parentNode.tagName.toUpperCase() === 'DD') {
             // Change clicked on child to parent
             dd_element = dd_element.parentNode;
@@ -92,10 +92,10 @@ window.onload = function () {
             input.setAttribute('aria-label', 'Select visibility status');
             input.setAttribute('name', 'visible');
             input.size = visibleCase.length;
-            
+
             for (const element of visibleCase) {
                 let option = document.createElement('option');
-                if(text === element){
+                if (text === element) {
                     option.setAttribute('selected', '');
                 }
                 option.value = element;
@@ -103,7 +103,6 @@ window.onload = function () {
                 input.appendChild(option);
             }
             dd_element.parentNode.insertBefore(input, dd_element);
-            console.log(input);
 
             input.focus();
             input.onblur = function () {
@@ -117,7 +116,6 @@ window.onload = function () {
                 // Show the span again
                 dd_element.style.display = '';
             };
-
         }
 
         // If clicked on a select option ICON edit
@@ -139,10 +137,10 @@ window.onload = function () {
             input.setAttribute('aria-label', 'Select visibility status');
             input.setAttribute('name', 'visible');
             input.size = visibleCase.length;
-            
+
             for (const element of visibleCase) {
                 let option = document.createElement('option');
-                if(text === element){
+                if (text === element) {
                     option.setAttribute('selected', '');
                 }
                 option.value = element;
@@ -150,7 +148,6 @@ window.onload = function () {
                 input.appendChild(option);
             }
             dd_element.parentNode.insertBefore(input, dd_element);
-            console.log(input);
 
             input.focus();
             input.onblur = function () {
@@ -164,9 +161,7 @@ window.onload = function () {
                 // Show the span again
                 dd_element.style.display = '';
             };
-
         }
-
     };
 };
 
@@ -176,35 +171,35 @@ window.onload = function () {
  * @param {*} _id
  */
 function submitSaveChanges(_id) {
-    let form = document.createElement('form');
-    form.setAttribute('action', `/admin/categories/${_id}/edit`);
-    form.setAttribute('method', 'POST');
+    let formData = new FormData();
+    let request = new XMLHttpRequest();
+    formData.append('_id', _id);
+    formData.append('category_name', document.getElementById('_category_name').textContent);
+    formData.append('slug', document.getElementById('_slug').textContent);
+    formData.append('total', document.getElementById('_total').textContent);
+    formData.append('visible', document.getElementById('_visible').textContent);
+    formData.append('img', document.getElementById('gallery-photo-add').files[0]);
+    // fetch(`/admin/categories/${_id}/edit`, { method: 'POST', body: formData });
+    request.open('POST', `/admin/categories/${_id}/edit`);
+    request.send(formData);
+    request.onload = function () {
+        let resJson = JSON.parse(request.responseText);
+        if (resJson.success) {
+            let successElement = document.getElementById('alert_success');
+            successElement.removeAttribute('style');
+            let message = document.createElement('div');
+            message.innerText = resJson.success;
+            successElement.appendChild(message);
 
-    let cate_id = document.createElement('input');
-    cate_id.setAttribute('type', 'hidden');
-    cate_id.setAttribute('name', '_id');
-    cate_id.value = _id;
-
-    let cate_name = document.createElement('input');
-    cate_name.setAttribute('type', 'hidden');
-    cate_name.setAttribute('name', 'category_name');
-    cate_name.value = document.getElementById('_category_name').textContent;
-
-    let cate_slug = document.createElement('input');
-    cate_slug.setAttribute('type', 'hidden');
-    cate_slug.setAttribute('name', 'slug');
-    cate_slug.value = document.getElementById('_slug').textContent;
-
-    let cate_total = document.createElement('input');
-    cate_total.setAttribute('type', 'hidden');
-    cate_total.setAttribute('name', 'total');
-    cate_total.value = document.getElementById('_total').textContent;
-
-    form.appendChild(cate_id);
-    form.appendChild(cate_name);
-    form.appendChild(cate_slug);
-    form.appendChild(cate_total);
-
-    document.body.appendChild(form);
-    form.submit();
+            setTimeout(function () {
+                location.reload();
+            }, 5000); // Wait 5 seconds before reloading page
+        } else {
+            let errorElement = document.getElementById('alert_error');
+            errorElement.removeAttribute('style');
+            let message = document.createElement('div');
+            message.innerText = resJson.error;
+            errorElement.appendChild(message);
+        }
+    };
 }

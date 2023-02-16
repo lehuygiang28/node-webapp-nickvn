@@ -261,42 +261,73 @@ class AdminController {
     // }
 
     // POST /admin/categories/:id/edit
-    editCategorySolvers(req, res, next) {
-        if (!req.body._id || !req.body.category_name || !req.body.slug || !req.body.total) {
+    async editCategorySolvers(req, res, next) {
+        if (!req.body._id) {
+            sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
+            return res.redirect('/admin/categories');
+        }
+        let _id = req.body._id;
+        let categoryFound = await Category.findById(_id);
+        if (!categoryFound) {
             sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
             return res.redirect('/admin/categories');
         }
 
-        if (isNaN(req.body.total)) {
-            sendMessage(req, res, next, { error: 'Total must be number, try again.' });
-            return res.redirect(`/admin/categories/${req.body._id}/view`);
+        // if (isNaN(req.body.total)) {
+        //     sendMessage(req, res, next, { error: 'Total must be number, try again.' });
+        //     return res.redirect(`/admin/categories/${req.body._id}/view`);
+        // }
+
+        let category_name = req.body.category_name || categoryFound.category_name;
+        let slug = req.body.slug || categoryFound.slug;
+        let total = req.body.total || categoryFound.total;
+        let visible = req.body.visible || categoryFound.visible;
+        let fileName = categoryFound.img;
+
+        if (req.files) {
+            try {
+                // Get file img
+                let { img } = req.files;
+
+                // Create a new file name with UUID
+                fileName = createUUIDFile(img.name);
+
+                // Move the img to public location image
+                img.mv(path.resolve('./src/public/img') + '/' + fileName);
+
+                // Add prefix to file name
+                fileName = `/img/${fileName}`;
+            } catch (error) {
+                removeFile(fileName);
+                sendMessage(req, res, next, { error: 'Image upload failed, try again later.' });
+                return res.redirect(`/admin/categories/${req.body._id}/view`);
+            }
         }
 
-        let _id = req.body._id;
-        let category_name = req.body.category_name;
-        let slug = req.body.slug;
-        let total = req.body.total;
-
-        let categoryEdited = {};
-        Object.assign(categoryEdited, {
+        let categoryEdited = {
             category_name: category_name,
             slug: slug,
             total: total,
-        });
+            visible: visible,
+            img: fileName,
+        };
 
         Category.findByIdAndUpdate(_id, categoryEdited)
-        .then(data => {
-            if (!data) {
-                sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
-                return res.redirect(`/admin/categories/${req.body._id}/view`);
-            }
-            sendMessage(req, res, next, { success: 'Edit successfuly!' });
-            return res.redirect(`/admin/categories/${req.body._id}/view`);
-        })
-        .catch(() => {
-            sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
-            return res.redirect(`/admin/categories`);
-        })
+            .then((data) => {
+                if (!data) {
+                    // sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
+                    return res.json({ error: 'Invalid category id, try again' });
+                    // return res.redirect(`/admin/categories/${req.body._id}/view`);
+                }
+                // sendMessage(req, res, next, { success: 'Edit successfuly!' });
+                return res.json({ success: 'Edit successfuly! Reload page to see change' });
+                // return res.redirect(`/admin/categories/${req.body._id}/view`);
+            })
+            .catch(() => {
+                // sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
+                return res.json({ error: 'Invalid category id, try again' });
+                // return res.redirect(`/admin/categories`);
+            });
     }
 
     // POST /admin/categories/:id/change-visible
