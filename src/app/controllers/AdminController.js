@@ -43,7 +43,7 @@ class AdminController {
         }
 
         // Find the user in database with username
-        let userFound = await User.findOne({ userName: userInput.userName });
+        let userFound = await User.findOne({ userName: sanitize(userInput.userName) });
         if (!userFound) {
             sendMessage(req, res, next, {
                 error: 'Tài khoản hoặc mật khẩu không chính xác!',
@@ -143,7 +143,7 @@ class AdminController {
             });
 
             Object.assign(pagination, {
-                page: page,
+                page: sanitize(page),
                 pageCount: totalPages,
             });
         }
@@ -168,9 +168,9 @@ class AdminController {
     }
 
     // POST /admin/categories/add
-    addCategorySolvers(req, res, next) {
+    async addCategorySolvers(req, res, next) {
         let category_name = req.body.category_name;
-        let slug = req.body.slug;
+        let slug = req.body.slug.toString();
         let visible = req.body.visible;
         let fileName;
 
@@ -180,19 +180,22 @@ class AdminController {
         }
 
         try {
-            // Get file img
+            // // Get file img
+            // let { img } = req.files;
+
+            // // Create a new file name with UUID
+            // fileName = createUUIDFile(img.name);
+
+            // // Move the img to public location image
+            // img.mv(path.resolve('./src/public/img') + '/' + fileName);
+
+            // // Add prefix to file name
+            // fileName = `/img/${fileName}`;
+
             let { img } = req.files;
-
-            // Create a new file name with UUID
-            fileName = createUUIDFile(img.name);
-
-            // Move the img to public location image
-            img.mv(path.resolve('./src/public/img') + '/' + fileName);
-
-            // Add prefix to file name
-            fileName = `/img/${fileName}`;
+            fileName = await UploadImage(img);
         } catch (error) {
-            removeFile(fileName);
+            // removeFile(fileName);
             sendMessage(req, res, next, { error: 'Image upload failed, try again later.' });
             return res.redirect('/admin/categories/add');
         }
@@ -213,7 +216,7 @@ class AdminController {
                 });
             })
             .catch(() => {
-                removeFile(fileName);
+                // removeFile(fileName);
                 next();
             });
     }
@@ -254,7 +257,7 @@ class AdminController {
             return res.redirect('/admin/categories');
         }
         let _id = req.body._id;
-        let categoryFound = await Category.findById(_id);
+        let categoryFound = await Category.findById(sanitize(_id));
         if (!categoryFound) {
             sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
             return res.redirect('/admin/categories');
@@ -262,7 +265,7 @@ class AdminController {
 
         if (isNaN(req.body.total)) {
             sendMessage(req, res, next, { error: 'Total must be number, try again.' });
-            return res.redirect(`/admin/categories/${req.body._id}/view`);
+            return res.redirect(`/admin/categories/${_id}/view`);
         }
 
         let category_name = req.body.category_name || categoryFound.category_name;
@@ -272,6 +275,7 @@ class AdminController {
         let fileName = categoryFound.img;
 
         if (req.files) {
+            console.log('Have files');
             try {
                 let { img } = req.files;
                 fileName = await UploadImage(img);
@@ -279,8 +283,10 @@ class AdminController {
                 console.log(error);
                 // removeFile(fileName);
                 sendMessage(req, res, next, { error: 'Image upload failed, try again later.' });
-                return res.redirect(`/admin/categories/${req.body._id}/view`);
+                return res.redirect(`/admin/categories/${_id}/view`);
             }
+        } else{
+            console.log('Not files');
         }
 
         let categoryEdited = {
@@ -291,15 +297,20 @@ class AdminController {
             img: fileName,
         };
 
-        Category.findByIdAndUpdate(_id, categoryEdited)
+        Category.findByIdAndUpdate(sanitize(_id), categoryEdited)
             .then((data) => {
                 if (!data) {
-                    return res.json({ error: 'Invalid category id, try again' });
+                    sendMessage(req, res, next, {
+                        error: 'Edit category failed, try again later!',
+                    });
+                    return res.redirect(`/admin/categories/${_id}/view`);
                 }
-                return res.json({ success: 'Edit successfuly! Reload page to see change' });
+                sendMessage(req, res, next, { success: 'Edit category successfuly!' });
+                return res.redirect(`/admin/categories/${_id}/view`);
             })
             .catch(() => {
-                return res.json({ error: 'Invalid category id, try again' });
+                sendMessage(req, res, next, { error: 'Edit category failed, try again later!' });
+                return res.redirect(`/admin/categories/${_id}/view`);
             });
     }
 
@@ -325,6 +336,14 @@ class AdminController {
                 res.json({ error: error.message });
                 next();
             });
+    }
+
+    test(req, res, next){
+        let error = {
+            error: 'Message error'
+        }
+        sendMessage(req, res, next, error);
+        return res.render('admin/test');
     }
 }
 
