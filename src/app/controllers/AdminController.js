@@ -6,6 +6,7 @@ const { logger } = require('../../util/logger');
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose');
 const { chiaLayPhanNguyen, chiaLayPhanDu } = require('../../util/caculator');
 const DISABLE_LAYOUT_PARTIALS = { layout: 'admin_without_partials' };
+const ADMIN_LAYOUT = { layout: 'admin' };
 const path = require('path');
 const {
     createUUID,
@@ -19,7 +20,7 @@ const { UploadImage } = require('../../util/imgur');
 class AdminController {
     // Get /admin/
     index(req, res, next) {
-        const ENABLE_LAYOUT_PARTIALS = res.locals.layout;
+        const ENABLE_LAYOUT_PARTIALS = res.locals.layout || ADMIN_LAYOUT;
         return res.render('admin', ENABLE_LAYOUT_PARTIALS);
     }
 
@@ -104,7 +105,7 @@ class AdminController {
 
     //GET /admin/categories
     async categories(req, res, next) {
-        const ENABLE_LAYOUT_PARTIALS = res.locals.layout;
+        const ENABLE_LAYOUT_PARTIALS = res.locals.layout || ADMIN_LAYOUT;
         let filter = {};
         let optionsQuery = {};
         let pagination = { page: 1, pageCount: 1 };
@@ -168,15 +169,17 @@ class AdminController {
 
     // GET /admin/categories/add
     addCategory(req, res, next) {
+        const ENABLE_LAYOUT_PARTIALS = res.locals.layout || ADMIN_LAYOUT;
         let visibleCase = ['show', 'hide'];
         res.render(
             'admin/categories/add_cate',
-            Object.assign({ visibleCase: visibleCase }, res.locals.layout),
+            Object.assign({ visibleCase: visibleCase }, ENABLE_LAYOUT_PARTIALS),
         );
     }
 
     // POST /admin/categories/add
     addCategorySolvers(req, res, next) {
+        const ENABLE_LAYOUT_PARTIALS = res.locals.layout || ADMIN_LAYOUT;
         let category_name = req.body.category_name;
         let slug = req.body.slug;
         let visible = req.body.visible;
@@ -218,7 +221,7 @@ class AdminController {
             .then(() => {
                 return res.render(
                     'admin/categories/add_cate',
-                    Object.assign(res.locals.layout, {
+                    Object.assign(ENABLE_LAYOUT_PARTIALS, {
                         success: 'Add new category successfully',
                     }),
                 );
@@ -231,6 +234,7 @@ class AdminController {
 
     // GET /admin/categories/:id/view
     detailCategory(req, res, next) {
+        const ENABLE_LAYOUT_PARTIALS = res.locals.layout || ADMIN_LAYOUT;c
         let _id = req.params.id;
         if (!_id) {
             sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
@@ -245,7 +249,7 @@ class AdminController {
                 }
                 return res.render(
                     'admin/categories/details_cate',
-                    Object.assign(res.locals.layout, {
+                    Object.assign(ENABLE_LAYOUT_PARTIALS, {
                         category: mongooseToObject(data),
                     }),
                 );
