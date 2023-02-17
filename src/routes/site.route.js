@@ -10,6 +10,7 @@ router.post('/dang-nhap', siteControllers.loginSolvers);
 router.get('/dang-nhap', siteControllers.login);
 router.post('/dang-ky', siteControllers.signupSolvers);
 router.get('/dang-ky', siteControllers.signup);
+router.post('/', siteControllers.home);
 router.get('/', siteControllers.home);
 
 module.exports = router;
