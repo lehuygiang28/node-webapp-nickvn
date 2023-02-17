@@ -6,7 +6,7 @@ const { logger } = require('./logger');
  *
  * Struct Object:
  *
- * {error: true || false, success: true || false, message: '{string message}'}
+ * {success ?? error: {string: message}}
  *
  */
 function sendMessage(_req, res, next, message) {
