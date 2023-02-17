@@ -18,13 +18,14 @@ function changeLayoutMiddleware(_req, res, next) {
 
         switch (controller) {
             case 'admin':
-                res.locals.layout = { layout: 'admin' };
+                res.locals.layout = 'admin';
                 break;
             case 'user_test':
                 break;
             case 'example_test':
                 break;
             default:
+                res.locals.layout = 'main';
                 break;
         }
     }

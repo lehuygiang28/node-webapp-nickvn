@@ -6,7 +6,6 @@ const { logger } = require('../../util/logger');
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose');
 const { chiaLayPhanNguyen, chiaLayPhanDu } = require('../../util/caculator');
 const DISABLE_LAYOUT_PARTIALS = { layout: 'admin_without_partials' };
-const ADMIN_LAYOUT = { layout: 'admin' };
 const path = require('path');
 const {
     createUUID,
@@ -20,8 +19,7 @@ const { UploadImage } = require('../../util/imgur');
 class AdminController {
     // Get /admin/
     index(req, res, next) {
-        const ENABLE_LAYOUT_PARTIALS = res.locals.layout || ADMIN_LAYOUT;
-        return res.render('admin', ENABLE_LAYOUT_PARTIALS);
+        return res.render('admin');
     }
 
     // GET /admin/login
@@ -105,7 +103,6 @@ class AdminController {
 
     //GET /admin/categories
     async categories(req, res, next) {
-        const ENABLE_LAYOUT_PARTIALS = res.locals.layout || ADMIN_LAYOUT;
         let filter = {};
         let optionsQuery = {};
         let pagination = { page: 1, pageCount: 1 };
@@ -153,13 +150,10 @@ class AdminController {
 
         Category.find(filter, {}, optionsQuery)
             .then((data) => {
-                res.render(
-                    'admin/categories/cate_menu',
-                    Object.assign(ENABLE_LAYOUT_PARTIALS, {
-                        allCategories: mutipleMongooseToObject(data),
-                        pagination: pagination,
-                    }),
-                );
+                res.render('admin/categories/cate_menu', {
+                    allCategories: mutipleMongooseToObject(data),
+                    pagination: pagination,
+                });
             })
             .catch(() => {
                 sendMessage(req, res, next, { error: 'Has error, try again' });
@@ -169,17 +163,12 @@ class AdminController {
 
     // GET /admin/categories/add
     addCategory(req, res, next) {
-        const ENABLE_LAYOUT_PARTIALS = res.locals.layout || ADMIN_LAYOUT;
         let visibleCase = ['show', 'hide'];
-        res.render(
-            'admin/categories/add_cate',
-            Object.assign({ visibleCase: visibleCase }, ENABLE_LAYOUT_PARTIALS),
-        );
+        res.render('admin/categories/add_cate', { visibleCase: visibleCase });
     }
 
     // POST /admin/categories/add
     addCategorySolvers(req, res, next) {
-        const ENABLE_LAYOUT_PARTIALS = res.locals.layout || ADMIN_LAYOUT;
         let category_name = req.body.category_name;
         let slug = req.body.slug;
         let visible = req.body.visible;
@@ -219,12 +208,9 @@ class AdminController {
         // Save the category to database
         Category.insertMany(category)
             .then(() => {
-                return res.render(
-                    'admin/categories/add_cate',
-                    Object.assign(ENABLE_LAYOUT_PARTIALS, {
-                        success: 'Add new category successfully',
-                    }),
-                );
+                return res.render('admin/categories/add_cate', {
+                    success: 'Add new category successfully',
+                });
             })
             .catch(() => {
                 removeFile(fileName);
@@ -234,7 +220,6 @@ class AdminController {
 
     // GET /admin/categories/:id/view
     detailCategory(req, res, next) {
-        const ENABLE_LAYOUT_PARTIALS = res.locals.layout || ADMIN_LAYOUT;
         let _id = req.params.id;
         if (!_id) {
             sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
@@ -247,12 +232,9 @@ class AdminController {
                     sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
                     return res.redirect('/admin/categories');
                 }
-                return res.render(
-                    'admin/categories/details_cate',
-                    Object.assign(ENABLE_LAYOUT_PARTIALS, {
-                        category: mongooseToObject(data),
-                    }),
-                );
+                return res.render('admin/categories/details_cate', {
+                    category: mongooseToObject(data),
+                });
             })
             .catch(() => {
                 sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
