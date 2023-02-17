@@ -11,7 +11,7 @@
 function changeLayoutMiddleware(_req, res, next) {
     if (_req.originalUrl.length > 1 && _req.originalUrl) {
         let stringPath = _req.originalUrl.toString();
-        let controller = stringPath.split('/')[1];
+        let controller = stringPath.split('/')[1].toString().toLowerCase();
 
         // console.log(_req.originalUrl);
         // console.log(`Controller: ${controller}`);
