@@ -234,7 +234,7 @@ class AdminController {
 
     // GET /admin/categories/:id/view
     detailCategory(req, res, next) {
-        const ENABLE_LAYOUT_PARTIALS = res.locals.layout || ADMIN_LAYOUT;c
+        const ENABLE_LAYOUT_PARTIALS = res.locals.layout || ADMIN_LAYOUT;
         let _id = req.params.id;
         if (!_id) {
             sendMessage(req, res, next, { error: 'Invalid category id, try again.' });
