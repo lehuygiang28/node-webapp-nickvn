@@ -3,6 +3,7 @@ const fs = require('fs');
 
 function removeFile(pathName) {
     // Remove a slash from the begin of path if exists
+    pathName = pathName.toString();
     pathName = pathName.charAt(0) === '/' || pathName.charAt(0) === '\\' ? pathName.substring(1) : pathName;
     pathName = path.resolve('./src/public', pathName);
     console.log(pathName);
