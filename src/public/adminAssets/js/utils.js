@@ -120,6 +120,10 @@ function acceptModal(data, _id) {
     });
 }
 
+function showSpinner() {
+    let showSpinner = document.getElementById('spinner');
+    showSpinner.classList.add('show');
+}
 /**
  * Categories utilities END
  */
