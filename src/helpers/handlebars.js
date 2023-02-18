@@ -7,6 +7,9 @@ module.exports = {
     },
     dateFormat: require('handlebars-dateformat'),
     paginate: require('handlebars-paginate'),
+    getLastChars: (stringInput, count) => {
+        return !stringInput ? '' : stringInput.toString().slice(Number(`-${count}`));
+    },
     ifCondition: (a, operator, b, options) => {
         switch (operator) {
             case '==':
