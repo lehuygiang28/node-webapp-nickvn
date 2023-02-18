@@ -74,7 +74,7 @@
                                     <a href='/admin/categories/{{this._id}}/edit' class='btn btn-outline-light btn-sm'>Edit</a>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn" id="{{this._id}}" style="font-size: x-large;" onclick="showOrHide('{{this._id}}');">
+                                    <button type="button" class="btn" id="{{this._id}}" style="font-size: x-large;" onclick="showOrHide('{{this._id}}', 'categories');">
                                         {{#ifCondition this.visible "===" 'show'}}
                                         <i class="fas fa-eye"></i>
                                         {{else}}
