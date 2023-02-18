@@ -18,6 +18,11 @@ const LienMinhSchema = new Schema(
         rank: { type: String, minLength: 1 },
         status_account: { type: String, minLength: 1 },
         note: { type: String, minLength: 0 },
+        status: {
+            id: { type: Number, default: 1005 },
+            name_en: { type: String, enum: ['sold', 'available'], default: 'available' },
+            name_vi: { type: String, enum: ['đã bán', 'có sẵn'], default: 'có sẵn' },
+        },
         status_id: { type: Number, minLength: 1 },
         status_name: { type: String, minLength: 1 },
         img: { type: Array, minLength: 1 },

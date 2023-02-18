@@ -168,7 +168,7 @@ async function generateLienMinhAtFirstTime(counters, next) {
  *
  */
 function resetProductAndUserPuchased(next) {
-    LienMinh.find({ status_id: 1006 })
+    LienMinh.find({ 'status.id': 1006 })
         .then((product) => {
             if (!product) {
                 logger.info('Not found product');
@@ -177,6 +177,11 @@ function resetProductAndUserPuchased(next) {
             product.forEach((productItem) => {
                 productItem.status_id = 1005;
                 productItem.status_name = 'Chưa bán';
+                productItem.status = {
+                    status_id: 1005,
+                    name_vi: 'Chưa bán',
+                    name_en: 'available'
+                }
                 productItem.save();
             });
             logger.info('Reset product successfully');
