@@ -16,6 +16,8 @@ const CategorySchema = new Schema({
         },
     ],
     visible: { type: String, enum: ['show', 'hide'], default: 'show' },
+    created_at: { type: Date, default: Date.now },
+    updated_at: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model('Category', CategorySchema);

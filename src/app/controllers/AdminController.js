@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Category = require('../models/Category');
+const LienMinh = require('../models/LienMinh');
 const { sendMessage } = require('../../util/flash-message');
 const { createHash, compare, compareSync } = require('../../util/bcrypt');
 const { logger } = require('../../util/logger');
@@ -148,6 +149,9 @@ class AdminController {
             });
         }
 
+        // Add sorting by updated date
+        optionsQuery.sort = { updated_at: -1 };
+
         Category.find(filter, {}, optionsQuery)
             .then((data) => {
                 res.render('admin/categories/cate_menu', {
@@ -285,7 +289,7 @@ class AdminController {
                 sendMessage(req, res, next, { error: 'Image upload failed, try again later.' });
                 return res.redirect(`/admin/categories/${_id}/view`);
             }
-        } else{
+        } else {
             console.log('Not files');
         }
 
@@ -295,6 +299,7 @@ class AdminController {
             total: total,
             visible: visible,
             img: fileName,
+            updated_at: Date.now(),
         };
 
         Category.findByIdAndUpdate(sanitize(_id), categoryEdited)
@@ -328,7 +333,12 @@ class AdminController {
             return res.json({ error: 'Invalid visible value' });
         }
 
-        Category.findByIdAndUpdate(_id, { visible: visible })
+        let cateUpdated = {
+            visible: visible,
+            updated_at: Date.now(),
+        }
+
+        Category.findByIdAndUpdate(_id, cateUpdated)
             .then(() => {
                 return res.json({ success: 'Visible has been changed' });
             })
@@ -338,12 +348,66 @@ class AdminController {
             });
     }
 
-    test(req, res, next){
-        let error = {
-            error: 'Message error'
+    // GET /admin/products
+    async products(req, res, next) {
+        let filter = {};
+        let optionsQuery = {};
+        let pagination = { page: 1, pageCount: 1 };
+
+        await paginationFn(res);
+        async function paginationFn(res, perPage = 20) {
+            // Get data for pagination
+            let page = res.locals._pagination.page; // page to get
+            // let perPage = 6; // page size
+            let skip = perPage * res.locals._pagination.page - perPage;
+            let totalPages;
+            let totalDocuments;
+            let countDocuments = await LienMinh.countDocuments(filter);
+
+            if (!countDocuments) {
+                return;
+            }
+
+            totalDocuments = !countDocuments ? 0 : countDocuments;
+
+            totalPages =
+                chiaLayPhanNguyen(totalDocuments, perPage) +
+                (chiaLayPhanDu(totalDocuments, perPage) > 0 ? 1 : 0);
+
+            if (totalDocuments === 0) {
+                totalPages = 0;
+            }
+
+            if (page > totalPages) {
+                page = totalPages;
+                return res.redirect(`/admin/products?page=${page}`);
+            }
+
+            Object.assign(optionsQuery, {
+                skip: skip,
+                limit: perPage,
+            });
+
+            Object.assign(pagination, {
+                page: sanitize(page),
+                pageCount: totalPages,
+            });
         }
-        sendMessage(req, res, next, error);
-        return res.render('admin/test');
+
+        // Add sorting by updated date
+        optionsQuery.sort = { updated_at: -1 };
+
+        LienMinh.find(filter, {}, optionsQuery)
+            .then((data) => {
+                res.render('admin/products/product_menu', {
+                    allProducts: mutipleMongooseToObject(data),
+                    pagination: pagination,
+                });
+            })
+            .catch(() => {
+                sendMessage(req, res, next, { error: 'Has error, try again' });
+                next();
+            });
     }
 }
 
