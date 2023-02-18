@@ -1,168 +1,169 @@
 window.onload = function () {
-    document.getElementById('content-editable').onclick = function (event) {
-        let dd_element, input, text;
+    if (window.location.href.includes('view'))
+        document.getElementById('content-editable').onclick = function (event) {
+            let dd_element, input, text;
 
-        // Get the event (handle MS difference)
-        event = event || window.event;
+            // Get the event (handle MS difference)
+            event = event || window.event;
 
-        // Get the root element of the event (handle MS difference)
-        dd_element = event.target || event.srcElement;
+            // Get the root element of the event (handle MS difference)
+            dd_element = event.target || event.srcElement;
 
-        // If has a disable-editable, then return
-        if (dd_element.hasAttribute('disable-editable')) return;
+            // If has a disable-editable, then return
+            if (dd_element.hasAttribute('disable-editable')) return;
 
-        // If clicked on a dd element
-        if (dd_element && dd_element.tagName.toUpperCase() === 'DD') {
-            // Hide it
-            dd_element.style.display = 'none';
+            // If clicked on a dd element
+            if (dd_element && dd_element.tagName.toUpperCase() === 'DD') {
+                // Hide it
+                dd_element.style.display = 'none';
 
-            // Get its text
-            text = dd_element.textContent;
+                // Get its text
+                text = dd_element.textContent;
 
-            // Create an input
-            input = document.createElement('input');
-            input.classList.add('form-control', 'w-50');
-            input.type = 'text';
-            input.value = text;
-            input.size = Math.max((text.length / 4) * 3, 4);
-            dd_element.parentNode.insertBefore(input, dd_element);
+                // Create an input
+                input = document.createElement('input');
+                input.classList.add('form-control', 'w-50');
+                input.type = 'text';
+                input.value = text;
+                input.size = Math.max((text.length / 4) * 3, 4);
+                dd_element.parentNode.insertBefore(input, dd_element);
 
-            // Focus it, hook blur to undo
-            input.focus();
-            input.onblur = function () {
-                // Remove the input
-                dd_element.parentNode.removeChild(input);
+                // Focus it, hook blur to undo
+                input.focus();
+                input.onblur = function () {
+                    // Remove the input
+                    dd_element.parentNode.removeChild(input);
 
-                // Update the span
-                dd_element.innerHTML = input.value == '' ? '&nbsp;' : input.value;
-                dd_element.innerHTML += '<i class="fas fa-edit float-end"></i>';
+                    // Update the span
+                    dd_element.innerHTML = input.value == '' ? '&nbsp;' : input.value;
+                    dd_element.innerHTML += '<i class="fas fa-edit float-end"></i>';
 
-                // Show the span again
-                dd_element.style.display = '';
-            };
-        }
-
-        // If clicked on a dd icon edit
-        if (dd_element && dd_element.parentNode.tagName.toUpperCase() === 'DD') {
-            // Change clicked on child to parent
-            dd_element = dd_element.parentNode;
-
-            // Hide it
-            dd_element.style.display = 'none';
-
-            // Get its text
-            text = dd_element.textContent;
-
-            // Create an input
-            input = document.createElement('input');
-            input.classList.add('form-control', 'w-50');
-            input.type = 'text';
-            input.value = text;
-            input.size = Math.max((text.length / 4) * 3, 4);
-            dd_element.parentNode.insertBefore(input, dd_element);
-
-            // Focus it, hook blur to undo
-            input.focus();
-            input.onblur = function () {
-                // Remove the input
-                dd_element.parentNode.removeChild(input);
-
-                // Update the span
-                dd_element.innerHTML = input.value == '' ? '&nbsp;' : input.value;
-                dd_element.innerHTML += '<i class="fas fa-edit float-end"></i>';
-
-                // Show the span again
-                dd_element.style.display = '';
-            };
-        }
-
-        // If clicked on a select option ICON edit
-        if (dd_element && dd_element.tagName.toUpperCase() === 'DO') {
-            let visibleCase = ['show', 'hide'];
-
-            // Hide it
-            dd_element.style.display = 'none';
-
-            // Get its text
-            text = dd_element.textContent;
-
-            // Create an select
-            input = document.createElement('select');
-            input.classList.add('form-select', 'text-capitalize', 'w-50');
-            input.setAttribute('aria-label', 'Select visibility status');
-            input.setAttribute('name', 'visible');
-            input.size = visibleCase.length;
-
-            for (const element of visibleCase) {
-                let option = document.createElement('option');
-                if (text === element) {
-                    option.setAttribute('selected', '');
-                }
-                option.value = element;
-                option.textContent = element;
-                input.appendChild(option);
+                    // Show the span again
+                    dd_element.style.display = '';
+                };
             }
-            dd_element.parentNode.insertBefore(input, dd_element);
 
-            input.focus();
-            input.onblur = function () {
-                // Remove the input
-                dd_element.parentNode.removeChild(input);
+            // If clicked on a dd icon edit
+            if (dd_element && dd_element.parentNode.tagName.toUpperCase() === 'DD') {
+                // Change clicked on child to parent
+                dd_element = dd_element.parentNode;
 
-                // Update the span
-                dd_element.innerHTML = input.value == '' ? '&nbsp;' : input.value;
-                dd_element.innerHTML += '<i class="fas fa-edit float-end"></i>';
+                // Hide it
+                dd_element.style.display = 'none';
 
-                // Show the span again
-                dd_element.style.display = '';
-            };
-        }
+                // Get its text
+                text = dd_element.textContent;
 
-        // If clicked on a select option ICON edit
-        if (dd_element && dd_element.parentNode.tagName.toUpperCase() === 'DO') {
-            let visibleCase = ['show', 'hide'];
+                // Create an input
+                input = document.createElement('input');
+                input.classList.add('form-control', 'w-50');
+                input.type = 'text';
+                input.value = text;
+                input.size = Math.max((text.length / 4) * 3, 4);
+                dd_element.parentNode.insertBefore(input, dd_element);
 
-            // Change clicked on child to parent
-            dd_element = dd_element.parentNode;
+                // Focus it, hook blur to undo
+                input.focus();
+                input.onblur = function () {
+                    // Remove the input
+                    dd_element.parentNode.removeChild(input);
 
-            // Hide it
-            dd_element.style.display = 'none';
+                    // Update the span
+                    dd_element.innerHTML = input.value == '' ? '&nbsp;' : input.value;
+                    dd_element.innerHTML += '<i class="fas fa-edit float-end"></i>';
 
-            // Get its text
-            text = dd_element.textContent;
-
-            // Create an select
-            input = document.createElement('select');
-            input.classList.add('form-select', 'text-capitalize', 'w-50');
-            input.setAttribute('aria-label', 'Select visibility status');
-            input.setAttribute('name', 'visible');
-            input.size = visibleCase.length;
-
-            for (const element of visibleCase) {
-                let option = document.createElement('option');
-                if (text === element) {
-                    option.setAttribute('selected', '');
-                }
-                option.value = element;
-                option.textContent = element;
-                input.appendChild(option);
+                    // Show the span again
+                    dd_element.style.display = '';
+                };
             }
-            dd_element.parentNode.insertBefore(input, dd_element);
 
-            input.focus();
-            input.onblur = function () {
-                // Remove the input
-                dd_element.parentNode.removeChild(input);
+            // If clicked on a select option ICON edit
+            if (dd_element && dd_element.tagName.toUpperCase() === 'DO') {
+                let visibleCase = ['show', 'hide'];
 
-                // Update the span
-                dd_element.innerHTML = input.value == '' ? '&nbsp;' : input.value;
-                dd_element.innerHTML += '<i class="fas fa-edit float-end"></i>';
+                // Hide it
+                dd_element.style.display = 'none';
 
-                // Show the span again
-                dd_element.style.display = '';
-            };
-        }
-    };
+                // Get its text
+                text = dd_element.textContent;
+
+                // Create an select
+                input = document.createElement('select');
+                input.classList.add('form-select', 'text-capitalize', 'w-50');
+                input.setAttribute('aria-label', 'Select visibility status');
+                input.setAttribute('name', 'visible');
+                input.size = visibleCase.length;
+
+                for (const element of visibleCase) {
+                    let option = document.createElement('option');
+                    if (text === element) {
+                        option.setAttribute('selected', '');
+                    }
+                    option.value = element;
+                    option.textContent = element;
+                    input.appendChild(option);
+                }
+                dd_element.parentNode.insertBefore(input, dd_element);
+
+                input.focus();
+                input.onblur = function () {
+                    // Remove the input
+                    dd_element.parentNode.removeChild(input);
+
+                    // Update the span
+                    dd_element.innerHTML = input.value == '' ? '&nbsp;' : input.value;
+                    dd_element.innerHTML += '<i class="fas fa-edit float-end"></i>';
+
+                    // Show the span again
+                    dd_element.style.display = '';
+                };
+            }
+
+            // If clicked on a select option ICON edit
+            if (dd_element && dd_element.parentNode.tagName.toUpperCase() === 'DO') {
+                let visibleCase = ['show', 'hide'];
+
+                // Change clicked on child to parent
+                dd_element = dd_element.parentNode;
+
+                // Hide it
+                dd_element.style.display = 'none';
+
+                // Get its text
+                text = dd_element.textContent;
+
+                // Create an select
+                input = document.createElement('select');
+                input.classList.add('form-select', 'text-capitalize', 'w-50');
+                input.setAttribute('aria-label', 'Select visibility status');
+                input.setAttribute('name', 'visible');
+                input.size = visibleCase.length;
+
+                for (const element of visibleCase) {
+                    let option = document.createElement('option');
+                    if (text === element) {
+                        option.setAttribute('selected', '');
+                    }
+                    option.value = element;
+                    option.textContent = element;
+                    input.appendChild(option);
+                }
+                dd_element.parentNode.insertBefore(input, dd_element);
+
+                input.focus();
+                input.onblur = function () {
+                    // Remove the input
+                    dd_element.parentNode.removeChild(input);
+
+                    // Update the span
+                    dd_element.innerHTML = input.value == '' ? '&nbsp;' : input.value;
+                    dd_element.innerHTML += '<i class="fas fa-edit float-end"></i>';
+
+                    // Show the span again
+                    dd_element.style.display = '';
+                };
+            }
+        };
 };
 
 /**

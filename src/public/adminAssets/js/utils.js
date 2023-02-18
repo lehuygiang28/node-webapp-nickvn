@@ -17,27 +17,28 @@ function closeClick(_id) {
     document.getElementById('visibleButton').remove();
 }
 
-function showOrHide(_id) {
+function showOrHide(_id, objectInput) {
     const currentElement = document.getElementById(_id);
     const firstChild = currentElement.children[0];
 
     if (firstChild.classList.value === 'fas fa-eye-slash') {
-        showVisibleModal('show', _id);
+        showVisibleModal('show', _id, objectInput);
         firstChild.classList.remove('fas', 'fa-eye-slash');
         firstChild.classList.add('fas', 'fa-eye');
     } else {
-        showVisibleModal('hide', _id);
+        showVisibleModal('hide', _id, objectInput);
         firstChild.classList.remove('fas', 'fa-eye');
         firstChild.classList.add('fas', 'fa-eye-slash');
     }
     document.getElementById('visibleButton').remove();
 }
 
-function showVisibleModal(caseVisible, _id) {
+function showVisibleModal(caseVisible, _id, objectInput) {
     createModal({
         title: 'Change visible',
         _id: _id,
         caseVisible: caseVisible,
+        objectInput: objectInput,
     });
     const modal = new bootstrap.Modal(document.getElementById('visibleButton'), {
         keyboard: false,
@@ -45,7 +46,7 @@ function showVisibleModal(caseVisible, _id) {
     modal.show();
 }
 
-function createModal({ title = '', caseVisible, _id = '' }) {
+function createModal({ title = '', caseVisible, _id = '',objectInput = ''  }) {
     const main = document.getElementById('visible');
     if (main) {
         const modal = document.createElement('div');
@@ -68,11 +69,11 @@ function createModal({ title = '', caseVisible, _id = '' }) {
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeClick('${_id}')"></button>
                         </div>
                         <div class="modal-body">
-                            Are you sure you want to show this category?
+                            Are you sure you want to show this ${objectInput.toLowerCase()}?
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeClick('${_id}');">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="acceptModal('show', '${_id}');">Save changes</button>
+                            <button type="button" class="btn btn-primary" onclick="acceptModal('show', '${_id}', '${objectInput.toLowerCase()}');">Save changes</button>
                         </div>
                         </div>
                     </div>
@@ -87,11 +88,11 @@ function createModal({ title = '', caseVisible, _id = '' }) {
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeClick('${_id}')"></button>
                         </div>
                         <div class="modal-body">
-                            Are you sure you want to hide this category?
+                            Are you sure you want to hide this ${objectInput.toLowerCase()}?
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeClick('${_id}')">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="acceptModal('hide', '${_id}');">Save changes</button>
+                            <button type="button" class="btn btn-primary" onclick="acceptModal('hide', '${_id}', '${objectInput.toLowerCase()}');">Save changes</button>
                         </div>
                         </div>
                     </div>
@@ -102,10 +103,22 @@ function createModal({ title = '', caseVisible, _id = '' }) {
     }
 }
 
-function acceptModal(data, _id) {
+function acceptModal(data, _id, objectInput) {
+    let objectInputSolve = '';
+    switch (objectInput.toLowerCase()) {
+        case 'categories':
+            objectInputSolve = 'categories';
+            break;
+        case 'products':
+            objectInputSolve = 'products';
+            break;
+        default:
+            objectInputSolve = 'categories';
+            break;
+    }
     $.ajax({
         type: 'POST',
-        url: `/admin/categories/${_id}/change-visible`,
+        url: `/admin/${objectInputSolve}/${_id}/change-visible`,
         data: { visible: data },
         success: function (response) {
             // if (response.success) console.log(response.success);
