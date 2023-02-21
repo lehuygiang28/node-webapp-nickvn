@@ -1,3 +1,4 @@
+const logger = require('../../util/logger');
 const User = require('../models/User');
 
 /***
@@ -8,25 +9,23 @@ const User = require('../models/User');
  *
  * Assign session to _req.session.User
  */
-function renewUserSessionMiddleware(_req, res, next) {
-    if (!_req.session.User) {
-        next();
+async function renewUserSessionMiddleware(_req, res, next) {
+    if (!_req.session.User || !_req.session.User._id) {
+        return next();
     }
-    User.findById(_req.session.User._id)
-        .then((user) => {
-            if (!user) {
-                _req.session.destroy();
-                return next();
-            } else {
-                Object.assign(_req.session.User, {
-                    _id: user._id,
-                    userName: user.userName,
-                    money: user.money,
-                    role: user.role,
-                });
-            }
-        })
-        .catch(next);
+    
+    let user = await User.findById(_req.session.User._id);
+    if (!user) {
+        _req.session.destroy();
+        return next();
+    }
+    Object.assign(_req.session.User, {
+        _id: user._id,
+        userName: user.userName,
+        money: user.money,
+        role: user.role,
+    });
+
     next();
 }
 

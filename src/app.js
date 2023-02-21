@@ -107,9 +107,6 @@ app.use(customSessionFlashMiddleware);
 // Sort
 app.use(sortMiddleware);
 
-// Renew User Session
-app.use(renewUserSessionMiddleware);
-
 // Pagination middleware
 app.use(paginationMiddleware);
 
