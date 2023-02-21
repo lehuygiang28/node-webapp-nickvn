@@ -1,5 +1,4 @@
 const User = require('../models/User');
-const { logger } = require('../../util/logger');
 
 /***
  * This middleware will renew the session of the user if found, otherwise destroy the wrong session
@@ -11,31 +10,23 @@ const { logger } = require('../../util/logger');
  */
 function renewUserSessionMiddleware(_req, res, next) {
     if (!_req.session.User) {
-        logger.info('User session not set!');
-    } else {
-        // console.log(_req.session);
-        User.findById(_req.session.User._id)
-            .then((user) => {
-                if (!user) {
-                    logger.info('User in session not found, destroy wrong session!');
-                    _req.session.destroy();
-                    return next();
-                } else {
-                    // logger.info(`Get session completed userName: ${_req.session.User.userName}`);
-                    Object.assign(_req.session.User, {
-                        _id: user._id,
-                        userName: user.userName,
-                        money: user.money,
-                        role: user.role,
-                    });
-                    // logger.info(
-                    //     `Renew User session completed userName: ${_req.session.User.userName}`,
-                    // );
-                }
-            })
-            .catch(next);
+        next();
     }
-
+    User.findById(_req.session.User._id)
+        .then((user) => {
+            if (!user) {
+                _req.session.destroy();
+                return next();
+            } else {
+                Object.assign(_req.session.User, {
+                    _id: user._id,
+                    userName: user.userName,
+                    money: user.money,
+                    role: user.role,
+                });
+            }
+        })
+        .catch(next);
     next();
 }
 

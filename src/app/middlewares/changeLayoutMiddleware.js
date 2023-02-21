@@ -17,10 +17,6 @@ function changeLayoutMiddleware(_req, res, next) {
             case 'admin':
                 res.locals.layout = 'admin';
                 break;
-            case 'user_test':
-                break;
-            case 'example_test':
-                break;
             default:
                 res.locals.layout = 'main';
                 break;
