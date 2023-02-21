@@ -58,21 +58,35 @@ function generateLienMinh(counters, next) {
         let product = new LienMinh({
             userName: 'shop' + randomString(6),
             password: 'passw' + randomString(8),
-            game_name: 'Liên Minh',
+            game: {
+                name: 'Liên Minh',
+            },
             price: randomNumber(10000, 20000000),
             champ: randomNumber(20, 199),
             skin: randomNumber(50, 600),
             rank: rankRd[randomNumber(0, rankRd.length - 1)],
             status_account: 'Trắng thông tin',
             note: 'note',
-            status_id: NOT_SOLD,
-            status_name: 'Chưa bán',
-            img: [firstImg[randomNumber(0, firstImg.length - 1)]],
+            status: {
+                id: NOT_SOLD,
+                name_en: 'available',
+                name_vi: 'có sẵn',
+            },
+            imgur: [
+                {
+                    link: firstImg[randomNumber(0, firstImg.length - 1)],
+                    deletehash: 'localfile',
+                },
+            ],
         });
 
         // Concat() is better than '...' (spread syntax ES6)
         // product.img.push(...afterImg);
-        product.img = product.img.concat(afterImg);
+        // product.img = product.img.concat(afterImg);
+
+        afterImg.forEach((i) => {
+            product.imgur.push({ link: i });
+        });
 
         product
             .save()
@@ -82,8 +96,6 @@ function generateLienMinh(counters, next) {
             })
             .catch(next);
     }
-    // })
-    // .catch(next);
 }
 
 /**
@@ -130,28 +142,41 @@ async function generateLienMinhAtFirstTime(counters, next) {
         let product = new LienMinh({
             userName: 'shop' + randomString(6),
             password: 'passw' + randomString(8),
-            game_name: 'Liên Minh',
+            game: {
+                name: 'Liên Minh',
+            },
             price: randomNumber(10000, 20000000),
             champ: randomNumber(20, 199),
             skin: randomNumber(50, 600),
             rank: rankRd[randomNumber(0, rankRd.length - 1)],
             status_account: 'Trắng thông tin',
             note: 'note',
-            status_id: NOT_SOLD,
-            status_name: 'Chưa bán',
-            img: [firstImg[randomNumber(0, firstImg.length - 1)]],
+            status: {
+                id: NOT_SOLD,
+                name_en: 'available',
+                name_vi: 'có sẵn',
+            },
+            imgur: [
+                {
+                    link: firstImg[randomNumber(0, firstImg.length - 1)],
+                    deletehash: 'localfile',
+                },
+            ],
         });
 
-        // Concat() is better than '...' (spread syntax ES6)
-        // product.img.push(...afterImg);
-        product.img = product.img.concat(afterImg);
+        afterImg.forEach((i) => {
+            let objectLink = { link: i, deletehash: 'localfile' };
+            product.imgur.push(objectLink);
+        });
 
         product
             .save()
+            .then(() => {
+                logger.info(`Add product successfully!`);
+                logger.info(product);
+            })
             .catch(next);
     }
-    // })
-    // .catch(next);
 }
 
 /**
@@ -180,8 +205,8 @@ function resetProductAndUserPuchased(next) {
                 productItem.status = {
                     status_id: 1005,
                     name_vi: 'Chưa bán',
-                    name_en: 'available'
-                }
+                    name_en: 'available',
+                };
                 productItem.save();
             });
             logger.info('Reset product successfully');

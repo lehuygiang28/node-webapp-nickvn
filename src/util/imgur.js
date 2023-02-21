@@ -14,7 +14,7 @@ async function UploadImage(img) {
     const response = await client.upload({
         image: img.data,
     });
-    return response.data.link;
+    return response.data;
 }
 
 module.exports = { UploadImage };

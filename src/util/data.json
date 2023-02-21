@@ -3,19 +3,28 @@
         {
             "category_name": "Liên Minh Huyền Thoại",
             "total": 10023,
-            "img": "/img/lien-minh.gif",
+            "imgur": [{
+                "link": "/img/lien-minh.gif",
+                "deletehash": "localfile"
+            }],
             "slug": "lien-minh",
             "categories": [
                 {
                     "category_name": "Liên Minh",
-                    "img": "/img/lien-minh.gif",
+                    "imgur": [{
+                        "link": "/img/lien-minh.gif",
+                        "deletehash": "localfile"
+                    }],
                     "slug": "acc-lien-minh",
                     "total": 5012,
                     "visible": "show"
                 },
                 {
                     "category_name": "Thử Vận May Liên Minh",
-                    "img": "/img/thu-van-may.gif",
+                    "imgur": [{
+                        "link": "/img/thu-van-may.gif",
+                        "deletehash": "localfile"
+                    }],
                     "slug": "thu-van-may",
                     "total": 512,
                     "visible": "show"
@@ -26,7 +35,10 @@
         {
             "category_name": "Liên Quân Mobile",
             "total": 1003,
-            "img": "/img/lien-quan.gif",
+            "imgur": [{
+                "link": "/img/lien-quan.gif",
+                "deletehash": "localfile"
+            }],
             "slug": "lien-quan",
             "categories": [],
             "visible": "show"
@@ -34,7 +46,10 @@
         {
             "category_name": "Fifa Online 4",
             "total": 1303,
-            "img": "/img/fo4.gif",
+            "imgur": [{
+                "link": "/img/fo4.gif",
+                "deletehash": "localfile"
+            }],
             "slug": "fo4",
             "categories": [],
             "visible": "show"
@@ -42,7 +57,10 @@
         {
             "category_name": "Ninja School Online",
             "total": 221,
-            "img": "/img/ninja.gif",
+            "imgur": [{
+                "link": "/img/ninja.gif",
+                "deletehash": "localfile"
+            }],
             "slug": "ninja",
             "categories": [],
             "visible": "show"
@@ -52,7 +70,6 @@
         {
             "userName": "admin",
             "password": "$2b$05$CQ/nsEj2Fp/7/6tkBnog0.l1PWv2NRM/t5bp2aoOfibOrdHGgtOhe",
-            "password_type": "1",
             "email": "lehuygiang28@giang.cf",
             "phone": "0123456789",
             "fullName": "administrator",
@@ -69,7 +86,6 @@
         {
             "userName": "giang",
             "password": "$2b$05$CQ/nsEj2Fp/7/6tkBnog0.l1PWv2NRM/t5bp2aoOfibOrdHGgtOhe",
-            "password_type": "1",
             "email": "mailgenshin.04@giang.cf",
             "phone": "0123456788",
             "fullName": "Lê Huy Giang",
@@ -86,7 +102,6 @@
         {
             "userName": "tester",
             "password": "$2b$05$CQ/nsEj2Fp/7/6tkBnog0.l1PWv2NRM/t5bp2aoOfibOrdHGgtOhe",
-            "password_type": "1",
             "email": "gianghuytv28@giang.cf",
             "phone": "0123456787",
             "fullName": "tester_no_money",
@@ -103,7 +118,6 @@
         {
             "userName": "tester1",
             "password": "$2b$05$sznyEKaeU//MDFSEjYKlxufbwq7civGgSD.DfhnC6SLIbB57iAoTi",
-            "password_type": "1",
             "email": "1hour.lehuygiang28@giang.cf",
             "phone": "0123456786",
             "fullName": "tester_money",

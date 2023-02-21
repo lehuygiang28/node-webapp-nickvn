@@ -6,27 +6,52 @@ const LienMinhSchema = new Schema(
     {
         // _id: {type: mongoose.SchemaTypes.ObjectId},
         product_id: { type: Number, require: true },
-        userName: { type: String, minLength: 1 },
-        password: { type: String, minLength: 1 },
+        userName: { type: String, require: [true, 'UserName is required'] },
+        password: { type: String, require: [true, 'Password is required'] },
         game: {
-            id: { type: Number, require: true },
+            id: { type: Number },
             name: { type: String, default: 'Liên Minh' },
         },
-        price: { type: Number, min: 0 },
-        champ: { type: Number, min: 0 },
-        skin: { type: Number, min: 0 },
-        rank: { type: String, minLength: 1 },
-        status_account: { type: String, minLength: 1 },
-        note: { type: String, minLength: 0 },
+        price: { type: Number, default: 0 },
+        champ: { type: Number, default: 0 },
+        skin: { type: Number, default: 0 },
+        rank: {
+            type: String,
+            require: [true, 'Rank must be selected'],
+            enum: {
+                values: [
+                    'Chưa Rank',
+                    'Sắt',
+                    'Đồng',
+                    'Bạc',
+                    'Vàng',
+                    'Bạch Kim',
+                    'Kim Cương',
+                    'Cao Thủ',
+                    'Đại Cao Thủ',
+                    'Thách Đấu',
+                ],
+                message: '{VALUE} is not supported',
+            },
+        },
+        status_account: { type: String },
+        note: { type: String, default: '' },
         status: {
             id: { type: Number, default: 1005 },
             name_en: { type: String, enum: ['sold', 'available'], default: 'available' },
             name_vi: { type: String, enum: ['đã bán', 'có sẵn'], default: 'có sẵn' },
         },
-        status_id: { type: Number, minLength: 1 },
-        status_name: { type: String, minLength: 1 },
-        img: { type: Array, minLength: 1 },
-        visible: { type: String, enum: ['show', 'hide'], default: 'show' },
+        status_id: { type: Number },
+        status_name: { type: String },
+        imgur: [{
+            link: { type: String, required: [true, 'Img link should not be undefined'] },
+            deletehash: { type: String, required: [true, 'Delete hash should not be undefined']}
+        }],
+        visible: {
+            type: String,
+            enum: { values: ['show', 'hide'], message: '{VALUE} is not supported' },
+            default: 'show',
+        },
         created_at: { type: Date, default: Date.now },
         updated_at: { type: Date, default: Date.now },
     },
@@ -36,4 +61,5 @@ const LienMinhSchema = new Schema(
 );
 
 LienMinhSchema.plugin(AutoIncrement, { inc_field: 'product_id' });
+
 module.exports = mongoose.model('LienMinh', LienMinhSchema);
