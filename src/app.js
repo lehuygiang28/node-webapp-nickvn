@@ -9,7 +9,6 @@ require('dotenv').config({
 });
 const favicon = require('serve-favicon');
 const { sortMiddleware } = require('./app/middlewares/sortMiddleware');
-const { renewUserSessionMiddleware } = require('./app/middlewares/renewUserSessionMiddleware');
 const { customSessionFlashMiddleware } = require('./app/middlewares/customSessionFlashMiddleware');
 const { getSessionToViewsMiddleware } = require('./app/middlewares/getSessionToViewsMiddleware');
 const { paginationMiddleware } = require('./app/middlewares/paginationMiddleware');
@@ -61,7 +60,7 @@ app.use(
 app.use(getSessionToViewsMiddleware);
 
 // Http logger
-if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'deploytest') {
     // app.use(morgan('combined'));
     // morgan(':date[clf] :method :url :status :res[content-length] - :response-time ms');
     morgan.token('date', (req, res) => {
@@ -117,9 +116,5 @@ app.use(changeLayoutMiddleware);
 
 // Routes init
 route(app);
-
-// app.listen(port, () => {
-//     console.log('\x1b[32m', `${formattedDate24h()} Server listening on port ${port}`, '\x1b[0m');
-// });
 
 module.exports = app;
