@@ -20,12 +20,12 @@ const { UploadImage } = require('../../util/imgur');
 class AdminController {
     // Get /admin/
     index(req, res, next) {
-        return res.render('admin');
+        return res.render('admin/sites/index');
     }
 
     // GET /admin/login
     login(req, res, next) {
-        res.render('admin/login', DISABLE_LAYOUT_PARTIALS);
+        res.render('admin/sites/login', DISABLE_LAYOUT_PARTIALS);
     }
 
     // POST /admin/login
@@ -40,7 +40,7 @@ class AdminController {
             sendMessage(req, res, next, {
                 error: 'Tài khoản hoặc mật khẩu không chính xác!',
             });
-            return res.status(401).render('admin/login', DISABLE_LAYOUT_PARTIALS);
+            return res.status(401).render('admin/sites/login', DISABLE_LAYOUT_PARTIALS);
         }
 
         // Find the user in database with username
@@ -49,7 +49,7 @@ class AdminController {
             sendMessage(req, res, next, {
                 error: 'Tài khoản hoặc mật khẩu không chính xác!',
             });
-            return res.status(401).render('admin/login', DISABLE_LAYOUT_PARTIALS);
+            return res.status(401).render('admin/sites/login', DISABLE_LAYOUT_PARTIALS);
         }
 
         // Compare the input password with the user's password
@@ -57,7 +57,7 @@ class AdminController {
             sendMessage(req, res, next, {
                 error: 'Tài khoản hoặc mật khẩu không chính xác!',
             });
-            return res.status(401).render('admin/login', DISABLE_LAYOUT_PARTIALS);
+            return res.status(401).render('admin/sites/login', DISABLE_LAYOUT_PARTIALS);
         }
 
         /***
@@ -81,7 +81,7 @@ class AdminController {
         sendMessage(req, res, next, {
             error: 'Tài khoản hoặc mật khẩu không chính xác!',
         });
-        return res.status(401).render('admin/login', DISABLE_LAYOUT_PARTIALS);
+        return res.status(401).render('admin/sites/login', DISABLE_LAYOUT_PARTIALS);
     }
 
     // GET /admin/signout
@@ -336,7 +336,7 @@ class AdminController {
         let cateUpdated = {
             visible: visible,
             updated_at: Date.now(),
-        }
+        };
 
         Category.findByIdAndUpdate(_id, cateUpdated)
             .then(() => {
@@ -408,6 +408,36 @@ class AdminController {
                 sendMessage(req, res, next, { error: 'Has error, try again' });
                 next();
             });
+    }
+
+    // GET /admin/products/add
+    async addProduct(req, res, next) {
+        let category = await Category.find({ slug: 'lien-minh' });
+        const rankList = [
+            'Chưa Rank',
+            'Sắt',
+            'Đồng',
+            'Bạc',
+            'Vàng',
+            'Bạch Kim',
+            'Kim Cương',
+            'Cao Thủ',
+            'Đại Cao Thủ',
+            'Thách Đấu',
+        ];
+        return res.render('admin/products/add_product', {
+            allCategories: mutipleMongooseToObject(category),
+            rankList: rankList,
+        });
+    }
+
+    // POST /admin/products/add
+    async addProductSolvers(req, res, next) {
+        let { img } = req.files;
+        let productInput = new LienMinh(req.body);
+        Object.assign(productInput, req.body);
+        productInput.img = Array.isArray(img) ? img.map((i) => i.name) : img.name;
+        res.json(productInput);
     }
 }
 
