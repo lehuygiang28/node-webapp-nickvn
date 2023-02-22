@@ -43,10 +43,16 @@ const LienMinhSchema = new Schema(
         },
         status_id: { type: Number },
         status_name: { type: String },
-        imgur: [{
-            link: { type: String, required: [true, 'Img link should not be undefined'] },
-            deletehash: { type: String, required: [true, 'Delete hash should not be undefined']}
-        }],
+        imgur: [
+            {
+                link: { type: String, required: [true, 'Img link should not be undefined'] },
+                deletehash: {
+                    type: String,
+                    required: [true, 'Delete hash should not be undefined'],
+                    default: 'localfile',
+                },
+            },
+        ],
         visible: {
             type: String,
             enum: { values: ['show', 'hide'], message: '{VALUE} is not supported' },

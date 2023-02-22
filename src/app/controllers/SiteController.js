@@ -11,7 +11,7 @@ const {
     generateLienMinh,
     generateCategoriesAtFirstTime,
     generateLienMinhAtFirstTime,
-    generateUsersAtFirstTime
+    generateUsersAtFirstTime,
 } = require('../../util/project_extensions');
 
 class SiteController {
@@ -35,17 +35,12 @@ class SiteController {
     signout(_req, res, next) {
         try {
             if (_req.session.User) {
-                _req.session.User = null;
                 _req.session.destroy();
-                console.log('Remove `user` session completed');
-                return res.redirect('/?sout=' + 'true');
-            } else {
-                return res.redirect('/?sout=' + 'false');
             }
         } catch (error) {
-            console.log('Destroy session error: ' + error);
-            res.redirect('/?sout=' + 'false');
-            next();
+            console.log(`ERROR: ${error}`);
+        } finally {
+            res.redirect('back');
         }
     }
 
@@ -55,8 +50,6 @@ class SiteController {
         if (_req.session.User) {
             return res.redirect(304, '/');
         }
-        // const passwordHash = createHash(_req.body.password);
-        // console.log(_req.body.username + _req.body.password + passwordHash);
 
         if (!_req.body.username || !_req.body.password) {
             return res

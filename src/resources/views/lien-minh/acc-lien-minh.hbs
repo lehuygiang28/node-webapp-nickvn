@@ -35,6 +35,35 @@
         }); 
     </script>
 
+    {{else if success}}
+    <div class="modal fade" id="successModal" role="dialog" style="display: block;" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class='modal-header'>
+                    <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                        <span aria-hidden='true'>×</span>
+                    </button>
+                    <h4 class='modal-title'>Thông báo</h4>
+                </div>
+                <div class="modal-body text-success">{{success}}</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4"
+                        data-dismiss="modal">Xác nhận</button>
+                    <button type="button"
+                        class="btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase"
+                        data-dismiss="modal">Đóng</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        var a = $('#successModal');
+        a.ready(function () {
+            a.modal('show');
+        }); 
+    </script>
+
     {{else if sessionFlash.error}}
     <div class="modal fade" id="errorModal" role="dialog" style="display: none;" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -47,6 +76,34 @@
                 </div>
 
                 <div class="modal-body text-danger">{{sessionFlash.error}}</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-red-4"
+                        data-dismiss="modal">Xác nhận</button>
+                    <button type="button"
+                        class="btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase"
+                        data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var a = $('#errorModal');
+        a.ready(function () {
+            a.modal('show');
+        });
+    </script>
+    {{else if error}}
+    <div class="modal fade" id="errorModal" role="dialog" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class='modal-header'>
+                    <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                        <span aria-hidden='true'>×</span>
+                    </button>
+                    <h4 class='modal-title'>Thông báo</h4>
+                </div>
+
+                <div class="modal-body text-danger">{{error}}</div>
                 <div class="modal-footer">
                     <button type="button" class="btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-red-4"
                         data-dismiss="modal">Xác nhận</button>
@@ -430,15 +487,15 @@
             <ul class="pagination">
 
                 {{#paginate pagination type="previous"}}
-                    <li {{#if disabled}}class="disabled" {{/if}}><a class="paginate-link" href="?page={{n}}">&lsaquo;</a>
-                    </li>
+                <li {{#if disabled}}class="disabled" {{/if}}><a class="paginate-link" href="?page={{n}}">&lsaquo;</a>
+                </li>
                 {{/paginate}}
                 {{#paginate pagination type="middle" limit="7"}}
-                    <li {{#if active}}class="active" {{/if}}><a class="paginate-link" href="?page={{n}}">{{n}}</a></li>
+                <li {{#if active}}class="active" {{/if}}><a class="paginate-link" href="?page={{n}}">{{n}}</a></li>
                 {{/paginate}}
                 {{#paginate pagination type="next"}}
-                    <li {{#if disabled}}class="disabled" {{/if}}><a class="paginate-link" href="?page={{n}}">&rsaquo;</a>
-                    </li>
+                <li {{#if disabled}}class="disabled" {{/if}}><a class="paginate-link" href="?page={{n}}">&rsaquo;</a>
+                </li>
                 {{/paginate}}
 
             </ul>

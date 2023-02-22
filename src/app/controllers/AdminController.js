@@ -15,7 +15,7 @@ const {
 } = require('../../util/generateUUID');
 const { removeFile } = require('../../util/files');
 const sanitize = require('mongo-sanitize');
-const { UploadImage } = require('../../util/imgur');
+const { UploadImage, DeleteImage } = require('../../util/imgur');
 
 class AdminController {
     // Get /admin/
@@ -176,7 +176,7 @@ class AdminController {
         let category_name = req.body.category_name;
         let slug = req.body.slug.toString();
         let visible = req.body.visible;
-        let fileName;
+        let imgurRes;
 
         if (!category_name || !visible || !slug) {
             sendMessage(req, res, next, { error: 'Image upload failed, try again later.' });
@@ -184,43 +184,30 @@ class AdminController {
         }
 
         try {
-            // // Get file img
-            // let { img } = req.files;
-
-            // // Create a new file name with UUID
-            // fileName = createUUIDFile(img.name);
-
-            // // Move the img to public location image
-            // img.mv(path.resolve('./src/public/img') + '/' + fileName);
-
-            // // Add prefix to file name
-            // fileName = `/img/${fileName}`;
-
             let { img } = req.files;
-            fileName = await UploadImage(img);
+            imgurRes = await UploadImage(img);
         } catch (error) {
-            // removeFile(fileName);
             sendMessage(req, res, next, { error: 'Image upload failed, try again later.' });
             return res.redirect('/admin/categories/add');
         }
 
         // Create a new category
-        let category = new Category({
+        let categoryInput = new Category({
             category_name: category_name,
             slug: slug.charAt(0) === '/' || slug.charAt(0) === '\\' ? slug : `/${slug}`, // Add a slash to the begin of string slug if not have
             visible: visible,
-            img: fileName,
+            imgur: imgurRes,
         });
 
         // Save the category to database
-        Category.insertMany(category)
+        Category.insertMany(categoryInput)
             .then(() => {
                 return res.render('admin/categories/add_cate', {
                     success: 'Add new category successfully',
                 });
             })
             .catch(() => {
-                // removeFile(fileName);
+                DeleteImage(categoryInput.imgur[0].deletehash);
                 next();
             });
     }
@@ -249,11 +236,6 @@ class AdminController {
             });
     }
 
-    // GET /admin/categories/:id/edit
-    // editCategory(req, res, next) {
-    //     return res.redirect(`/admin/categories/${req.params.id}/edit`);
-    // }
-
     // POST /admin/categories/:id/edit
     async editCategorySolvers(req, res, next) {
         if (!req.body._id) {
@@ -276,32 +258,29 @@ class AdminController {
         let slug = req.body.slug || categoryFound.slug;
         let total = req.body.total || categoryFound.total;
         let visible = req.body.visible || categoryFound.visible;
-        let fileName = categoryFound.img;
-
-        if (req.files) {
-            console.log('Have files');
-            try {
-                let { img } = req.files;
-                fileName = await UploadImage(img);
-            } catch (error) {
-                console.log(error);
-                // removeFile(fileName);
-                sendMessage(req, res, next, { error: 'Image upload failed, try again later.' });
-                return res.redirect(`/admin/categories/${_id}/view`);
-            }
-        } else {
-            console.log('Not files');
-        }
+        let imgurRes;
 
         let categoryEdited = {
             category_name: category_name,
             slug: slug,
             total: total,
             visible: visible,
-            img: fileName,
             updated_at: Date.now(),
         };
 
+        if (req.files) {
+            try {
+                let { img } = req.files;
+                imgurRes = await UploadImage(img);
+                Object.assign(categoryEdited, { imgur: imgurRes });
+            } catch (error) {
+                console.log(error);
+                sendMessage(req, res, next, { error: 'Image upload failed, try again later.' });
+                return res.redirect(`/admin/categories/${_id}/view`);
+            }
+        }
+
+        let oldImage = (await Category.findById(sanitize(_id))).imgur[0].deletehash;
         Category.findByIdAndUpdate(sanitize(_id), categoryEdited)
             .then((data) => {
                 if (!data) {
@@ -310,6 +289,7 @@ class AdminController {
                     });
                     return res.redirect(`/admin/categories/${_id}/view`);
                 }
+                DeleteImage(oldImage);
                 sendMessage(req, res, next, { success: 'Edit category successfuly!' });
                 return res.redirect(`/admin/categories/${_id}/view`);
             })
@@ -433,11 +413,203 @@ class AdminController {
 
     // POST /admin/products/add
     async addProductSolvers(req, res, next) {
-        let { img } = req.files;
-        let productInput = new LienMinh(req.body);
-        Object.assign(productInput, req.body);
-        productInput.img = Array.isArray(img) ? img.map((i) => i.name) : img.name;
-        res.json(productInput);
+        let imgurArr = [];
+
+        if (!req.body.userName || !req.body.password || !req.body.rank) {
+            sendMessage(req, res, next, { success: 'Field can not be empty' });
+            return res.redirect('/admin/products/add');
+        }
+
+        if (isNaN(req.body.price) || isNaN(req.body.champ) || isNaN(req.body.skin)) {
+            sendMessage(req, res, next, {
+                success: 'Data is invalid, price - champ - skin must be number',
+            });
+            return res.redirect('/admin/products/add');
+        }
+
+        let input = new LienMinh({
+            userName: sanitize(req.body.userName),
+            password: sanitize(req.body.password),
+            game: {
+                name: sanitize(req.body.gameName) || 'Liên Minh',
+            },
+            price: req.body.price || 0,
+            champ: req.body.champ || 0,
+            skin: req.body.skin || 0,
+            rank: sanitize(req.body.rank),
+            status_account: sanitize(req.body.status_account) || undefined,
+            note: sanitize(req.body.note) || 'Note',
+            visible: sanitize(req.body.visible) || 'hide',
+            created_at: Date.now(),
+            updated_at: Date.now(),
+        });
+
+        switch (req.body.status) {
+            case 'available':
+                Object.assign(input, {
+                    status: {
+                        id: 1005,
+                        name_en: 'available',
+                        name_vi: 'có sẵn',
+                    },
+                });
+                break;
+            case 'sold':
+            default:
+                Object.assign(input, {
+                    status: {
+                        id: 1006,
+                        name_en: 'sold',
+                        name_vi: 'đã bán',
+                    },
+                });
+                break;
+        }
+
+        if (req.files) {
+            let { img } = req.files;
+            switch (Array.isArray(img)) {
+                case true:
+                    img.map(async (image) => {
+                        let responseUpload = await UploadImage(image);
+                        imgurArr.push(responseUpload);
+                    });
+                    break;
+                case false:
+                default:
+                    let responseUpload = await UploadImage(img);
+                    imgurArr.push(responseUpload);
+                    break;
+            }
+            Object.assign(input, { imgur: imgurArr });
+        }
+
+        input.save();
+        sendMessage(req, res, next, { success: 'Add new product successfully!' });
+        return res.redirect('/admin/products/add');
+    }
+
+    // GET /admin/products/:id/view
+    async detailProduct(req, res, next) {
+        let productFound = await LienMinh.findById(sanitize(req.params.id));
+        if (!productFound) {
+            sendMessage(req, res, next, { error: 'Product not found!' });
+            return res.redirect('/admin/products/product_menu');
+        }
+
+        res.render('admin/products/details_product', {
+            product: mongooseToObject(productFound),
+        });
+    }
+
+    // POST /admin/products/:id/edit
+    async editProductSolvers(req, res, next) {
+        let imgurArr = [];
+        let _id = req.params.id;
+        let input = {
+            game: {
+                name: sanitize(req.body.gameName) || undefined,
+            },
+            price: Number(sanitize(req.body.price)) || undefined,
+            skin: Number(sanitize(req.body.skin)) || undefined,
+            champ: Number(sanitize(req.body.champ)) || undefined,
+            visible: sanitize(req.body.visible) || undefined,
+        };
+
+        if (!_id) {
+            return res.redirect('/admin/products');
+        }
+
+        let oldProduct = await LienMinh.findById(sanitize(_id));
+        if (!oldProduct) {
+            return res.redirect('/admin/products');
+        }
+
+        if (req.files) {
+            let { img } = req.files;
+            switch (Array.isArray(img)) {
+                case true:
+                    img.map(async (image) => {
+                        let responseUpload = await UploadImage(image);
+                        imgurArr.push(responseUpload);
+                    });
+                    break;
+                case false:
+                default:
+                    let responseUpload = await UploadImage(img);
+                    imgurArr.push(responseUpload);
+                    break;
+            }
+            Object.assign(input, { imgur: imgurArr, updated_at: Date.now() });
+        }
+
+        Object.assign(oldProduct, input);
+        oldProduct
+            .save()
+            .then(() => {
+                sendMessage(req, res, next, { success: 'Edit product successfully' });
+                res.redirect(`/admin/products/${oldProduct._id}/view`);
+            })
+            .catch((err) => next(err));
+    }
+
+    // GET /admin/users
+    async users(req, res, next) {
+        let filter = {};
+        let optionsQuery = {};
+        let pagination = { page: 1, pageCount: 1 };
+
+        await paginationFn(res);
+
+        async function paginationFn(res, perPage = 20) {
+            // Get data for pagination
+            let page = res.locals._pagination.page; // page to get
+            // let perPage = 6; // page size
+            let skip = perPage * res.locals._pagination.page - perPage;
+            let totalPages;
+            let totalDocuments;
+            let countDocuments = await User.countDocuments(filter);
+
+            if (!countDocuments) {
+                return;
+            }
+
+            totalDocuments = !countDocuments ? 0 : countDocuments;
+
+            totalPages =
+                chiaLayPhanNguyen(totalDocuments, perPage) +
+                (chiaLayPhanDu(totalDocuments, perPage) > 0 ? 1 : 0);
+
+            if (totalDocuments === 0) {
+                totalPages = 0;
+            }
+
+            if (page > totalPages) {
+                page = totalPages;
+                return res.redirect(`/admin/users?page=${page}`);
+            }
+
+            Object.assign(optionsQuery, {
+                skip: skip,
+                limit: perPage,
+            });
+
+            Object.assign(pagination, {
+                page: sanitize(page),
+                pageCount: totalPages,
+            });
+        }
+        
+        let allUsers = await User.find(filter, {}, optionsQuery);
+        res.render('admin/users/user_menu', {
+            allUsers: mutipleMongooseToObject(allUsers),
+            pagination: pagination,
+        });
+    }
+
+    test(req, res, next) {
+        let resa = DeleteImage('YAuFWcmuKrMINiV');
+        return res.json(resa);
     }
 }
 

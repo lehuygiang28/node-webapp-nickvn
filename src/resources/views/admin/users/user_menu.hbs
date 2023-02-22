@@ -1,0 +1,111 @@
+<script> document.title = `Product Managaments - ${document.title}`; </script>
+
+<div class='container-fluid pt-4 px-4'>
+<div id="visible"></div>
+    <div class='col-sm-12 col-xl-12'>
+        <div class='bg-secondary rounded p-4'>
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                </symbol>
+                <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                </symbol>
+                <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                </symbol>
+            </svg>
+
+            {{#if sessionFlash.success}}
+                <div class="alert alert-success d-flex align-items-center" id="alert_success" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+                        <use xlink:href="#check-circle-fill" />
+                        <div>{{sessionFlash.success}}</div>
+                    </svg>
+                </div>
+            {{else if sessionFlash.error}}
+                <div class="alert alert-danger d-flex align-items-center" id="alert_error" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                        <use xlink:href="#exclamation-triangle-fill" />
+                        <div>{{sessionFlash.error}}</div>
+                    </svg>
+                </div>
+            {{else if success}}
+                <div class="alert alert-success d-flex align-items-center" id="alert_success" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+                        <use xlink:href="#check-circle-fill" />
+                        <div>{{success}}</div>
+                    </svg>
+                </div>
+            {{else if error}}
+                <div class="alert alert-danger d-flex align-items-center" id="alert_error" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                        <use xlink:href="#exclamation-triangle-fill" />
+                        <div>{{error}}</div>
+                    </svg>
+                </div>
+            {{/if}}
+            <div class='d-flex align-items-center justify-content-between mb-2'>
+                <h6>Products Table</h6>
+            </div>
+            <div class='table-responsive'>
+                <table class='table table-striped' id='table'>
+                    <thead>
+                        <tr>
+                            <th scope='col'>ID</th>
+                            <th scope='col'>User Name</th>
+                            <th scope='col'>Money</th>
+                            <th scope='col'>Email</th>
+                            <th scope='col'>Role</th>
+                            <th scope='col'>Status</th>
+                            <th scope='col'>Updated At</th>
+                            <th scope='col'>&nbsp;</th>
+                            {{!-- <th scope='col'><a href="/admin/products/add" class="btn btn-outline-info ">Add New</a></th> --}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each allUsers}}
+                            <tr>
+                                <td>{{getLastChars this._id 7}}</td>
+                                <td>{{this.userName}}</td>
+                                <td>{{vndCurrency this.money}}</td>
+                                <td>{{this.email}}</td>
+                                <td>{{this.role.role_name_en}}</td>
+                                <td class="text-capitalize">{{this.status}}</td>
+                                <td>{{dateFormat this.updatedAt 'hh:mm - DD/MM/YYYY'}}</td>
+                                <td>
+                                    <a href='/admin/users/{{this._id}}/view' class='btn btn-outline-info btn-sm'>Details / Edit</a>
+                                </td>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            
+        {{!-- Paginate if have result --}}
+        {{#if allUsers}}
+        {{!-- Pagination section: START --}}
+        <nav aria-label="Page navigation">
+            <ul class="pagination pagination-sm justify-content-center">
+
+                {{#paginate pagination type="previous"}}
+                    <li {{#if disabled}}class="page-item disabled" {{else}} class="page-item" {{/if}}><a class="page-link" href="?page={{n}}">&lsaquo;</a>
+                    </li>
+                {{/paginate}}
+                {{#paginate pagination type="middle" limit="7"}}
+                    <li {{#if active}}class="page-item active" {{else}} class="page-item" {{/if}}><a class="page-link" href="?page={{n}}">{{n}}</a></li>
+                {{/paginate}}
+                {{#paginate pagination type="next"}}
+                    <li {{#if disabled}}class="page-item disabled" {{else}} class="page-item" {{/if}}><a class="page-link" href="?page={{n}}">&rsaquo;</a>
+                    </li>
+                {{/paginate}}
+
+            </ul>
+        </nav>
+        {{!-- Pagination section: END --}}
+        {{/if}}
+        </div>
+    </div>
+</div>

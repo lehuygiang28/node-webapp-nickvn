@@ -26,11 +26,10 @@ class LienMinhController {
     // GET /lien-minh/acc-lien-minh
     // GET /lien-minh/acc-lien-minh?_paginate&page=:page
     async showAccLienMinh(_req, res, next) {
+        let lienMinhQuery;
         let filterProduct = { visible: 'show', 'status.id': 1005, 'status.name_en': 'available' };
-
         let optionsQuery = {};
         let pagination = { page: 1, pageCount: 1 };
-        let lienMinhQuery;
 
         await sortAndSearch(res);
         await paginationFn(res);
@@ -42,20 +41,14 @@ class LienMinhController {
 
             // Search with product id
             if (_req.query.product_id) {
-                let productFound = await LienMinh.findOne({
-                    product_id: sanitize(_req.query.product_id),
-                });
-
-                if (productFound) {
-                    return res.redirect(`/lien-minh/acc-lien-minh/${acc.product_id}`);
+                let prdId = _req.query.product_id;
+                if (!isNaN(Number(sanitize(prdId)))) {
+                    prdId = Number(prdId);
+                    Object.assign(filterProduct, {
+                        product_id: prdId,
+                    });
+                    return;
                 }
-
-                sendMessage(_req, res, next, {
-                    error: `Không tìm thấy tài khoản số #${_req.query.product_id}`,
-                });
-                return res.render(`lien-minh/acc-lien-minh`, {
-                    pagination: paginationFn,
-                });
             }
 
             // Search with keywords => add keywords to filter
@@ -63,6 +56,7 @@ class LienMinhController {
                 let search_key = sanitize(res.locals._sort.search_key).toString();
                 Object.assign(filterProduct, {
                     $or: [
+                        { product_id: { $regex: search_key, $options: 'i' } },
                         { rank: { $regex: search_key, $options: 'i' } },
                         { status_account: { $regex: search_key, $options: 'i' } },
                         { note: { $regex: search_key, $options: 'i' } },
@@ -148,7 +142,12 @@ class LienMinhController {
         if (!res.locals.id) {
             return res.redirect(303, '/lien-minh/acc-lien-minh');
         } else {
-            let filter = {product_id: res.locals.id, visible: 'show', 'status.id': 1005, 'status.name_en': 'available' };
+            let filter = {
+                product_id: res.locals.id,
+                visible: 'show',
+                'status.id': 1005,
+                'status.name_en': 'available',
+            };
 
             // Find product by product_id, if exists return product to view, otherwise return error msg
             LienMinh.findOne(filter)
