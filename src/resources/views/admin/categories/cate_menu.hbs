@@ -55,23 +55,23 @@
                 <table class='table table-striped' id='table'>
                     <thead>
                         <tr>
+                            <th scope='col'>ID</th>
                             <th scope='col'>Category Title</th>
                             <th scope='col'>Total</th>
+                            <th scope='col'>Slug</th>
                             <th scope='col'>&nbsp;</th>
-                            <th scope='col'>&nbsp;</th>
-                            <th scope='col'><a href="/admin/categories/add" class="btn btn-outline-info ">Add</a></th>
+                            <th scope='col'><a href="/admin/categories/add" class="btn btn-outline-info ">Add New</a></th>
                         </tr>
                     </thead>
                     <tbody>
                         {{#each allCategories}}
                             <tr>
+                                <td>{{getLastChars this._id 5}}</td>
                                 <td>{{this.category_name}}</td>
                                 <td>{{this.total}}</td>
+                                <td>{{this.slug}}</td>
                                 <td>
-                                    <a href='/admin/categories/{{this._id}}/view' class='btn btn-outline-info btn-sm'>Details</a>
-                                </td>
-                                <td>
-                                    <a href='/admin/categories/{{this._id}}/edit' class='btn btn-outline-light btn-sm'>Edit</a>
+                                    <a href='/admin/categories/{{this._id}}/view' class='btn btn-outline-info btn-sm'>Details / Edit</a>
                                 </td>
                                 <td>
                                     <button type="button" class="btn" id="{{this._id}}" style="font-size: x-large;" onclick="showOrHide('{{this._id}}', 'categories');">
