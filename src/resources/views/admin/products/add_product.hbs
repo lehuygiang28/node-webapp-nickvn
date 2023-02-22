@@ -1,0 +1,136 @@
+<div class='container-fluid pt-4 px-4'>
+    <form method='POST' action='/admin/products/add' enctype='multipart/form-data'>
+        <div class='row g-4 justify-content-md-center'>
+
+            {{! <div class='col-sm-12 col-xl-6'> }}
+                <div class='col-sm-10'>
+                    <div class='bg-secondary rounded h-100 p-4'>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                            <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                            </symbol>
+                            <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                            </symbol>
+                            <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                            </symbol>
+                        </svg>
+
+                        {{#if sessionFlash.success}}
+                        <div class="alert alert-success d-flex align-items-center" id="alert_success" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+                                <use xlink:href="#check-circle-fill" />
+                                <div>{{sessionFlash.success}}</div>
+                            </svg>
+                        </div>
+                        {{else if sessionFlash.error}}
+                        <div class="alert alert-danger d-flex align-items-center" id="alert_error" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                                <use xlink:href="#exclamation-triangle-fill" />
+                                <div>{{sessionFlash.error}}</div>
+                            </svg>
+                        </div>
+                        {{else if success}}
+                        <div class="alert alert-success d-flex align-items-center" id="alert_success" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+                                <use xlink:href="#check-circle-fill" />
+                                <div>{{success}}</div>
+                            </svg>
+                        </div>
+                        {{else if error}}
+                        <div class="alert alert-danger d-flex align-items-center" id="alert_error" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                                <use xlink:href="#exclamation-triangle-fill" />
+                                <div>{{error}}</div>
+                            </svg>
+                        </div>
+                        {{/if}}
+
+                        <h6 class='mb-4'>Add Product</h6>
+
+                        <div class='form-floating mb-3'>
+                            <input type='text' class='form-control' id='userName' name='userName' required />
+                            <label for='userName'>UserName</label>
+                        </div>
+                        <div class='form-floating mb-3'>
+                            <input type='text' class='form-control' id='password' name='password' required />
+                            <label for='password'>Password</label>
+                        </div>
+                        <div class='form-floating mb-3'>
+                            <input type='text' class='form-control' id='GameName' name='gameName' />
+                            <label for='GameName'>Game Name</label>
+                        </div>
+
+                        <div class='form-floating mb-3'>
+                            <select class='form-select text-capitalize' id='floatingSelectStatus'
+                                aria-label='Select category' name='category' required>
+                                {{#each allCategories}}
+                                <option value='{{this._id}}'>{{this.category_name}}</option>
+                                {{/each}}
+                            </select>
+                            <label for='floatingSelectStatus'>Select category</label>
+                        </div>
+
+                        <div class='form-floating mb-3'>
+                            <input type='number' class='form-control' id='price' name='price' />
+                            <label for='price'>Price</label>
+                        </div>
+
+                        <div class='form-floating mb-3'>
+                            <input type='number' class='form-control' id='champ' name='champ' />
+                            <label for='champ'>Champ</label>
+                        </div>
+
+                        <div class='form-floating mb-3'>
+                            <input type='number' class='form-control' id='skin' name='skin' />
+                            <label for='skin'>Skin</label>
+                        </div>
+
+                        <div class='form-floating mb-3'>
+                            <select class='form-select text-capitalize' id='selectRank' aria-label='Select Rank'
+                                name='rank' required>
+                                {{#each rankList}}
+                                <option value='{{this}}'>{{this}}</option>
+                                {{/each}}
+                            </select>
+                            <label for='selectRank'>Select rank</label>
+                        </div>
+
+                        <div class='form-floating mb-3'>
+                            <input type='text' class='form-control' id='status_account' name='status_account' />
+                            <label for='status_account'>Status Account</label>
+                        </div>
+
+                        <div class='form-floating mb-3'>
+                            <input type='text' class='form-control' id='note' name='note' />
+                            <label for='note'>Note</label>
+                        </div>
+
+                        <div class='form-floating mb-3'>
+                            <select class='form-select text-capitalize' id='selectRank' aria-label='Select Rank'
+                                name='status' required>
+                                <option value="available" selected>available</option>
+                                <option value="sold">sold</option>
+                            </select>
+                            <label for='selectRank'>Select Status</label>
+                        </div>
+
+                        <div class='mb-3'>
+                            <label for='gallery-photo-add' class='form-label'>Multiple image input</label>
+                            <input class='form-control bg-dark' type='file' accept='image/*' name='img'
+                                id='gallery-photo-add' required multiple />
+                            <div class='gallery row pt-2'></div>
+                        </div>
+                        <button type='submit' class='btn btn-success' onsubmit="showSpinner()">Save</button>
+                    </div>
+
+                </div>
+
+            </div>
+    </form>
+</div>
