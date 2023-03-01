@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const Category = require('../models/Category');
 const LienMinh = require('../models/LienMinh');
+const UserPuchased = require('../models/UserPuchased');
 const { sendMessage } = require('../../util/flash-message');
 const { createHash, compare, compareSync } = require('../../util/bcrypt');
 const { logger } = require('../../util/logger');
@@ -16,11 +17,152 @@ const {
 const { removeFile } = require('../../util/files');
 const sanitize = require('mongo-sanitize');
 const { UploadImage, DeleteImage } = require('../../util/imgur');
+const {
+    getOneDayInUTCWithLocal,
+    compareDateUTCWithGMT7,
+    getThisTimeInUTCwithGMTp7,
+    compareMonthUCTWithGMT7,
+} = require('../../util/time-resolve');
+const { start } = require('repl');
 
 class AdminController {
     // Get /admin/
-    index(req, res, next) {
-        return res.render('admin/sites/index');
+    async index(req, res, next) {
+        let todaySale;
+        let totalSale;
+        let dataChart = {};
+
+        try {
+            todaySale = await getTodaySale();
+            totalSale = await getTotalSale();
+            Object.assign(dataChart, await resolveDataForChart());
+
+            async function getTodaySale() {
+                let nowDate = new Date(); // local datetime
+                let oneDayInUTC = getOneDayInUTCWithLocal(nowDate);
+                let filter = {
+                    'product_puchased.created_at': {
+                        $gte: oneDayInUTC.start,
+                        $lt: oneDayInUTC.end,
+                    },
+                };
+
+                let dataReturn = await UserPuchased.find(filter).populate({
+                    path: 'product_puchased.product',
+                });
+
+                let price = 0;
+                // Get and push all products that match the filter to dataFilter
+                let dataFilter = [];
+                dataReturn.forEach((data) =>
+                    data.product_puchased.forEach((i) => {
+                        return compareDateUTCWithGMT7(nowDate, i.created_at)
+                            ? dataFilter.push(i)
+                            : undefined;
+                    }),
+                );
+
+                // Add all price of the products
+                dataFilter.forEach((data) => {
+                    data.product.forEach((dataIn) => {
+                        price += dataIn.price;
+                    });
+                });
+
+                return price;
+            }
+
+            async function getTotalSale() {
+                let filter = {};
+
+                let dataReturn = await UserPuchased.find(filter).populate({
+                    path: 'product_puchased.product',
+                });
+
+                let price = 0;
+                dataReturn.forEach((data) => {
+                    data.product_puchased.forEach((dataIn) => {
+                        dataIn.product.forEach((dataIn2) => {
+                            price += dataIn2.price;
+                        });
+                    });
+                });
+
+                return price;
+            }
+
+            async function resolveDataForChart() {
+                let filter = {};
+
+                let dataReturn = await UserPuchased.find(filter).populate({
+                    path: 'product_puchased.product',
+                });
+
+                // Get data of 8 months ago from the current
+                let nowDate = new Date();
+                let UTC = getThisTimeInUTCwithGMTp7(nowDate);
+                let currentMonth = UTC.getMonth();
+                let currentYear = UTC.getFullYear();
+
+                let startMonth = currentMonth - 7;
+                let startYear = currentYear;
+
+                if (currentMonth <= 7) {
+                    startMonth = 12 - (7 - currentMonth);
+                    startYear--;
+                }
+
+                let stringTime = '[';
+                let stringPrice = '[';
+
+                for (let i = 0; i < 8; i++) {
+                    if (startMonth > 12) {
+                        startMonth = 1;
+                        startYear++;
+                    }
+                    stringPrice += `${getTotalSaleOfMonth(dataReturn, startMonth, startYear)}\,`;
+                    stringTime += `${resolveMonthSlashYear(startMonth, startYear)}\,`;
+                    startMonth++;
+                }
+                stringTime += ']';
+                stringPrice += ']';
+
+                return { stringTime, stringPrice };
+            }
+
+            function getTotalSaleOfMonth(dataInput, month, year) {
+                let price = 0;
+                // Get and push all products that match the filter to dataFilter
+                let dataFilter = [];
+                dataInput.forEach((data) =>
+                    data.product_puchased.forEach((i) => {
+                        return month === i.created_at.getMonth() &&
+                            year === i.created_at.getFullYear()
+                            ? dataFilter.push(i)
+                            : undefined;
+                    }),
+                );
+
+                // Add all price of the products
+                dataFilter.forEach((data) => {
+                    data.product.forEach((dataIn) => {
+                        price += dataIn.price;
+                    });
+                });
+                return price;
+            }
+
+            function resolveMonthSlashYear(month, year) {
+                return `\'${month}/${year}\'`;
+            }
+        } catch (error) {
+            return res.render('admin/sites/index');
+        }
+        return res.render('admin/sites/index', {
+            todaySale: todaySale,
+            totalSale: totalSale,
+            dataChart: dataChart,
+        });
     }
 
     // GET /admin/login
@@ -599,17 +741,17 @@ class AdminController {
                 pageCount: totalPages,
             });
         }
-        
+
         let allUsers = await User.find(filter, {}, optionsQuery);
+
         res.render('admin/users/user_menu', {
             allUsers: mutipleMongooseToObject(allUsers),
             pagination: pagination,
         });
     }
 
-    test(req, res, next) {
-        let resa = DeleteImage('YAuFWcmuKrMINiV');
-        return res.json(resa);
+    async test(req, res, next) {
+        res.json()
     }
 }
 
