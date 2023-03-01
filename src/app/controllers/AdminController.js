@@ -750,7 +750,7 @@ class AdminController {
     }
 
     async test(req, res, next) {
-        res.json()
+        res.json();
     }
 }
 

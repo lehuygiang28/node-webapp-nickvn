@@ -12,7 +12,7 @@ const UserPuchasedSchema = new Schema({
             // product_name: {type: String, required: true},
             // price: { type: Number, required: true },
             product: { type: [Schema.Types.ObjectId], ref: 'LienMinh' },
-            created_at: { type: Date, default: Date.now() },
+            created_at: { type: Date, default: new Date() },
         },
     ],
 });

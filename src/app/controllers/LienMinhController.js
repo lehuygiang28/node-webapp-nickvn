@@ -225,14 +225,14 @@ class LienMinhController {
                     product_puchased: [
                         {
                             product: lienMinhFound,
-                            created_at: Date.now(),
+                            created_at: new Date(),
                         },
                     ],
                 });
             } else {
                 puchasedFound.product_puchased.push({
                     product: lienMinhFound,
-                    created_at: Date.now(),
+                    created_at: new Date(),
                 });
             }
 
