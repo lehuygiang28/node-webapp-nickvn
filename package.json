@@ -6,6 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./bin/www",
     "dev": "cross-env NODE_ENV=development nodemon --inspect ./bin/www",
+    "build": "npm install",
     "devtest": "cross-env NODE_ENV=test nodemon --inspect ./bin/www",
     "test": "cross-env NODE_ENV=test mocha --recursive --exit ./test/index.test.js --no-deprecation",
     "testb": "cross-env NODE_ENV=test mocha --recursive --exit ./test/index.test.js node --trace-deprecation",
