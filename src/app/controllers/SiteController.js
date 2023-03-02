@@ -166,7 +166,7 @@ class SiteController {
                 }
 
                 user = new User({
-                    userName: _req.body.userName,
+                    userName: _req.body.userName.toString().toLowerCase(),
                     email: _req.body.email,
                     phone: _req.body.phone,
                     password: createHash(_req.body.password),
