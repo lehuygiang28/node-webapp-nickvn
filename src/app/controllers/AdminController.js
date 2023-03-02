@@ -8,13 +8,11 @@ const { logger } = require('../../util/logger');
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose');
 const { chiaLayPhanNguyen, chiaLayPhanDu } = require('../../util/caculator');
 const DISABLE_LAYOUT_PARTIALS = { layout: 'admin_without_partials' };
-const path = require('path');
 const {
     createUUID,
     createUUIDWithFileExtension,
     createUUIDFile,
 } = require('../../util/generateUUID');
-const { removeFile } = require('../../util/files');
 const sanitize = require('mongo-sanitize');
 const { UploadImage, DeleteImage } = require('../../util/imgur');
 const {
@@ -31,132 +29,128 @@ class AdminController {
         let totalSale;
         let dataChart = {};
 
-        try {
-            todaySale = await getTodaySale();
-            totalSale = await getTotalSale();
-            Object.assign(dataChart, await resolveDataForChart());
+        todaySale = await getTodaySale();
+        totalSale = await getTotalSale();
+        Object.assign(dataChart, await resolveDataForChart());
 
-            async function getTodaySale() {
-                let nowDate = new Date(); // local datetime
-                let oneDayInUTC = getOneDayInUTCWithLocal(nowDate);
-                let filter = {
-                    'product_puchased.created_at': {
-                        $gte: oneDayInUTC.start,
-                        $lt: oneDayInUTC.end,
-                    },
-                };
+        async function resolveDataForChart() {
+            let filter = {};
 
-                let dataReturn = await UserPuchased.find(filter).populate({
-                    path: 'product_puchased.product',
-                });
+            let dataReturn = await UserPuchased.find(filter).populate({
+                path: 'product_puchased.product',
+            });
 
-                let price = 0;
-                // Get and push all products that match the filter to dataFilter
-                let dataFilter = [];
-                dataReturn.forEach((data) =>
-                    data.product_puchased.forEach((i) => {
-                        return compareDateUTCWithGMT7(nowDate, i.created_at)
-                            ? dataFilter.push(i)
-                            : undefined;
-                    }),
-                );
+            // Get data of 8 months ago from the current
+            let nowDate = new Date();
+            let UTC = getThisTimeInUTCwithGMTp7(nowDate);
+            let currentMonth = UTC.getMonth();
+            let currentYear = UTC.getFullYear();
 
-                // Add all price of the products
-                dataFilter.forEach((data) => {
-                    data.product.forEach((dataIn) => {
-                        price += dataIn.price;
-                    });
-                });
+            let startMonth = currentMonth - 7;
+            let startYear = currentYear;
 
-                return price;
+            if (currentMonth <= 7) {
+                startMonth = 12 - (7 - currentMonth);
+                startYear--;
             }
 
-            async function getTotalSale() {
-                let filter = {};
+            let stringTime = '[';
+            let stringPrice = '[';
 
-                let dataReturn = await UserPuchased.find(filter).populate({
-                    path: 'product_puchased.product',
-                });
-
-                let price = 0;
-                dataReturn.forEach((data) => {
-                    data.product_puchased.forEach((dataIn) => {
-                        dataIn.product.forEach((dataIn2) => {
-                            price += dataIn2.price;
-                        });
-                    });
-                });
-
-                return price;
-            }
-
-            async function resolveDataForChart() {
-                let filter = {};
-
-                let dataReturn = await UserPuchased.find(filter).populate({
-                    path: 'product_puchased.product',
-                });
-
-                // Get data of 8 months ago from the current
-                let nowDate = new Date();
-                let UTC = getThisTimeInUTCwithGMTp7(nowDate);
-                let currentMonth = UTC.getMonth();
-                let currentYear = UTC.getFullYear();
-
-                let startMonth = currentMonth - 7;
-                let startYear = currentYear;
-
-                if (currentMonth <= 7) {
-                    startMonth = 12 - (7 - currentMonth);
-                    startYear--;
+            for (let i = 0; i < 8; i++) {
+                if (startMonth > 12) {
+                    startMonth = 1;
+                    startYear++;
                 }
-
-                let stringTime = '[';
-                let stringPrice = '[';
-
-                for (let i = 0; i < 8; i++) {
-                    if (startMonth > 12) {
-                        startMonth = 1;
-                        startYear++;
-                    }
-                    stringPrice += `${getTotalSaleOfMonth(dataReturn, startMonth, startYear)}\,`;
-                    stringTime += `${resolveMonthSlashYear(startMonth, startYear)}\,`;
-                    startMonth++;
-                }
-                stringTime += ']';
-                stringPrice += ']';
-
-                return { stringTime, stringPrice };
+                stringPrice += `${getTotalSaleOfMonth(dataReturn, startMonth, startYear)}\,`;
+                stringTime += `${resolveMonthSlashYear(startMonth, startYear)}\,`;
+                startMonth++;
             }
-
-            function getTotalSaleOfMonth(dataInput, month, year) {
-                let price = 0;
-                // Get and push all products that match the filter to dataFilter
-                let dataFilter = [];
-                dataInput.forEach((data) =>
-                    data.product_puchased.forEach((i) => {
-                        return month === i.created_at.getMonth() &&
-                            year === i.created_at.getFullYear()
-                            ? dataFilter.push(i)
-                            : undefined;
-                    }),
-                );
-
-                // Add all price of the products
-                dataFilter.forEach((data) => {
-                    data.product.forEach((dataIn) => {
-                        price += dataIn.price;
-                    });
-                });
-                return price;
-            }
+            stringTime += ']';
+            stringPrice += ']';
 
             function resolveMonthSlashYear(month, year) {
                 return `\'${month}/${year}\'`;
             }
-        } catch (error) {
-            return res.render('admin/sites/index');
+
+            return { stringTime, stringPrice };
         }
+
+        async function getTodaySale() {
+            let nowDate = new Date(); // local datetime
+            let oneDayInUTC = getOneDayInUTCWithLocal(nowDate);
+            let filter = {
+                'product_puchased.created_at': {
+                    $gte: oneDayInUTC.start,
+                    $lt: oneDayInUTC.end,
+                },
+            };
+
+            let dataReturn = await UserPuchased.find(filter).populate({
+                path: 'product_puchased.product',
+            });
+
+            let price = 0;
+            // Get and push all products that match the filter to dataFilter
+            let dataFilter = [];
+            dataReturn.forEach((data) =>
+                data.product_puchased.forEach((i) => {
+                    return compareDateUTCWithGMT7(nowDate, i.created_at)
+                        ? dataFilter.push(i)
+                        : undefined;
+                }),
+            );
+
+            // Add all price of the products
+            dataFilter.forEach((data) => {
+                data.product.forEach((dataIn) => {
+                    price += dataIn.price;
+                });
+            });
+
+            return price;
+        }
+
+        async function getTotalSale() {
+            let filter = {};
+
+            let dataReturn = await UserPuchased.find(filter).populate({
+                path: 'product_puchased.product',
+            });
+
+            let price = 0;
+            dataReturn.forEach((data) => {
+                data.product_puchased.forEach((dataIn) => {
+                    dataIn.product.forEach((dataIn2) => {
+                        price += dataIn2.price;
+                    });
+                });
+            });
+
+            return price;
+        }
+
+        function getTotalSaleOfMonth(dataInput, month, year) {
+            let price = 0;
+            // Get and push all products that match the filter to dataFilter
+            let dataFilter = [];
+            dataInput.forEach((data) =>
+                data.product_puchased.forEach((i) => {
+                    return month === i.created_at.getMonth() && year === i.created_at.getFullYear()
+                        ? dataFilter.push(i)
+                        : undefined;
+                }),
+            );
+
+            // Add all price of the products
+            dataFilter.forEach((data) => {
+                data.product.forEach((dataIn) => {
+                    price += dataIn.price;
+                });
+            });
+            return price;
+        }
+
         return res.render('admin/sites/index', {
             todaySale: todaySale,
             totalSale: totalSale,
@@ -181,48 +175,61 @@ class AdminController {
             sendMessage(req, res, next, {
                 error: 'Tài khoản hoặc mật khẩu không chính xác!',
             });
-            return res.status(401).render('admin/sites/login', DISABLE_LAYOUT_PARTIALS);
+            return res.status(401).render(
+                'admin/sites/login',
+                Object.assign(DISABLE_LAYOUT_PARTIALS, {
+                    error: 'User Name or Password is incorrect',
+                }),
+            );
         }
 
+        let filter = {
+            userName: sanitize(userInput.userName),
+            $or: [
+                { 'role.role_name_en': { $regex: /^admin$/i } },
+                { 'role.role_name_en': { $regex: /^moderator$/i } },
+            ],
+        };
+
         // Find the user in database with username
-        let userFound = await User.findOne({ userName: sanitize(userInput.userName) });
+        let userFound = await User.findOne(filter);
         if (!userFound) {
-            sendMessage(req, res, next, {
-                error: 'Tài khoản hoặc mật khẩu không chính xác!',
-            });
-            return res.status(401).render('admin/sites/login', DISABLE_LAYOUT_PARTIALS);
+            return res.status(401).render(
+                'admin/sites/login',
+                Object.assign(DISABLE_LAYOUT_PARTIALS, {
+                    error: 'User Name or Password is incorrect',
+                }),
+            );
         }
 
         // Compare the input password with the user's password
         if (!compareSync(userInput.password, userFound.password)) {
-            sendMessage(req, res, next, {
-                error: 'Tài khoản hoặc mật khẩu không chính xác!',
-            });
-            return res.status(401).render('admin/sites/login', DISABLE_LAYOUT_PARTIALS);
+            return res.status(401).render(
+                'admin/sites/login',
+                Object.assign(DISABLE_LAYOUT_PARTIALS, {
+                    error: 'User Name or Password is incorrect',
+                }),
+            );
         }
 
-        /***
-         * Check if the user's role is admin or moderator set session values and return to view admin
-         * Otherwise, return to view login wih error message
-         */
-        if (
-            userFound.role.role_name_en.toLowerCase() === 'admin' ||
-            userFound.role.role_name_en.toLowerCase() === 'moderator'
-        ) {
-            req.session.adminUser = {
-                _id: userFound._id,
-                userName: userFound.userName,
-                fullName: userFound.fullName,
-                role_name_en: userFound.role_name_en,
-                avatar_url: userFound.avatar,
-            };
-            return res.redirect(302, '/admin');
+        if (userFound.status === 'ban') {
+            return res.status(401).render(
+                'admin/sites/login',
+                Object.assign(DISABLE_LAYOUT_PARTIALS, {
+                    error: 'Your account has been banned, please contact the administrator(admin@giang.cf) for more information!',
+                }),
+            );
         }
 
-        sendMessage(req, res, next, {
-            error: 'Tài khoản hoặc mật khẩu không chính xác!',
-        });
-        return res.status(401).render('admin/sites/login', DISABLE_LAYOUT_PARTIALS);
+        req.session.adminUser = {
+            _id: userFound._id,
+            userName: userFound.userName,
+            fullName: userFound.fullName,
+            role_name_en: userFound.role_name_en,
+            avatar_url: userFound.avatar,
+        };
+
+        return res.redirect(302, '/admin');
     }
 
     // GET /admin/signout
@@ -749,8 +756,154 @@ class AdminController {
         });
     }
 
+    // GET /admin/users/:username/view
+    async detailUser(req, res, next) {
+        let userFound = await User.findOne({ userName: sanitize(req.params.username) });
+        if (!userFound) {
+            return res.redirect('/admin/users');
+        }
+
+        res.render('admin/users/detail_user', { user: mongooseToObject(userFound) });
+    }
+
+    async orders(req, res, next) {
+        let filter = {};
+        let optionsQuery = {};
+        let pagination = { page: 1, pageCount: 1 };
+
+        await paginationFn(res);
+
+        async function paginationFn(res, perPage = 20) {
+            // Get data for pagination
+            let page = res.locals._pagination.page; // page to get
+            // let perPage = 6; // page size
+            let skip = perPage * res.locals._pagination.page - perPage;
+            let totalPages;
+            let totalDocuments;
+            let countDocuments = await UserPuchased.countDocuments(filter);
+
+            if (!countDocuments) {
+                return;
+            }
+
+            totalDocuments = !countDocuments ? 0 : countDocuments;
+
+            totalPages =
+                chiaLayPhanNguyen(totalDocuments, perPage) +
+                (chiaLayPhanDu(totalDocuments, perPage) > 0 ? 1 : 0);
+
+            if (totalDocuments === 0) {
+                totalPages = 0;
+            }
+
+            if (page > totalPages) {
+                page = totalPages;
+                return res.redirect(`/admin/orders?page=${page}`);
+            }
+
+            Object.assign(optionsQuery, {
+                skip: skip,
+                limit: perPage,
+            });
+
+            Object.assign(pagination, {
+                page: sanitize(page),
+                pageCount: totalPages,
+            });
+        }
+
+        let allOrders = await UserPuchased.find(filter, {}, optionsQuery)
+            .populate({
+                path: 'product_puchased.product',
+            })
+            .populate({
+                path: 'user_id',
+            })
+            .sort({ 'product_puchased.created_at': '-1' });
+
+        let dataFilter = [];
+        allOrders.forEach((data) => {
+            let order_id = data._id;
+            let userName = data.user_id.userName;
+            data.product_puchased.forEach((i) => {
+                return i
+                    ? dataFilter.push({
+                          order_level1_id: order_id,
+                          order_level2_id: i._id,
+                          user_name: userName,
+                          product__id: i.product[0]._id,
+                          product_id: i.product[0].product_id,
+                          price: i.product[0].price,
+                          created_at: i.created_at,
+                      })
+                    : undefined;
+            });
+        });
+
+        dataFilter.sort(function (a, b) {
+            // Turn your strings into dates, and then subtract them
+            // to get a value that is either negative, positive, or zero.
+            return new Date(b.created_at) - new Date(a.created_at);
+        });
+
+        res.render('admin/orders/order_menu', {
+            allOrders: dataFilter,
+            pagination: pagination,
+        });
+
+        // res.json(dataFilter);
+    }
+
+    // GET /admin/test
     async test(req, res, next) {
         res.json();
+    }
+
+    // POST /admin/users/change-status
+    async changeUserStatus(req, res, next) {
+        let userName = req.body.userName;
+        let status = req.body.status;
+        let statusCase = ['active', 'ban'];
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        if (!userName || !status || !statusCase.includes(status)) {
+            return res.redirect('/admin/users');
+        }
+
+        if (userName.toString().toLowerCase() === 'admin') {
+            sendMessage(req, res, next, {
+                error: `Can not change status of ADMIN. Please contact your administrator.`,
+            });
+            return res.redirect(`back`);
+        }
+
+        if (
+            userName.toString().toLowerCase() ===
+            req.session.adminUser.userName.toString().toLowerCase()
+        ) {
+            sendMessage(req, res, next, {
+                error: `Can not change status yourself. Please contact your administrator.`,
+            });
+            return res.redirect(`back`);
+        }
+
+        let userFound = await User.findOne({ userName: sanitize(userName) });
+        if (!userFound || userFound.status.toLowerCase() === status.toLowerCase()) {
+            return res.redirect(`back`);
+        }
+
+        userFound.status = status;
+        userFound.createdAt = new Date();
+
+        userFound.save().then(() => {
+            sendMessage(req, res, next, {
+                success: `${capitalizeFirstLetter(status)} "${userName}" successfully!`,
+            });
+            return res.redirect(`back`);
+        });
     }
 }
 

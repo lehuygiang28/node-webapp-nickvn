@@ -271,3 +271,29 @@ function submitSaveChanges(_id) {
             break;
     }
 }
+
+/**
+ * 
+ * @param {string} _userName User name to change status
+ * @param {string} _status Status to change
+ */
+function banOrActive(_userName, _status) {
+    let form = document.createElement("form");
+    form.setAttribute("action", "/admin/users/change-status");
+    form.setAttribute("method", "POST");
+    form.setAttribute("style", "display: none");
+
+    let userName = document.createElement("input");
+    userName.setAttribute("name", "userName");
+    userName.value = _userName;
+
+    let status = document.createElement("input");
+    status.setAttribute("name", "status");
+    status.value = _status;
+
+    form.appendChild(userName);
+    form.appendChild(status);
+
+    document.body.appendChild(form);
+    form.submit();
+}

@@ -4,6 +4,11 @@ const router = express.Router();
 const AdminControllers = require('../app/controllers/AdminController');
 router.get('/test', AdminControllers.test);
 
+router.post('/users/change-status', AdminControllers.changeUserStatus);
+
+router.get('/orders', AdminControllers.orders);
+
+router.get('/users/:username/view', AdminControllers.detailUser);
 router.get('/users', AdminControllers.users);
 
 router.post('/products/:id/edit', AdminControllers.editProductSolvers);

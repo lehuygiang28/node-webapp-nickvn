@@ -1,7 +1,7 @@
 <script> document.title = `Product Managaments - ${document.title}`; </script>
 
 <div class='container-fluid pt-4 px-4'>
-<div id="visible"></div>
+    <div id="visible"></div>
     <div class='col-sm-12 col-xl-12'>
         <div class='bg-secondary rounded p-4'>
             <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -20,33 +20,33 @@
             </svg>
 
             {{#if sessionFlash.success}}
-                <div class="alert alert-success d-flex align-items-center" id="alert_success" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-                        <use xlink:href="#check-circle-fill" />
-                        <div>{{sessionFlash.success}}</div>
-                    </svg>
-                </div>
+            <div class="alert alert-success d-flex align-items-center" id="alert_success" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+                    <use xlink:href="#check-circle-fill" />
+                    <div>{{sessionFlash.success}}</div>
+                </svg>
+            </div>
             {{else if sessionFlash.error}}
-                <div class="alert alert-danger d-flex align-items-center" id="alert_error" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
-                        <use xlink:href="#exclamation-triangle-fill" />
-                        <div>{{sessionFlash.error}}</div>
-                    </svg>
-                </div>
+            <div class="alert alert-danger d-flex align-items-center" id="alert_error" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                    <use xlink:href="#exclamation-triangle-fill" />
+                    <div>{{sessionFlash.error}}</div>
+                </svg>
+            </div>
             {{else if success}}
-                <div class="alert alert-success d-flex align-items-center" id="alert_success" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-                        <use xlink:href="#check-circle-fill" />
-                        <div>{{success}}</div>
-                    </svg>
-                </div>
+            <div class="alert alert-success d-flex align-items-center" id="alert_success" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+                    <use xlink:href="#check-circle-fill" />
+                    <div>{{success}}</div>
+                </svg>
+            </div>
             {{else if error}}
-                <div class="alert alert-danger d-flex align-items-center" id="alert_error" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
-                        <use xlink:href="#exclamation-triangle-fill" />
-                        <div>{{error}}</div>
-                    </svg>
-                </div>
+            <div class="alert alert-danger d-flex align-items-center" id="alert_error" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                    <use xlink:href="#exclamation-triangle-fill" />
+                    <div>{{error}}</div>
+                </svg>
+            </div>
             {{/if}}
             <div class='d-flex align-items-center justify-content-between mb-2'>
                 <h6>Products Table</h6>
@@ -55,7 +55,6 @@
                 <table class='table table-striped' id='table'>
                     <thead>
                         <tr>
-                            <th scope='col'>ID</th>
                             <th scope='col'>User Name</th>
                             <th scope='col'>Money</th>
                             <th scope='col'>Email</th>
@@ -63,49 +62,150 @@
                             <th scope='col'>Status</th>
                             <th scope='col'>Updated At</th>
                             <th scope='col'>&nbsp;</th>
-                            {{!-- <th scope='col'><a href="/admin/products/add" class="btn btn-outline-info ">Add New</a></th> --}}
+                            <th scope='col'>&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{#each allUsers}}
-                            <tr>
-                                <td>{{getLastChars this._id 7}}</td>
-                                <td>{{this.userName}}</td>
-                                <td>{{vndCurrency this.money}}</td>
-                                <td>{{this.email}}</td>
-                                <td>{{this.role.role_name_en}}</td>
-                                <td class="text-capitalize">{{this.status}}</td>
-                                <td>{{dateFormat this.updatedAt 'hh:mm - DD/MM/YYYY'}}</td>
-                                <td>
-                                    <a href='/admin/users/{{this._id}}/view' class='btn btn-outline-info btn-sm'>Details / Edit</a>
-                                </td>
-                        {{/each}}
+                        {{#each allUsers as | user_i |}}
+                        <tr>
+                            <td>{{user_i.userName}}</td>
+                            <td>{{vndCurrency this.money}}</td>
+                            <td>{{user_i.email}}</td>
+                            <td>{{user_i.role.role_name_en}}</td>
+                            <td class="text-capitalize">{{user_i.status}}</td>
+                            <td>{{dateFormat user_i.updatedAt 'hh:mm - DD/MM/YYYY'}}</td>
+                            <td>
+                                <a href='/admin/users/{{user_i.userName}}/view'
+                                    class='btn btn-outline-info btn-sm'>Details</a>
+                            </td>
+                            <td>
+                                {{#ifCondition user_i.status '===' 'ban'}}
+                                <button type="button" class="btn btn-success m-2 text-capitalize" data-bs-toggle="modal"
+                                    data-bs-target="#UnbanModal" data-user-name="{{user_i.userName}}">
+                                    active
+                                </button>
+                                {{else}}
+                                <button type="button" class="btn btn-outline-danger m-2 text-capitalize"
+                                    data-bs-toggle="modal" data-bs-target="#BanModal"
+                                    data-user-name="{{user_i.userName}}">
+                                    ban
+                                </button>
+                                {{/ifCondition}}
+
+                            </td>
+                            {{/each}}
                     </tbody>
                 </table>
             </div>
-            
-        {{!-- Paginate if have result --}}
-        {{#if allUsers}}
-        {{!-- Pagination section: START --}}
-        <nav aria-label="Page navigation">
-            <ul class="pagination pagination-sm justify-content-center">
 
-                {{#paginate pagination type="previous"}}
-                    <li {{#if disabled}}class="page-item disabled" {{else}} class="page-item" {{/if}}><a class="page-link" href="?page={{n}}">&lsaquo;</a>
-                    </li>
-                {{/paginate}}
-                {{#paginate pagination type="middle" limit="7"}}
-                    <li {{#if active}}class="page-item active" {{else}} class="page-item" {{/if}}><a class="page-link" href="?page={{n}}">{{n}}</a></li>
-                {{/paginate}}
-                {{#paginate pagination type="next"}}
-                    <li {{#if disabled}}class="page-item disabled" {{else}} class="page-item" {{/if}}><a class="page-link" href="?page={{n}}">&rsaquo;</a>
-                    </li>
-                {{/paginate}}
+            {{!-- Paginate if have result --}}
+            {{#if allUsers}}
+            {{!-- Pagination section: START --}}
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm justify-content-center">
 
-            </ul>
-        </nav>
-        {{!-- Pagination section: END --}}
-        {{/if}}
+                    {{#paginate pagination type="previous"}}
+                    <li {{#if disabled}}class="page-item disabled" {{else}} class="page-item" {{/if}}><a
+                            class="page-link" href="?page={{n}}">&lsaquo;</a>
+                    </li>
+                    {{/paginate}}
+                    {{#paginate pagination type="middle" limit="7"}}
+                    <li {{#if active}}class="page-item active" {{else}} class="page-item" {{/if}}><a class="page-link"
+                            href="?page={{n}}">{{n}}</a></li>
+                    {{/paginate}}
+                    {{#paginate pagination type="next"}}
+                    <li {{#if disabled}}class="page-item disabled" {{else}} class="page-item" {{/if}}><a
+                            class="page-link" href="?page={{n}}">&rsaquo;</a>
+                    </li>
+                    {{/paginate}}
+
+                </ul>
+            </nav>
+            {{!-- Pagination section: END --}}
+            {{/if}}
         </div>
     </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="BanModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-secondary" id="modalLabel">Confirmation to
+                    ban?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure to ban this User?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="UnbanModal" tabindex="-1" aria-labelledby="modalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-secondary" id="modalLabel1">Confirmation to
+                    active?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure to active this User?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal End -->
+
+<script>
+    //triggered when modal is about to be shown
+    $('#UnbanModal').on('show.bs.modal', function (e) {
+
+        //get data-id attribute of the clicked element
+        var userName = $(e.relatedTarget).data('user-name');
+
+        console.log(userName)
+        let atrOnclick = 'banOrActive(\'' + userName + '\', \'active\');showSpinner();';
+
+        let banButton = document.createElement('button');
+        banButton.classList.add('btn', 'btn-success', 'text-white', 'text-capitalize');
+        banButton.setAttribute('type', 'button');
+        banButton.setAttribute('id', 'ConfirmActive');
+        banButton.setAttribute('data-bs-dissmiss', 'modal');
+        banButton.setAttribute('onclick', atrOnclick);
+        banButton.textContent = 'active';
+
+        $(e.currentTarget).find('.modal-footer>#ConfirmActive').remove();
+        $(e.currentTarget).find('.modal-footer').append(banButton);
+    });
+
+    //triggered when modal is about to be shown
+    $('#BanModal').on('show.bs.modal', function (e) {
+
+        //get data-id attribute of the clicked element
+        var userName = $(e.relatedTarget).data('user-name');
+
+        console.log(userName)
+        let atrOnclick = 'banOrActive(\'' + userName + '\', \'ban\');showSpinner();';
+
+        let banButton = document.createElement('button');
+        banButton.classList.add('btn', 'btn-danger', 'text-white', 'text-capitalize');
+        banButton.setAttribute('type', 'button');
+        banButton.setAttribute('id', 'ConfirmBan');
+        banButton.setAttribute('data-bs-dissmiss', 'modal');
+        banButton.setAttribute('onclick', atrOnclick);
+        banButton.textContent = 'ban';
+
+        $(e.currentTarget).find('.modal-footer>#ConfirmBan').remove();
+        $(e.currentTarget).find('.modal-footer').append(banButton);
+    });
+</script>
