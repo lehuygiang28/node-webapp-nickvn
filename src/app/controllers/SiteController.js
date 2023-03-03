@@ -74,12 +74,17 @@ class SiteController {
                         if (err) {
                             throw new Error(err);
                         } else if (!result) {
-                            logger.info('Dang nhap that bai: ');
                             return res.status(401).render('sites/dang-nhap', {
                                 error: 'Tài khoản hoặc mật khẩu không chính xác !',
                             });
                         }
-                        logger.info('Dang nhap thanh cong: ');
+
+                        if (user.status.toString().toLowerCase() === 'ban') {
+                            return res.render('sites/dang-nhap', {
+                                error: 'Tài khoản của bạn đã bị khóa, vui lòng liên hệ admin để biết thông tin chi tiết!',
+                            });
+                        }
+
                         // Set the session value
                         _req.session.User = {
                             _id: user._id,
@@ -166,7 +171,7 @@ class SiteController {
                 }
 
                 user = new User({
-                    userName: _req.body.userName,
+                    userName: _req.body.userName.toString().toLowerCase(),
                     email: _req.body.email,
                     phone: _req.body.phone,
                     password: createHash(_req.body.password),
