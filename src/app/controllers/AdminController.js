@@ -825,11 +825,13 @@ class AdminController {
         allOrders.forEach((data) => {
             let order_id = data._id;
             let userName = data.user_id.userName;
+            let user_id = data.user_id._id;
             data.product_puchased.forEach((i) => {
                 return i
                     ? dataFilter.push({
                           order_level1_id: order_id,
                           order_level2_id: i._id,
+                          user_id: user_id,
                           user_name: userName,
                           product__id: i.product[0]._id,
                           product_id: i.product[0].product_id,
@@ -852,6 +854,46 @@ class AdminController {
         });
 
         // res.json(dataFilter);
+    }
+
+    // GET /admin/orders/:id/view
+    async detailOrder(req, res, next) {
+        let _id = req.params.id;
+        let _user_id = req.params.user_id;
+        if (!_id || !_user_id) {
+            return res.redirect('back');
+        }
+
+        let orderFound = await UserPuchased.findOne({ user_id: sanitize(_user_id) })
+            .populate({
+                path: 'user_id',
+            })
+            .populate({
+                path: 'product_puchased.product',
+            });
+
+        if (!orderFound) {
+            return res.redirect('back');
+        }
+
+        // Get order details
+        let dataFilter = {
+            _user_id: orderFound.user_id._id,
+            _user_name: orderFound.user_id.userName,
+        };
+        orderFound.product_puchased.forEach((product) => {
+            if (product._id.toString() === _id.toString()) {
+                console.log(product._id);
+                return Object.assign(dataFilter, mongooseToObject(product));
+            }
+        });
+
+        // Modified product form array to 1 object
+        dataFilter.product = dataFilter.product[0];
+
+        // res.json(dataFilter);
+        console.log(dataFilter);
+        res.render('admin/orders/detail_order', { order: dataFilter });
     }
 
     // GET /admin/test
