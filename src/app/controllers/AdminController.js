@@ -891,8 +891,6 @@ class AdminController {
         // Modified product form array to 1 object
         dataFilter.product = dataFilter.product[0];
 
-        // res.json(dataFilter);
-        console.log(dataFilter);
         res.render('admin/orders/detail_order', { order: dataFilter });
     }
 
