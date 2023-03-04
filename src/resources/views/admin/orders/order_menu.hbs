@@ -71,7 +71,7 @@
                                 <td>{{vndCurrency this.price}}</td>
                                 <td>{{dateFormat this.created_at 'hh:mm - DD/MM/YYYY'}}</td>
                                 <td>
-                                    <a href='/admin/orders/{{this.order_level2_id}}/view' class='btn btn-outline-info btn-sm'>Details</a>
+                                    <a href='/admin/orders/{{this.user_id}}/{{this.order_level2_id}}/view' class='btn btn-outline-info btn-sm'>Details</a>
                                 </td>
                             </tr>
                         {{/each}}
