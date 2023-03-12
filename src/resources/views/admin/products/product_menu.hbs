@@ -59,6 +59,7 @@
                             <th scope='col'>Game Name</th>
                             <th scope='col'>User Name</th>
                             <th scope='col'>Price</th>
+                            <th scope='col'>Status</th>
                             <th scope='col'>&nbsp;</th>
                             <th scope='col'><a href="/admin/products/add" class="btn btn-outline-info ">Add New</a></th>
                         </tr>
@@ -70,6 +71,7 @@
                                 <td>{{this.game.name}}</td>
                                 <td>{{this.userName}}</td>
                                 <td>{{this.price}}</td>
+                                <td class="text-capitalize">{{this.status.name_en}}</td>
                                 <td>
                                     <a href='/admin/products/{{this._id}}/view' class='btn btn-outline-info btn-sm'>Details / Edit</a>
                                 </td>

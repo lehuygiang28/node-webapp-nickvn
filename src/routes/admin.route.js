@@ -6,6 +6,7 @@ router.get('/test', AdminControllers.test);
 
 router.post('/users/change-status', AdminControllers.changeUserStatus);
 
+router.get('/orders/:user_id/:id/view', AdminControllers.detailOrder);
 router.get('/orders', AdminControllers.orders);
 
 router.get('/users/:username/view', AdminControllers.detailUser);
