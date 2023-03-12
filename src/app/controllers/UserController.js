@@ -178,7 +178,7 @@ class UserController {
             password: productFound.password.toString(),
         };
 
-        let isSendMail = await sendMail(userEmail, emailContext);
+        let isSendMail = sendMail(userEmail, emailContext);
         if (!isSendMail) {
             sendMessage(_req, res, next, { error: 'Có lỗi xảy ra vui lòng thử lại sau!' });
             return res.redirect(303, '/user/tai-khoan-da-mua');

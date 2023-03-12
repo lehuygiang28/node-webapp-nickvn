@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const util = require('util');
 const { emailTemplate } = require('./email-template');
+const path = require('path');
 
 /***
  * Send an email to the user with the callback
@@ -15,8 +16,9 @@ const sendMailCallback = util.callbackify(sendMail);
  * @param {String} to The email adress to send
  * @param {Object} inputContent The content to send
  */
-async function sendMail(to, inputContent) {
+function sendMail(to, inputContent) {
     try {
+        const emailImgFolderPath = path.resolve(__dirname, '../private/email-img/');
         const client = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -26,8 +28,7 @@ async function sendMail(to, inputContent) {
         });
 
         let mailTemplateHtml = emailTemplate(inputContent);
-
-        await client.sendMail({
+        client.sendMail({
             from: 'Sender',
             to: to,
             subject: inputContent.subject,
@@ -36,22 +37,22 @@ async function sendMail(to, inputContent) {
             attachments: [
                 {
                     filename: 'image-1.png',
-                    path: 'src/private/email-img/image-1.png',
+                    path: path.resolve(emailImgFolderPath, 'image-1.png'),
                     cid: 'image-1',
                 },
                 {
                     filename: 'image-2.png',
-                    path: 'src/private/email-img/image-2.png',
+                    path: path.resolve(emailImgFolderPath, 'image-2.png'),
                     cid: 'image-2',
                 },
                 {
                     filename: 'image-3.png',
-                    path: 'src/private/email-img/image-3.png',
+                    path: path.resolve(emailImgFolderPath, 'image-3.png'),
                     cid: 'image-3',
                 },
                 {
                     filename: 'image-4.png',
-                    path: 'src/private/email-img/image-4.png',
+                    path: path.resolve(emailImgFolderPath, 'image-4.png'),
                     cid: 'image-4',
                 },
             ],
