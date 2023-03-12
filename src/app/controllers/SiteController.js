@@ -13,6 +13,7 @@ const {
     generateLienMinhAtFirstTime,
     generateUsersAtFirstTime,
 } = require('../../util/project_extensions');
+const sanitize = require('mongo-sanitize');
 
 class SiteController {
     // GET homepage
@@ -47,6 +48,7 @@ class SiteController {
     // POST /dang-nhap
     // Xu li dang nhap form
     loginSolvers(_req, res, next) {
+        
         if (_req.session.User) {
             return res.redirect(304, '/');
         }
@@ -58,7 +60,7 @@ class SiteController {
         }
 
         // Find by username
-        User.findOne({ userName: _req.body.username })
+        User.findOne({ userName: sanitize(_req.body.username).toLowerCase() })
             .then((user) => {
                 if (!user) {
                     logger.warn('User not found');
