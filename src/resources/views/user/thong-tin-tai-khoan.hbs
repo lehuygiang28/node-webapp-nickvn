@@ -29,6 +29,7 @@
                             {{user.userName}}
                         </h2>
                         <h2 class="c-font-22">{{user.role.role_name_vi}}</h2>
+                        <h2 class="c-font-22">{{user.phone}}</h2>
                         <h2 class="c-font-22">{{user.email}}</h2>
                         <h2 class="c-font-22 c-font-red">{{vndCurrency user.money}}</h2>
                     </center>
@@ -92,7 +93,7 @@
                                 <ul class="c-menu c-arrow-dot c-square c-theme">
                                     <li><a href=""><b>Nạp thẻ tự động</b></a></li>
 
-                                    <li><a href="">Lịch sử nạp thẻ</a></li>
+                                    {{!-- <li><a href="">Lịch sử nạp thẻ</a></li> --}}
                                     {{!-- <li><a href="/recharge" class="">Nạp Ví / ATM tự động</a></li> --}}
 
                                     <li><a href="/user/tai-khoan-da-mua" class="">Tài khoản đã mua</a></li>
@@ -133,15 +134,14 @@
                     <td>Tanmk1191@gmail.com (<a href="/user/email.html">Cài đặt</a>)</td>
                 </tr>-->
                             <tr>
+                                <th scope="row">Email:</th>
+                                <td>{{user.email}}</td>
+                            </tr>
+
+                            <tr>
                                 <th scope="row">Số điện thoại:</th>
                                 <td>{{user.phone}}</td>
                             </tr>
-
-                            {{!-- <tr>
-                                <th scope="row">Bảo mật ODP:</th>
-                                <td><a href="/user/phone.html"><b><i class="text-danger">Thêm số điện thoại</i></b></a>
-                                </td>
-                            </tr> --}}
 
                             <tr>
                                 <th scope="row">Nhóm tài khoản:</th>
