@@ -123,6 +123,7 @@ class SiteController {
 
     // POST /dang-ky
     signupSolvers(_req, res, next) {
+        let regexUserName = /^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
         if (_req.session.User) {
             return res.redirect(304, '/');
         }
@@ -137,6 +138,12 @@ class SiteController {
             return res
                 .status(401)
                 .render('sites/dang-ky', { error: 'Vui lòng điền đầy đủ các trường dữ liệu !' });
+        }
+
+        if (!regexUserName.test(_req.body.userName)) {
+            return res
+                .status(401)
+                .render('sites/dang-ky', { error: 'Tên tài khoản chưa đúng định dạng' });
         }
 
         if (!isEmailValid(_req.body.email)) {
