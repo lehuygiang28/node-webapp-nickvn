@@ -27,7 +27,7 @@ async function sendMail(to, inputContent) {
 
         let mailTemplateHtml = emailTemplate(inputContent);
 
-        client.sendMail({
+        await client.sendMail({
             from: 'Sender',
             to: to,
             subject: inputContent.subject,
@@ -59,6 +59,7 @@ async function sendMail(to, inputContent) {
         console.log(`Mail sent successful to: ${to}`);
         return true;
     } catch (error) {
+        console.error('Error sending mail: ' + error);
         return false;
     }
 }
