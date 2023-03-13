@@ -76,16 +76,16 @@
                             <td>{{dateFormat user_i.updatedAt 'hh:mm - DD/MM/YYYY'}}</td>
                             <td>
                                 <a href='/admin/users/{{user_i.userName}}/view'
-                                    class='btn btn-outline-info btn-sm'>Details</a>
+                                    class='btn btn-sm btn-outline-info text-capitalize'>details</a>
                             </td>
                             <td>
                                 {{#ifCondition user_i.status '===' 'ban'}}
-                                <button type="button" class="btn btn-success m-2 text-capitalize" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-sm btn-success text-capitalize" data-bs-toggle="modal"
                                     data-bs-target="#UnbanModal" data-user-name="{{user_i.userName}}">
                                     active
                                 </button>
                                 {{else}}
-                                <button type="button" class="btn btn-outline-danger m-2 text-capitalize"
+                                <button type="button" class="btn btn-sm btn-outline-danger text-capitalize"
                                     data-bs-toggle="modal" data-bs-target="#BanModal"
                                     data-user-name="{{user_i.userName}}">
                                     ban
