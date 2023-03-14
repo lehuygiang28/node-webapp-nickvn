@@ -3,7 +3,6 @@ const path = require('path');
 const handlebars = require('express-handlebars');
 const morgan = require('morgan');
 const session = require('express-session');
-const flash = require('express-flash');
 require('dotenv').config({
     path: path.resolve(__dirname, `./config/env/.env.${process.env.NODE_ENV}`),
 });
@@ -60,7 +59,11 @@ app.use(
 app.use(getSessionToViewsMiddleware);
 
 // Http logger
-if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'deploytest') {
+if (
+    process.env.NODE_ENV === 'production' ||
+    process.env.NODE_ENV === 'development' ||
+    process.env.NODE_ENV === 'deploytest'
+) {
     // app.use(morgan('combined'));
     // morgan(':date[clf] :method :url :status :res[content-length] - :response-time ms');
     morgan.token('date', (req, res) => {
@@ -100,7 +103,7 @@ app.set('views', path.resolve(__dirname, 'resources', 'views'));
 app.set('view layouts', path.resolve(__dirname, 'views', 'layouts'));
 
 // --- CUSTOM MIDDLEWARES ---
-// Custom flash middleware
+// Custom flash middleware to send message to views
 app.use(customSessionFlashMiddleware);
 
 // Sort

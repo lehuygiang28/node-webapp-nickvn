@@ -4,6 +4,7 @@ const { formattedDate24h } = require('./formatDate');
 // Set date format to mm/dd/yyyy h/mm/ss
 logger.setDate(() => formattedDate24h());
 
+// Disable log in test enviroment
 if (process.env.NODE_ENV === 'test') {
     logger.setLevel('disable');
 }

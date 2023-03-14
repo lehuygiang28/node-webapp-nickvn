@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const util = require('util');
+const {logger} = require('./logger');
 const { emailTemplate } = require('./email-template');
 const path = require('path');
 
