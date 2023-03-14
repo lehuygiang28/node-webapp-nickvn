@@ -4,7 +4,7 @@ const LienMinh = require('../models/LienMinh');
 const UserPuchased = require('../models/UserPuchased');
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose');
 const { sendMessage } = require('../../util/flash-message');
-const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer');
+const { sendMail } = require('../../util/send_mail-nodemailer');
 const { logger } = require('../../util/logger');
 const { chiaLayPhanNguyen, chiaLayPhanDu } = require('../../util/caculator');
 const sanitize = require('mongo-sanitize');
@@ -257,20 +257,22 @@ class LienMinhController {
             await puchasedFound.save();
 
             // Send email to user
-            sendMailCallback(
-                userFound.email,
-                {
-                    subject: 'Thông tin tài khoản đã mua tại giang.cf',
-                    title: `Thông tin tài khoản đã mua #${lienMinhFound.product_id}`,
-                    // context: `Tài khoản: ${acc.userName}<br>Mật khẩu: ${acc.password}`,
-                    heading: `Xin chào, bạn đã mua thành công tài khoản ${lienMinhFound.game.name} mã số ${lienMinhFound.product_id}!`,
-                    userName: lienMinhFound.userName.toString(),
-                    password: lienMinhFound.password.toString(),
-                },
-                () => {
-                    logger.info(`Mail sent successful to: ${userFound.email}`);
-                },
-            );
+            let isSent = sendMail(userFound.email, {
+                subject: 'Thông tin tài khoản đã mua tại giang.cf',
+                title: `Thông tin tài khoản đã mua #${lienMinhFound.product_id}`,
+                // context: `Tài khoản: ${acc.userName}<br>Mật khẩu: ${acc.password}`,
+                heading: `Xin chào, bạn đã mua thành công tài khoản ${lienMinhFound.game.name} mã số ${lienMinhFound.product_id}!`,
+                userName: lienMinhFound.userName.toString(),
+                password: lienMinhFound.password.toString(),
+            });
+
+            if (!isSent) {
+                sendMessage(_req, res, next, {
+                    success:
+                        'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn!',
+                });
+            }
+
             sendMessage(_req, res, next, {
                 success:
                     'Mua tài khoản thành công, thông tin tài khoản đã được gửi về email của bạn!',

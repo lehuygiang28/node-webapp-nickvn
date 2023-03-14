@@ -4,7 +4,7 @@ const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoo
 const { sendMessage } = require('../../util/flash-message');
 const { logger } = require('../../util/logger');
 const { createHash, compare } = require('../../util/bcrypt');
-const { sendMail, sendMailCallback } = require('../../util/send_mail-nodemailer');
+const { sendMail } = require('../../util/send_mail-nodemailer');
 const sanitize = require('mongo-sanitize');
 
 class UserController {

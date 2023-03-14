@@ -4,14 +4,6 @@ const { emailTemplate } = require('./email-template');
 const path = require('path');
 
 /***
- * Send an email to the user with the callback
- * @param {String} to The email adress to send
- * @param {Object} inputContent The content to send
- * @param callback The callback
- */
-const sendMailCallback = util.callbackify(sendMail);
-
-/***
  * Send an email to the user
  * @param {String} to The email adress to send
  * @param {Object} inputContent The content to send
@@ -57,7 +49,7 @@ function sendMail(to, inputContent) {
                 },
             ],
         });
-        console.log(`Mail sent successful to: ${to}`);
+        logger.info(`Mail sent successful to: ${to}`);
         return true;
     } catch (error) {
         console.error('Error sending mail: ' + error);
@@ -67,5 +59,4 @@ function sendMail(to, inputContent) {
 
 module.exports = {
     sendMail,
-    sendMailCallback,
 };

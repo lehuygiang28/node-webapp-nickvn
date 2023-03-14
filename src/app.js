@@ -83,7 +83,7 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'developme
 }
 
 // Flash express to send msg
-app.use(flash());
+// app.use(flash());
 
 // Template engine
 app.engine(
