@@ -11,23 +11,23 @@ function isAdmin(req, res, next) {
     let nonCheckFeatures = ['/change-visible'];
 
     /**
-     * If the request is not authenticated, return error
+     * If the request is not authenticated, return homepage
      */
-    if(req.originalUrl.includes(nonCheckFeatures) && !req.session.adminUser){
-        return res.json({error: 'You not allowed to access this page'});
+    if (req.originalUrl.includes(nonCheckFeatures) && !req.session.adminUser) {
+        return res.redirect('/');
     }
 
     /**
-     * If request is login site, return login page
+     * If request is login site, pass to login page
      */
-    if(req.path === nonCheckSites[0] && req.session.adminUser){
+    if (req.path === nonCheckSites[0] && req.session.adminUser) {
         return res.redirect('/admin');
     }
 
     /**
      * If request is include non check sites, next() will return
      */
-    if(nonCheckSites.includes(req.path)) return next();
+    if (nonCheckSites.includes(req.path)) return next();
 
     /**
      * Require admin authen, if not return login page
