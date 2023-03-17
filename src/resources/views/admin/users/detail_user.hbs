@@ -78,7 +78,7 @@
 
                     <dt class="col-sm-4 text-capitalize">money</dt>
                     <dd class="col-sm-8" disable-editable>
-                        {{user.money}}
+                        {{vndCurrency user.money}}
                     </dd>
 
                     <dt class="col-sm-4 text-capitalize">role</dt>
@@ -122,6 +122,10 @@
                         <a type="button" class="btn btn-success m-2" data-bs-toggle="modal"
                             data-bs-target="#UnbanButton">
                             ACTIVE
+                        </a>
+                        <a type="button" class="btn btn-success m-2 text-capitalize" data-bs-toggle="modal"
+                            data-bs-target="#moneyModal">
+                            <i class="fa fa-plus"></i> | money
                         </a>
 
                         <!-- Modal -->
@@ -171,6 +175,36 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+
+                        <div class="modal fade" id="moneyModal" tabindex="-1" aria-labelledby="moneyModalLabel"
+                            aria-hidden="true">
+                            <form action="/admin/users/{{user.userName}}/money" method="post">
+                                <div class="modal-dialog">
+                                    <div class="modal-content" style="background-color: #191C24;">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-white" id="moneyModalLabel">Change user's money
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Input your money to update:
+                                            <div class='form-floating mb-3'>
+                                                <input type='number' class='form-control' id="money" name='money' />
+                                                <label for='money'>Money</label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button class="btn btn-success text-white text-capitalize" type="submit"
+                                                onclick="showSpinner();">Change</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <!-- Modal End -->
 

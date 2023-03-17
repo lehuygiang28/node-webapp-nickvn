@@ -945,6 +945,46 @@ class AdminController {
             return res.redirect(`back`);
         });
     }
+
+    // PATCH /admin/users/money
+    async changeUserMoney(req, res, next) {
+        let newMoney = req.body.money;
+        let userName = req.params.user_name;
+
+        if (!userName) {
+            sendMessage(req, res, next, { error: 'User not found' });
+            return res.redirect('back');
+        }
+
+        if (!newMoney || isNaN(newMoney)) {
+            sendMessage(req, res, next, { error: 'Input must be number.' });
+            return res.redirect('back');
+        }
+
+        let userFound = await User.findOne({ userName: sanitize(userName) });
+        userFound.money += Number(newMoney);
+        userFound.save((err) => {
+            if (err) {
+                console.error(`Has error when change user money: ${err}`);
+                return res.redirect('back');
+            }
+        });
+
+        switch (Number(newMoney) < 0) {
+            case true:
+                sendMessage(req, res, next, {
+                    success: `User's money has been subtract: ${newMoney}`,
+                });
+                break;
+            case false:
+            default:
+                sendMessage(req, res, next, {
+                    success: `User's money has been add: ${newMoney}`,
+                });
+                break;
+        }
+        return res.redirect('back');
+    }
 }
 
 module.exports = new AdminController();

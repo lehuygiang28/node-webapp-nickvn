@@ -5,6 +5,7 @@ const AdminControllers = require('../app/controllers/AdminController');
 router.get('/test', AdminControllers.test);
 
 router.post('/users/change-status', AdminControllers.changeUserStatus);
+router.post('/users/:user_name/money', AdminControllers.changeUserMoney);
 
 router.get('/orders/:user_id/:id/view', AdminControllers.detailOrder);
 router.get('/orders', AdminControllers.orders);
