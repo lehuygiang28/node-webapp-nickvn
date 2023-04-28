@@ -1,6 +1,6 @@
 # Node-webapp-nickvn
 
-#### Live Demo: **_[nodejs.giang.cf](https://nodejs.giang.cf/)_**
+#### Live Demo: **_[nodejs.giaang.com](https://nodejs.giaang.com/)_**
 
 ## Current features
 
